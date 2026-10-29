@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="An alarm clock that wakes you with a word from God, chosen for how you feel.">
+<meta name="theme-color" content="#131B2D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Peace Rising">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<style>[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}@media (max-width:560px){html,body{height:100%}:root{height:100%}}</style>
+<title>Peace Rising</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: pre-dawn presentation stage, pitch panel left, phone right; on a real phone the app goes full screen. Single committed look (night stage, morning-lit app). */
+:root{
+  color-scheme: dark;
+  --stage:#0E1524; --stage-2:#18223A; --stage-fg:#E8ECF4; --stage-muted:#97A1B7;
+  --night:#131B2D; --night-2:#1C2640; --night-line:#2B3653; --night-fg:#EEF1F7; --night-muted:#96A0B8;
+  --gold:#F2B544; --gold-ink:#9A620A; --ember:#E27454; --rose:#F1B8A2;
+  --day:#F3F4F0; --card:#FFFFFF; --ink:#1C2537; --ink-2:#596379; --line:#E1E3DD;
+  --sage:#47705E; --sage-soft:#E2ECE5; --gold-soft:#FBEFD6; --danger-soft:#FBE7E1;
+  --display:'Young Serif', Georgia, 'Times New Roman', serif;
+  --word:'Newsreader', Georgia, 'Times New Roman', serif;
+  --ui:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--stage);color:var(--stage-fg);font-family:var(--ui);margin:0;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+input,textarea{font:inherit}
+
+/* ---------- Stage ---------- */
+.stage{min-height:100%;display:grid;grid-template-columns:minmax(0,440px) auto;justify-content:center;align-items:center;gap:72px;
+  padding-block:24px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));
+  background:radial-gradient(120% 60% at 70% 115%, #3A2C3A 0%, #1F2236 45%, var(--stage) 75%)}
+.pitch{display:flex;flex-direction:column;gap:28px;min-width:0}
+.brand{display:flex;align-items:center;gap:14px}
+.brand svg{flex:none}
+.brand h1{font-family:var(--display);font-weight:400;font-size:40px;margin:0;letter-spacing:.2px}
+.tagline{font-family:var(--word);font-size:22px;line-height:1.4;color:var(--stage-fg);margin:0;max-width:30ch;text-wrap:balance}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;color:var(--stage-muted);line-height:1.45;font-size:15px}
+.steps li::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:50%;border:1px solid #3A4562;display:grid;place-items:center;font-size:13px;color:var(--gold);font-weight:600}
+.steps b{color:var(--stage-fg);font-weight:600}
+.controls{display:grid;gap:12px;padding:18px;border:1px solid #2B3550;border-radius:16px;background:rgba(24,34,58,.6)}
+.controls .lbl{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--stage-muted);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.sbtn{padding:10px 14px;border-radius:10px;background:#24304C;color:var(--stage-fg);font-weight:600;font-size:14px}
+.sbtn:hover{background:#2D3A5B}
+.sbtn.primary{background:var(--gold);color:#2A1C04}
+.sbtn.primary:hover{background:#F6C467}
+.sbtn.ghost{background:transparent;border:1px solid #33405F;font-weight:500;color:var(--stage-muted)}
+.foot{font-size:12px;color:var(--stage-muted);line-height:1.5;margin:0}
+
+/* ---------- Phone ---------- */
+.device-wrap{width:calc(393px * var(--s,1));height:calc(852px * var(--s,1));position:relative}
+.phone{position:absolute;top:0;left:0;width:393px;height:852px;transform:scale(var(--s,1));transform-origin:top left;
+  border-radius:54px;background:#05070C;padding:12px;box-shadow:0 0 0 1.5px #3A4157,0 40px 90px rgba(0,0,0,.55),0 0 120px rgba(242,181,68,.08)}
+.app{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;display:flex;flex-direction:column;background:var(--day);color:var(--ink)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:30}
+.statusbar{height:52px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 30px 0 34px;font-weight:600;font-size:15px;z-index:20;font-variant-numeric:tabular-nums}
+.sb-icons{display:flex;gap:6px;align-items:center}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.pad{padding:8px 22px 28px}
+
+.app[data-mode="night"]{background:var(--night);color:var(--night-fg)}
+.app[data-mode="dawn"]{background:#1B2236;color:#fff}
+
+/* Tab bar */
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 10px 22px;border-top:1px solid var(--line);background:rgba(255,255,255,.92)}
+.app[data-mode="night"] .tabbar{background:#10182A;border-top-color:var(--night-line)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--ink-2);padding:6px 0;border-radius:12px}
+.app[data-mode="night"] .tab{color:var(--night-muted)}
+.tab.on{color:var(--gold-ink)}
+.app[data-mode="night"] .tab.on{color:var(--gold)}
+.tab svg{width:24px;height:24px}
+
+/* Shared bits */
+.eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;color:var(--ink-2)}
+.app[data-mode="night"] .eyebrow{color:var(--night-muted)}
+.h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:4px 0 0;text-wrap:balance}
+.h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0}
+.muted{color:var(--ink-2)}
+.app[data-mode="night"] .muted{color:var(--night-muted)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border-radius:16px;font-weight:700;font-size:16px;background:var(--ink);color:#fff}
+.btn.gold{background:var(--gold);color:#2A1C04}
+.btn.soft{background:transparent;border:1.5px solid currentColor;opacity:.85;font-weight:600}
+.btn.sage{background:var(--sage);color:#fff}
+.stack{display:grid;gap:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--gold-soft);color:var(--gold-ink)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;display:inline-block}
+
+/* Alarms (night) */
+.nextcard{margin-top:18px;padding:22px;border-radius:24px;background:linear-gradient(160deg,#22304F,#1A233B);border:1px solid var(--night-line)}
+.bigtime{font-family:var(--display);font-size:64px;line-height:1;font-variant-numeric:tabular-nums}
+.bigtime small{font-family:var(--ui);font-size:20px;font-weight:600;margin-left:6px;color:var(--night-muted)}
+.alarm-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 4px;border-bottom:1px solid var(--night-line)}
+.alarm-row .t{font-family:var(--display);font-size:32px;font-variant-numeric:tabular-nums}
+.alarm-row .t small{font-family:var(--ui);font-size:14px;font-weight:600;margin-left:4px}
+.alarm-row.off .t,.alarm-row.off .meta{opacity:.45}
+.alarm-row .meta{font-size:13px;color:var(--night-muted);margin-top:2px}
+.alarm-main{text-align:left;flex:1;min-width:0}
+.switch{width:52px;height:32px;border-radius:99px;background:#3A4562;position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch.on{background:var(--gold)}
+.switch.on::after{transform:translateX(20px)}
+.nightverse{margin-top:22px;padding:18px;border-radius:18px;border:1px dashed var(--night-line)}
+.nightverse p{font-family:var(--word);font-style:italic;font-size:17px;line-height:1.5;margin:6px 0}
+
+.soundpill{display:flex;align-items:center;gap:8px;margin-top:14px;padding:9px 12px;border-radius:12px;background:rgba(242,181,68,.12);color:var(--gold);font-size:12.5px;font-weight:600;text-align:left;width:100%}
+.soundico{width:64px;height:64px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:rgba(242,181,68,.15);color:var(--gold)}
+.soundsteps{margin:0;padding-left:20px;display:grid;gap:8px;line-height:1.45;font-size:14.5px;color:var(--night-fg)}
+.soundsteps b{color:var(--gold)}
+/* Sheet */
+.backdrop{position:absolute;inset:0;background:rgba(5,8,15,.55);z-index:40;display:flex;align-items:flex-end}
+.sheet{width:100%;background:var(--night-2);color:var(--night-fg);border-radius:28px 28px 0 0;padding:22px 22px 30px;display:grid;gap:18px;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet input[type=time]{width:100%;font-family:var(--display);font-size:48px;background:#121A2C;color:var(--night-fg);border:1px solid var(--night-line);border-radius:16px;padding:10px 16px;text-align:center}
+.sheet input[type=text]{width:100%;background:#121A2C;color:var(--night-fg);border:1px solid var(--night-line);border-radius:12px;padding:12px 14px;font-size:16px}
+.days{display:flex;justify-content:space-between;gap:6px}
+.day{width:38px;height:38px;border-radius:50%;border:1px solid var(--night-line);font-weight:700;font-size:13px;color:var(--night-muted)}
+.day.on{background:var(--gold);color:#2A1C04;border-color:var(--gold)}
+
+/* Ringing (dawn) */
+.ring{position:relative;min-height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 26px 34px;overflow:hidden;
+  background:linear-gradient(180deg,#1B2236 0%,#3B3550 34%,#B86A5E 64%,#F0A76A 82%,#F7CF86 100%)}
+.ring .label{font-weight:600;letter-spacing:.4px;opacity:.85}
+.ring .clock{font-family:var(--display);font-size:92px;line-height:1;margin-top:12px;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.25)}
+.ring .date{opacity:.85;margin-top:8px}
+.sunbox{position:relative;width:100%;height:190px;margin-top:10px;overflow:hidden}
+.tabbar[hidden]{display:none}
+.sun{position:absolute;left:50%;bottom:0;width:150px;height:150px;margin-left:-75px;border-radius:50%;
+  background:radial-gradient(circle,#FFF4D1 0%,#FFD27A 45%,#F7A94E 100%);box-shadow:0 0 80px 30px rgba(255,200,110,.45);animation:rise 3.5s ease-out both, pulse 2.4s ease-in-out 3.5s infinite}
+@keyframes rise{from{transform:translateY(150px)}to{transform:translateY(40px)}}
+@keyframes pulse{0%,100%{transform:translateY(40px) scale(1)}50%{transform:translateY(40px) scale(1.05)}}
+.horizon{position:absolute;left:-10%;right:-10%;bottom:0;height:90px;background:linear-gradient(180deg,rgba(247,207,134,0) 0,#F7CF86 60%)}
+.ringword{font-family:var(--word);font-style:italic;font-size:19px;line-height:1.45;color:#3A2410;max-width:28ch;margin:14px 0 0}
+.ringword cite{display:block;font-style:normal;font-family:var(--ui);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:6px;opacity:.75}
+.ring .actions{margin-top:auto;display:grid;gap:12px;width:100%;padding-top:20px}
+.ring .btn.gold{background:#1C2537;color:#FFE7B0;font-size:18px;padding:18px}
+.ring .btn.soft{color:#3A2410}
+
+/* Mood + questions */
+.ringbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:var(--danger-soft);color:#8A3A22;font-weight:600;font-size:13px;margin-bottom:18px}
+.bars{display:flex;gap:3px;align-items:flex-end;height:16px}
+.bars i{width:3px;background:currentColor;border-radius:2px;animation:eq 0.9s ease-in-out infinite}
+.bars i:nth-child(2){animation-delay:.15s}.bars i:nth-child(3){animation-delay:.3s}.bars i:nth-child(4){animation-delay:.45s}
+@keyframes eq{0%,100%{height:4px}50%{height:16px}}
+.moods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.mood{display:flex;align-items:center;gap:12px;padding:16px 14px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);font-weight:600;font-size:16px;text-align:left;transition:transform .12s,border-color .12s}
+.mood:hover{border-color:#C9CCC4}
+.mood:active{transform:scale(.97)}
+.mood .dot{width:14px;height:14px}
+.mood.picked{border-color:var(--ink);background:var(--ink);color:#fff}
+.progress{display:flex;gap:6px;margin:6px 0 18px}
+.progress span{height:4px;flex:1;border-radius:4px;background:var(--line)}
+.progress span.on{background:var(--gold)}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.back{display:flex;align-items:center;gap:4px;font-weight:600;color:var(--ink-2);padding:6px 0}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.opt{padding:13px 18px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);font-weight:600;font-size:15px;text-align:left}
+.opt:hover{border-color:#C9CCC4}
+.opt.picked{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.loading{min-height:100%;display:grid;place-items:center;text-align:center;padding:40px}
+.loading .orb{width:80px;height:80px;border-radius:50%;margin:0 auto 22px;background:radial-gradient(circle,#FFF4D1,#F7B95C);animation:breathe 1.4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.85);opacity:.7}50%{transform:scale(1.05);opacity:1}}
+
+/* Verses */
+.vhead{padding:8px 22px 18px;background:linear-gradient(180deg,#FBE9C9 0%,var(--day) 100%)}
+.verse{background:var(--card);border-radius:22px;padding:20px;border:1px solid var(--line);display:grid;gap:12px}
+.verse .ref{font-weight:700;font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--gold-ink)}
+.verse blockquote{margin:0;font-family:var(--word);font-size:20px;line-height:1.5;color:var(--ink)}
+.why{font-size:12px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.why span.tag{background:var(--day);border-radius:99px;padding:3px 8px;font-weight:600}
+.vactions{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.vact{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2);padding:6px 10px;border-radius:10px;background:var(--day)}
+.vact.on{color:var(--gold-ink);background:var(--gold-soft)}
+.vact svg{width:16px;height:16px}
+.prayer{border-radius:22px;padding:20px;background:var(--sage-soft);color:#1F3A2E}
+.prayer p{font-family:var(--word);font-style:italic;font-size:18px;line-height:1.55;margin:8px 0 0}
+.reflect textarea{width:100%;min-height:84px;border-radius:16px;border:1.5px solid var(--line);padding:14px;font-size:15px;resize:none;background:var(--card);color:var(--ink);margin-top:8px}
+.care{border-radius:22px;padding:20px;background:var(--danger-soft);color:#6E2A16;display:grid;gap:8px}
+.care h3{margin:0;font-family:var(--display);font-weight:400;font-size:20px}
+.care p{margin:0;line-height:1.5;font-size:15px}
+
+/* Today / Journal */
+.streak{display:flex;align-items:center;gap:16px;padding:20px;border-radius:24px;background:linear-gradient(150deg,#FCE6BC,#F8D7C4);color:#3A2410}
+.streak .n{font-family:var(--display);font-size:52px;line-height:1}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:4px}
+.wd{display:grid;justify-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--ink-2)}
+.wd .c{width:34px;height:34px;border-radius:50%;border:1.5px dashed #CDD0C8;display:grid;place-items:center}
+.wd .c.has{border:0}
+.wd.today .c{outline:2px solid var(--ink);outline-offset:2px}
+.list{display:grid;gap:10px}
+.li{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.li .main{flex:1;min-width:0}
+.li .ttl{font-weight:600}
+.li .sub{font-size:13px;color:var(--ink-2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.moodbar{display:grid;grid-template-columns:96px 1fr 22px;gap:10px;align-items:center;font-size:13px;font-weight:600}
+.moodbar .track{height:10px;border-radius:6px;background:var(--line);overflow:hidden}
+.moodbar .fill{height:100%;border-radius:6px}
+.moodbar .ct{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.section{display:grid;gap:12px;margin-top:26px}
+.section-h{display:flex;justify-content:space-between;align-items:baseline}
+
+/* Connect */
+.circle{padding:20px;border-radius:24px;background:linear-gradient(155deg,#2D4D40,#47705E);color:#fff;display:grid;gap:12px}
+.avatars{display:flex}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#1C2537;border:2px solid #3A5E4F;margin-right:-8px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;background:rgba(255,255,255,.16);padding:5px 10px;border-radius:99px}
+.live i{width:8px;height:8px;border-radius:50%;background:#8FF0B6;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.3}}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:#E6E8E2;border-radius:12px;padding:4px;margin-top:18px}
+.seg button{padding:9px 4px;border-radius:9px;font-weight:600;font-size:13px;color:var(--ink-2)}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.req{padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line);display:grid;gap:10px}
+.req .who{display:flex;align-items:center;gap:10px;font-size:13px}
+.req .who .av{margin:0;border:0;width:30px;height:30px;font-size:12px}
+.req p{margin:0;line-height:1.5}
+.req .vq{font-family:var(--word);font-style:italic;font-size:16px}
+.pray{justify-self:start;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:8px 12px;border-radius:10px;background:var(--sage-soft);color:var(--sage)}
+.pray.on{background:var(--sage);color:#fff}
+.compose{display:grid;gap:10px;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.compose textarea,.chatin input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:15px;resize:none;background:var(--day);color:var(--ink)}
+.compose .r{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.compose label{font-size:13px;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.small-btn{padding:10px 16px;border-radius:12px;background:var(--sage);color:#fff;font-weight:700;font-size:14px}
+.msgs{display:grid;gap:10px}
+.msg{max-width:82%;display:grid;gap:3px}
+.msg .b{padding:11px 14px;border-radius:18px 18px 18px 6px;background:var(--card);border:1px solid var(--line);line-height:1.45;font-size:15px}
+.msg .n{font-size:11px;font-weight:700;color:var(--ink-2);padding-left:6px}
+.msg.me{justify-self:end}
+.msg.me .b{background:var(--sage);color:#fff;border-color:var(--sage);border-radius:18px 18px 6px 18px}
+.msg.me .n{text-align:right;padding-right:6px}
+.chatin{display:flex;gap:8px;margin-top:14px}
+.chatin input{flex:1;min-width:0}
+.ci{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.ci .tm{width:62px;font-family:var(--display);font-size:18px;line-height:1.1}
+.ci .tm small{display:block;font-family:var(--ui);font-size:11px;font-weight:700;color:var(--ink-2)}
+.ci .main{flex:1;min-width:0}
+.join{padding:8px 14px;border-radius:10px;border:1.5px solid var(--sage);color:var(--sage);font-weight:700;font-size:13px}
+.join.on{background:var(--sage);color:#fff}
+.safety{font-size:12px;color:var(--ink-2);line-height:1.5;padding:12px 14px;border-radius:14px;background:#EAECE6}
+
+/* Toast */
+.toast{position:absolute;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Narrow screens: app goes full screen ---------- */
+@media (max-width: 900px){
+  .stage{grid-template-columns:1fr;justify-items:center;gap:32px}
+  .pitch{max-width:440px}
+}
+@media (max-width: 560px){
+  .stage{display:block;padding:0;background:var(--day)}
+  .pitch{display:none}
+  .device-wrap{width:100%;height:100%}
+  .phone{position:static;width:100%;height:100%;transform:none;border-radius:0;padding:0;box-shadow:none;background:transparent}
+  .app{border-radius:0}
+  .island{display:none}
+  .statusbar{display:none}
+  .screen .pad{padding-top:16px}
+  .tabbar{padding-bottom:max(14px,env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+
+<div class="stage">
+  <aside class="pitch" aria-label="About Peace Rising">
+    <div class="brand">
+      <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
+        <circle cx="26" cy="34" r="13" fill="#F2B544"/>
+        <rect x="0" y="34" width="52" height="18" fill="#0E1524"/>
+        <path d="M4 34h44" stroke="#F2B544" stroke-width="2.5" stroke-linecap="round"/>
+        <g stroke="#F2B544" stroke-width="2.5" stroke-linecap="round">
+          <path d="M26 8v6"/><path d="M9 17l4 4"/><path d="M43 17l-4 4"/>
+        </g>
+        <path d="M14 41h24M19 47h14" stroke="#97A1B7" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h1>Peace Rising</h1>
+    </div>
+    <p class="tagline">An alarm clock that wakes you with a word from God, chosen for how you feel.</p>
+    <ol class="steps">
+      <li><span><b>Set your alarm</b> before bed, with a verse to sleep on.</span></li>
+      <li><span><b>Wake to a gentle chime</b> that grows slowly, with a sunrise on screen.</span></li>
+      <li><span><b>Silence it by checking in.</b> Say how you feel and answer two quick questions.</span></li>
+      <li><span><b>Receive scripture</b> matched to your morning, a short prayer and a moment to reflect.</span></li>
+      <li><span><b>Pray together</b> in Prayer Connect with people who wake when you do.</span></li>
+    </ol>
+    <div class="controls">
+      <div class="lbl">Demo controls</div>
+      <div class="row">
+        <button class="sbtn primary" data-side="ring">Ring the alarm now</button>
+        <button class="sbtn" data-side="checkin">Check in without alarm</button>
+      </div>
+      <div class="row">
+        <button class="sbtn ghost" data-side="alarms">Alarms</button>
+        <button class="sbtn ghost" data-side="journal">Journal</button>
+        <button class="sbtn ghost" data-side="connect">Prayer Connect</button>
+        <button class="sbtn ghost" data-side="reset">Reset demo</button>
+      </div>
+    </div>
+    <p class="foot">Working prototype. Turn your sound on for the alarm. Scripture is from the King James Version (public domain). Journal history and Prayer Connect members are sample data.</p>
+  </aside>
+
+  <div class="device-wrap" id="wrap">
+    <div class="phone" id="phone">
+      <div class="app" id="app" data-mode="night">
+        <div class="island" aria-hidden="true"></div>
+        <div class="statusbar"><span id="sbTime">5:45</span>
+          <span class="sb-icons" aria-hidden="true">
+            <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="9.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
+          </span>
+        </div>
+        <main class="screen" id="screen"></main>
+        <nav class="tabbar" id="tabbar" aria-label="App sections"></nav>
+        <div class="toast" id="toast" role="status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const pad = n => String(n).padStart(2,'0');
+const keyFor = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const todayKey = () => keyFor(new Date());
+const DAYS = ['S','M','T','W','T','F','S'];
+const DAYNAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmt12(hhmm){ const [h,m] = hhmm.split(':').map(Number); return {t:(h%12||12)+':'+pad(m), ap:h<12?'AM':'PM'}; }
+function nowLabel(){ const d=new Date(); return (d.getHours()%12||12)+':'+pad(d.getMinutes())+' '+(d.getHours()<12?'AM':'PM'); }
+
+/* ---------------- Scripture library (KJV, public domain) ---------------- */
+const V = {
+ phil4:{ref:'Philippians 4:6–7',t:'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.',tags:['anxious','worry','peace','overwhelmed','money','future','thanks']},
+ pet57:{ref:'1 Peter 5:7',t:'Casting all your care upon him; for he careth for you.',tags:['anxious','worry','overwhelmed','burden','peace','comfort','responsibilities']},
+ mt634:{ref:'Matthew 6:34',t:'Take therefore no thought for the morrow: for the morrow shall take thought for the things of itself. Sufficient unto the day is the evil thereof.',tags:['anxious','future','worry','tasks']},
+ isa4110:{ref:'Isaiah 41:10',t:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.',tags:['anxious','fear','strength','courage','presence','health','lonely']},
+ jn1427:{ref:'John 14:27',t:'Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.',tags:['anxious','peace','fear','sad','family']},
+ ps3418:{ref:'Psalm 34:18',t:'The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.',tags:['sad','grief','comfort','hopeless','relationship','loss']},
+ ps305:{ref:'Psalm 30:5',t:'For his anger endureth but a moment; in his favour is life: weeping may endure for a night, but joy cometh in the morning.',tags:['sad','grief','hope','morning','hopeless','disappointment','comfort']},
+ mt54:{ref:'Matthew 5:4',t:'Blessed are they that mourn: for they shall be comforted.',tags:['sad','loss','grief','comfort']},
+ ps1473:{ref:'Psalm 147:3',t:'He healeth the broken in heart, and bindeth up their wounds.',tags:['sad','relationship','comfort','health','loss']},
+ ps4211:{ref:'Psalm 42:11',t:'Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him, who is the health of my countenance, and my God.',tags:['sad','hopeless','hope','farGod','spirit']},
+ jas48:{ref:'James 4:8',t:'Draw nigh to God, and he will draw nigh to you.',tags:['farGod','closeGod','lonely']},
+ mt1128:{ref:'Matthew 11:28',t:'Come unto me, all ye that labour and are heavy laden, and I will give you rest.',tags:['tired','rest','overwhelmed','burden','work','spirit','tasks']},
+ isa4031:{ref:'Isaiah 40:31',t:'But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.',tags:['tired','strength','waiting','hope','patience']},
+ isa4029:{ref:'Isaiah 40:29',t:'He giveth power to the faint; and to them that have no might he increaseth strength.',tags:['tired','strength','sleep','work','health','weakness']},
+ ps1272:{ref:'Psalm 127:2',t:'It is vain for you to rise up early, to sit up late, to eat the bread of sorrows: for so he giveth his beloved sleep.',tags:['tired','sleep','rest','work']},
+ lam322:{ref:'Lamentations 3:22–23',t:'It is of the LORD’s mercies that we are not consumed, because his compassions fail not. They are new every morning: great is thy faithfulness.',tags:['morning','hope','sad','grateful','spirit','disappointment','hopeless','myself']},
+ ps11824:{ref:'Psalm 118:24',t:'This is the day which the LORD hath made; we will rejoice and be glad in it.',tags:['happy','grateful','joy','morning','praise','alive']},
+ thes516:{ref:'1 Thessalonians 5:16–18',t:'Rejoice evermore. Pray without ceasing. In every thing give thanks: for this is the will of God in Christ Jesus concerning you.',tags:['grateful','thanks','happy','joy','pray']},
+ ps1004:{ref:'Psalm 100:4',t:'Enter into his gates with thanksgiving, and into his courts with praise: be thankful unto him, and bless his name.',tags:['grateful','thanks','praise','answered']},
+ jas117:{ref:'James 1:17',t:'Every good gift and every perfect gift is from above, and cometh down from the Father of lights, with whom is no variableness, neither shadow of turning.',tags:['grateful','thanks','opportunity','happy','goodnews','family']},
+ ps963:{ref:'Psalm 96:3',t:'Declare his glory among the heathen, his wonders among all people.',tags:['happy','share','praise','goodnews','answered']},
+ thes511:{ref:'1 Thessalonians 5:11',t:'Wherefore comfort yourselves together, and edify one another, even as also ye do.',tags:['share','lonely','friends','serve']},
+ jas516:{ref:'James 5:16',t:'Confess your faults one to another, and pray one for another, that ye may be healed. The effectual fervent prayer of a righteous man availeth much.',tags:['pray','intercede','health']},
+ jas119:{ref:'James 1:19–20',t:'Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath: For the wrath of man worketh not the righteousness of God.',tags:['frustrated','anger','patience','person','family']},
+ eph432:{ref:'Ephesians 4:32',t:'And be ye kind one to another, tenderhearted, forgiving one another, even as God for Christ’s sake hath forgiven you.',tags:['frustrated','forgiveness','person','family','relationship']},
+ prov151:{ref:'Proverbs 15:1',t:'A soft answer turneth away wrath: but grievous words stir up anger.',tags:['frustrated','anger','person','work','family']},
+ gal69:{ref:'Galatians 6:9',t:'And let us not be weary in well doing: for in due season we shall reap, if we faint not.',tags:['frustrated','tired','patience','waiting','work','serve','situation','strength']},
+ rom1212:{ref:'Romans 12:12',t:'Rejoicing in hope; patient in tribulation; continuing instant in prayer.',tags:['frustrated','patience','hope','situation','pray','waiting']},
+ rom1218:{ref:'Romans 12:18',t:'If it be possible, as much as lieth in you, live peaceably with all men.',tags:['person','peace','frustrated']},
+ col313:{ref:'Colossians 3:13',t:'Forbearing one another, and forgiving one another, if any man have a quarrel against any: even as Christ forgave you, so also do ye.',tags:['forgiveness','person','family','relationship']},
+ prov356:{ref:'Proverbs 3:5–6',t:'Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',tags:['direction','decisions','future','anxious','overwhelmed','wisdom']},
+ jas15:{ref:'James 1:5',t:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.',tags:['wisdom','direction','decisions','work']},
+ ps328:{ref:'Psalm 32:8',t:'I will instruct thee and teach thee in the way which thou shalt go: I will guide thee with mine eye.',tags:['direction','decisions','future','wisdom']},
+ jer2911:{ref:'Jeremiah 29:11',t:'For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.',tags:['hope','future','anxious','disappointment','sad','waiting']},
+ rom1513:{ref:'Romans 15:13',t:'Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope, through the power of the Holy Ghost.',tags:['hope','joy','peace','sad','happy']},
+ rom828:{ref:'Romans 8:28',t:'And we know that all things work together for good to them that love God, to them who are the called according to his purpose.',tags:['disappointment','hope','situation','sad','frustrated']},
+ deut316:{ref:'Deuteronomy 31:6',t:'Be strong and of a good courage, fear not, nor be afraid of them: for the LORD thy God, he it is that doth go with thee; he will not fail thee, nor forsake thee.',tags:['lonely','presence','courage','strength','fear']},
+ heb135:{ref:'Hebrews 13:5',t:'Let your conversation be without covetousness; and be content with such things as ye have: for he hath said, I will never leave thee, nor forsake thee.',tags:['lonely','presence','money','provision','comfort']},
+ ps686:{ref:'Psalm 68:6',t:'God setteth the solitary in families.',tags:['lonely','family','friends']},
+ ps461:{ref:'Psalm 46:1',t:'God is our refuge and strength, a very present help in trouble.',tags:['overwhelmed','strength','presence','anxious','situation','responsibilities']},
+ ps4610:{ref:'Psalm 46:10',t:'Be still, and know that I am God.',tags:['peace','overwhelmed','anxious','spirit','still']},
+ cor129:{ref:'2 Corinthians 12:9',t:'And he said unto me, My grace is sufficient for thee: for my strength is made perfect in weakness.',tags:['tired','strength','myself','spirit','weakness']},
+ ps1438:{ref:'Psalm 143:8',t:'Cause me to hear thy lovingkindness in the morning; for in thee do I trust: cause me to know the way wherein I should walk; for I lift up my soul unto thee.',tags:['morning','direction','farGod','closeGod','decisions']},
+ ps53:{ref:'Psalm 5:3',t:'My voice shalt thou hear in the morning, O LORD; in the morning will I direct my prayer unto thee, and will look up.',tags:['morning','pray','closeGod','farGod','lonely']},
+ neh810:{ref:'Nehemiah 8:10',t:'…for the joy of the LORD is your strength.',tags:['happy','joy','strength','tired']},
+ ps1611:{ref:'Psalm 16:11',t:'Thou wilt shew me the path of life: in thy presence is fulness of joy; at thy right hand there are pleasures for evermore.',tags:['happy','joy','closeGod','direction']},
+ col323:{ref:'Colossians 3:23',t:'And whatsoever ye do, do it heartily, as to the Lord, and not unto men.',tags:['work','serve','happy','tasks']},
+ ps5522:{ref:'Psalm 55:22',t:'Cast thy burden upon the LORD, and he shall sustain thee: he shall never suffer the righteous to be moved.',tags:['burden','overwhelmed','money','responsibilities','sad']},
+ phil419:{ref:'Philippians 4:19',t:'But my God shall supply all your need according to his riches in glory by Christ Jesus.',tags:['money','provision','anxious']},
+ mt633:{ref:'Matthew 6:33',t:'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.',tags:['money','provision','direction','overwhelmed']},
+ jer1714:{ref:'Jeremiah 17:14',t:'Heal me, O LORD, and I shall be healed; save me, and I shall be saved: for thou art my praise.',tags:['health','healing']},
+ ps271:{ref:'Psalm 27:1',t:'The LORD is my light and my salvation; whom shall I fear? the LORD is the strength of my life; of whom shall I be afraid?',tags:['anxious','fear','courage','strength']},
+ josh19:{ref:'Joshua 1:9',t:'Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.',tags:['courage','strength','work','future','fear','opportunity']}
+};
+const BEDTIME = {ref:'Psalm 4:8', t:'I will both lay me down in peace, and sleep: for thou, LORD, only makest me dwell in safety.'};
+
+/* ---------------- Check-in questions ---------------- */
+const MOODS = {
+ anxious:{label:'Anxious',color:'#8A9BD8',low:true,q:'What’s on your mind this morning?',opts:[['Work or school',['work']],['Money',['money','provision']],['Family',['family']],['My health',['health']],['The future',['future']],['I can’t say why',['peace','still']]]},
+ sad:{label:'Sad',color:'#6E8FB3',low:true,q:'What’s behind the sadness?',opts:[['A loss',['loss','grief']],['A relationship',['relationship']],['A disappointment',['disappointment']],['I feel far from God',['farGod']],['I feel hopeless',['hopeless'],true],['I’m not sure',['comfort']]]},
+ frustrated:{label:'Frustrated',color:'#D9775B',low:true,q:'Who or what is it about?',opts:[['Someone at work or school',['person','work']],['Someone at home',['family','person']],['Myself',['myself','weakness']],['A situation I can’t change',['situation']],['Daily hassles',['patience']]]},
+ tired:{label:'Tired',color:'#9C8FB8',low:true,q:'What kind of tired?',opts:[['I didn’t sleep well',['sleep','rest']],['Worn out from work',['work','rest']],['Tired of waiting',['waiting']],['Tired in my spirit',['spirit']]]},
+ lonely:{label:'Lonely',color:'#6FA39C',low:true,q:'What feels missing?',opts:[['Friends nearby',['friends']],['Family',['family']],['Someone to talk to',['share','lonely']],['Closeness with God',['farGod']]]},
+ overwhelmed:{label:'Overwhelmed',color:'#C98F5B',low:true,q:'What’s piling up?',opts:[['Too many tasks',['tasks','work']],['Responsibilities at home',['responsibilities','family']],['Money pressure',['money','provision']],['A big decision',['decisions','direction']]]},
+ grateful:{label:'Grateful',color:'#D7A53A',low:false,q:'What are you thankful for?',opts:[['A good night’s rest',['rest','thanks']],['Family and friends',['family','thanks']],['An answered prayer',['answered']],['A new opportunity',['opportunity']],['Just being alive',['alive','morning']]]},
+ happy:{label:'Happy',color:'#E6B53B',low:false,q:'What’s lifting you today?',opts:[['Good news',['goodnews']],['Looking forward to today',['morning']],['Feeling close to God',['closeGod']],['No reason, just joy',['joy']]]}
+};
+const NEED_LOW = {q:'What do you need most this morning?',opts:[['Peace',['peace'],'peace'],['Strength',['strength'],'strength'],['Direction',['direction','wisdom'],'direction'],['Comfort',['comfort'],'comfort'],['Hope',['hope'],'hope'],['Patience',['patience'],'patience'],['Rest',['rest'],'rest']]};
+const NEED_HIGH = {q:'How would you like to carry this into your day?',opts:[['Share the joy',['share','joy'],'share'],['Stay thankful',['thanks'],'thanks'],['Serve someone',['serve'],'serve'],['Pray for others',['pray','intercede'],'pray']]};
+const PRAYERS = {
+ peace:'Lord, quiet my heart before the day gets loud. I give you what I cannot control. Let your peace guard my mind in every conversation today. Amen.',
+ strength:'Father, I don’t have much in me this morning, but you do. Lend me your strength for each task, one at a time. Amen.',
+ direction:'Lord, I don’t need to see the whole road, only the next step. Guide my choices today and close the doors that are not mine. Amen.',
+ comfort:'God of all comfort, meet me where it hurts. Hold what I can’t say out loud, and let me feel that I am not alone today. Amen.',
+ hope:'Lord, your mercies are new this morning. Lift my eyes from what went wrong to what you are still doing. Amen.',
+ patience:'Father, slow my reactions and soften my words. Give me grace for the people and the waiting in front of me today. Amen.',
+ rest:'Jesus, you invite the weary to come to you. I come as I am. Give me rest inside the busy hours. Amen.',
+ share:'Lord, thank you for this joy. Help me carry it well and pass it on to someone who needs it today. Amen.',
+ thanks:'Father, every good gift comes from you. Keep my heart thankful from this first moment to the last. Amen.',
+ serve:'Lord, show me one person to serve today, and give me a willing heart to do it as unto you. Amen.',
+ pray:'Father, bring to mind those who need prayer today. Let my gratitude turn into intercession for them. Amen.'
+};
+
+/* ---------------- Community seed ---------------- */
+const MEMBERS = [['Adaeze','Lagos','#F6C9A8'],['Tunde','Ibadan','#BFD8C9'],['Grace','Abuja','#F2DD9B'],['Emeka','Enugu','#C5CDEB'],['Bisi','Lagos','#EBC2CF'],['Ruth','Port Harcourt','#CFE3E8'],['Samuel','Jos','#E1D2F0']];
+const avColor = n => (MEMBERS.find(m=>m[0]===n)||[0,0,'#E2E4DE'])[2];
+
+/* ---------------- State ---------------- */
+const STORE = 'peace-rising-demo-v1';
+function seed(){
+  const hist = [];
+  const sample = [
+    ['grateful','thanks','Stay thankful',['lam322','ps1004','jas117'],'5:47 AM'],
+    ['anxious','peace','Peace',['phil4','pet57','ps4610'],'5:49 AM'],
+    ['tired','strength','Strength',['isa4031','mt1128','isa4029'],'5:52 AM'],
+    ['happy','share','Share the joy',['ps11824','ps963','thes516'],'5:46 AM'],
+    ['overwhelmed','direction','Direction',['prov356','ps461','pet57'],'5:48 AM'],
+    ['sad','comfort','Comfort',['ps305','ps3418','mt54'],'5:51 AM']
+  ];
+  sample.forEach((s,i)=>{ const d=new Date(); d.setDate(d.getDate()-(i+1));
+    hist.push({date:keyFor(d),mood:s[0],need:s[1],needLabel:s[2],verses:s[3],time:s[4],note:'',sample:true}); });
+  return {
+    alarms:[{id:'a1',time:'05:45',label:'Rise & pray',days:[1,2,3,4,5],on:true},{id:'a2',time:'07:00',label:'Weekend',days:[0,6],on:false}],
+    history:hist, saved:['lam322','isa4031'],
+    feed:[
+      {id:'r1',name:'Adaeze',when:'5:41 AM',text:'Job interview at 10. Praying for calm and favour.',count:8},
+      {id:'r2',name:'Tunde',when:'5:38 AM',text:'My mum starts treatment this week. Please pray for her healing.',count:14},
+      {id:'r3',name:'Anonymous',when:'5:36 AM',text:'Feeling far from God lately. Pray I find my way back.',count:11},
+      {id:'r4',name:'Grace',when:'Yesterday',text:'Praise report: I passed my exams! Thank you all for praying with me last week.',count:21,praise:true}
+    ],
+    chat:[
+      {name:'Emeka',text:'Good morning, Risers! Today’s circle verse is Psalm 5:3.',when:'5:32 AM'},
+      {name:'Bisi',text:'Morning all. Up, and grateful for another day.',when:'5:35 AM'},
+      {name:'Ruth',text:'Praying for everyone with exams and interviews today.',when:'5:38 AM'},
+      {name:'Samuel',text:'Amen. Who’s joining the 6:00 voice prayer?',when:'5:40 AM'}
+    ],
+    prayed:{}, joined:[]
+  };
+}
+let S;
+try { S = JSON.parse(localStorage.getItem(STORE)) || seed(); } catch(e){ S = seed(); }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+
+let view = 'alarms', connectTab = 'requests', sheet = null, ringing = false, ringAlarm = null, celebrate = false;
+let flow = {}, soundChecked = false;
+const firedKeys = {};
+
+/* ---------------- Audio: gentle bell that grows ---------------- */
+let actx=null, master=null, loopTimer=null;
+function ensureAudio(){
+  try{
+    if(!actx){ actx = new (window.AudioContext||window.webkitAudioContext)(); master = actx.createGain(); master.gain.value = 0; master.connect(actx.destination); }
+    if(actx.state === 'suspended') actx.resume();
+  }catch(e){}
+}
+function bell(freq, t, dur){
+  const g = actx.createGain(); g.connect(master);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.5,t+0.015); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  [[1,1],[2.76,0.25],[5.4,0.08]].forEach(([mult,amp])=>{
+    const o = actx.createOscillator(), og = actx.createGain(); o.type='sine'; o.frequency.value=freq*mult; og.gain.value=amp;
+    o.connect(og); og.connect(g); o.start(t); o.stop(t+dur+0.05);
+  });
+}
+function phrase(){
+  if(!actx) return; const t = actx.currentTime + 0.05;
+  [523.25,659.25,783.99,1046.5,783.99,659.25].forEach((f,i)=>bell(f, t+i*0.34, 1.8));
+}
+function startRing(){
+  ensureAudio(); if(!actx) return;
+  const t = actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(0.06,t); master.gain.linearRampToValueAtTime(0.55,t+18);
+  phrase(); clearInterval(loopTimer); loopTimer = setInterval(phrase, 3200);
+  try{ navigator.vibrate && navigator.vibrate([400,300,400]); }catch(e){}
+}
+function softenRing(){ if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value,t); master.gain.linearRampToValueAtTime(0.18,t+0.8); }
+function stopRing(){
+  ringing = false;
+  if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value,t); master.gain.linearRampToValueAtTime(0,t+1.2);
+  setTimeout(()=>clearInterval(loopTimer),1300);
+}
+document.addEventListener('pointerdown', ensureAudio, {once:true});
+
+/* ---------------- Helpers ---------------- */
+const todayEntry = () => S.history.find(h=>h.date===todayKey());
+function streak(){
+  let n=0; const d=new Date(); if(!todayEntry()) d.setDate(d.getDate()-1);
+  while(S.history.some(h=>h.date===keyFor(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function nextAlarm(){
+  const now = new Date(); let best=null;
+  S.alarms.filter(a=>a.on).forEach(a=>{
+    const [h,m]=a.time.split(':').map(Number);
+    for(let i=0;i<8;i++){ const d=new Date(now); d.setDate(now.getDate()+i); d.setHours(h,m,0,0);
+      if(d<=now) continue; if(a.days.length && !a.days.includes(d.getDay())) continue;
+      if(!best||d<best.d) best={a,d}; break; }
+  });
+  return best;
+}
+function untilText(d){ const mins=Math.round((d-new Date())/60000); const h=Math.floor(mins/60), m=mins%60; return (h?h+' h ':'')+m+' min'; }
+function daysText(days){ if(!days.length) return 'Once'; if(days.length===7) return 'Every day'; const s=[...days].sort().join(''); if(s==='12345') return 'Weekdays'; if(s==='06') return 'Weekends'; return [...days].sort().map(d=>DAYNAMES[d]).join(', '); }
+function circleFor(){
+  const a = S.alarms.filter(x=>x.on).sort((x,y)=>x.time.localeCompare(y.time))[0] || S.alarms[0];
+  const [h,m]=a.time.split(':').map(Number); const startM = m<30?0:30;
+  return {start:(h%12||12)+':'+pad(startM)+' '+(h<12?'AM':'PM'), alarm:fmt12(a.time)};
+}
+function pickVerses(tags, mood){
+  const seedN = new Date().getDate();
+  const scored = Object.entries(V).map(([id,v],i)=>{
+    let s=0, hits=[];
+    v.tags.forEach(t=>{ if(t===mood){s+=3;} if(tags.cause.includes(t)){s+=2;} if(tags.need.includes(t)){s+=2.5;} if(t==='morning') s+=0.4; });
+    s += ((i*7+seedN)%10)/100;
+    return {id,s};
+  }).filter(x=>x.s>=2).sort((a,b)=>b.s-a.s);
+  return scored.slice(0,3).map(x=>x.id);
+}
+function reasonsFor(id, e){
+  const v=V[id], out=[];
+  if(v.tags.includes(e.mood)) out.push(MOODS[e.mood].label);
+  if(e.causeTags && v.tags.some(t=>e.causeTags.includes(t))) out.push(e.causeLabel);
+  if(e.needTags && v.tags.some(t=>e.needTags.includes(t))) out.push(e.needLabel);
+  if(!out.length && v.tags.includes('morning')) out.push('A word for the morning');
+  return out;
+}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+const ICON = {
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 17a7 7 0 0 1 14 0"/><path d="M2 17h20M12 4v3M4.9 9.1l2 2M19.1 9.1l-2 2M8 21h8"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M12 7v6M9 9.5h6" stroke-linecap="round"/></svg>',
+  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.5" r="2.5"/><path d="M3 19.5c.6-3.3 3-5 6-5s5.4 1.7 6 5M15 14.8c2.8-.3 5 1.2 5.6 4.2"/></svg>',
+  mark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  markOn:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="9" r="2.6"/><circle cx="16" cy="9" r="2.6"/><path d="M3 19c.5-2.8 2.5-4.3 5-4.3s4.5 1.5 5 4.3M11 19c.5-2.8 2.5-4.3 5-4.3s4.5 1.5 5 4.3"/></svg>',
+  hands:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 21V9.5L9.5 4a1.4 1.4 0 0 0-2.5 1.2L8.5 10 5 14.5V18l3 3M12 21V9.5L14.5 4a1.4 1.4 0 0 1 2.5 1.2L15.5 10l3.5 4.5V18l-3 3"/></svg>',
+  back:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
+};
+
+/* ---------------- Views ---------------- */
+const views = {};
+views.alarms = () => {
+  const h = new Date().getHours(); const greet = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  const n = nextAlarm();
+  const next = n ? (()=>{ const f=fmt12(pad(n.d.getHours())+':'+pad(n.d.getMinutes())); return `
+    <div class="nextcard">
+      <div class="eyebrow">Next alarm · ${esc(n.a.label)}</div>
+      <div class="bigtime" style="margin-top:10px">${f.t}<small>${f.ap}</small></div>
+      <div class="muted" style="margin-top:8px">Rings in ${untilText(n.d)}. To silence it, you’ll tell us how you feel.</div>
+      <button class="soundpill" data-act="soundcheck"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>Keep your ringer on so you can hear it · Sound check</button>
+    </div>`; })() : `<div class="nextcard"><div class="eyebrow">No alarm set</div><div class="muted" style="margin-top:8px">Turn one on below or add a new alarm.</div></div>`;
+  const rows = S.alarms.map(a=>{ const f=fmt12(a.time); return `
+    <div class="alarm-row ${a.on?'':'off'}">
+      <button class="alarm-main" data-act="edit" data-arg="${a.id}" aria-label="Edit ${esc(a.label)} alarm">
+        <div class="t">${f.t}<small>${f.ap}</small></div>
+        <div class="meta">${esc(a.label)} · ${daysText(a.days)}</div>
+      </button>
+      <button class="switch ${a.on?'on':''}" role="switch" aria-checked="${a.on}" aria-label="Turn ${esc(a.label)} ${a.on?'off':'on'}" data-act="toggle" data-arg="${a.id}"></button>
+    </div>`; }).join('');
+  return `<div class="pad">
+    <div class="eyebrow">${greet}</div>
+    <h1 class="h1">Rest well tonight</h1>
+    ${next}
+    <div style="margin-top:22px" class="section-h"><h2 class="h2">Alarms</h2><button class="chip" data-act="new">+ New alarm</button></div>
+    <div>${rows}</div>
+    <div class="stack" style="margin-top:20px">
+      <button class="btn gold" data-act="ring">Try the wake-up now</button>
+    </div>
+    <div class="nightverse">
+      <div class="eyebrow">A verse to sleep on</div>
+      <p>“${BEDTIME.t}”</p>
+      <div class="muted" style="font-size:13px;font-weight:600">${BEDTIME.ref}</div>
+    </div>
+    <button class="muted" style="display:block;margin:22px auto 0;font-size:13px;font-weight:600;text-decoration:underline" data-act="reset">Reset demo</button>
+  </div>`;
+};
+views.ring = () => {
+  const d=new Date(); const f=fmt12(pad(d.getHours())+':'+pad(d.getMinutes()));
+  return `<div class="ring">
+    <div class="label">${esc(ringAlarm?ringAlarm.label:'Rise & pray')}</div>
+    <div class="clock" id="ringClock">${f.t}</div>
+    <div class="date">${d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</div>
+    <div class="sunbox"><div class="sun"></div><div class="horizon"></div></div>
+    <p class="ringword">“His compassions fail not. They are new every morning.”<cite>Lamentations 3:22–23</cite></p>
+    <div class="actions">
+      <button class="btn gold" data-act="awake">I’m awake</button>
+      <button class="btn soft" data-act="snooze">Snooze 9 minutes</button>
+    </div>
+  </div>`;
+};
+views.mood = () => {
+  const bubbles = Object.entries(MOODS).map(([k,m])=>`<button class="mood ${flow.mood===k?'picked':''}" data-act="mood" data-arg="${k}"><span class="dot" style="background:${m.color}"></span>${m.label}</button>`).join('');
+  return `<div class="pad">
+    ${ringing?`<div class="ringbar"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Alarm still ringing. Answer to silence it.</div>`:`<div class="topline"><button class="back" data-act="go" data-arg="today">${ICON.back}Back</button></div>`}
+    <div class="eyebrow">Morning check-in</div>
+    <h1 class="h1">How are you feeling this morning?</h1>
+    <div class="moods">${bubbles}</div>
+    <p class="muted" style="font-size:13px;margin-top:18px;line-height:1.5">There’s no wrong answer. What you share stays private to you unless you choose to post it in Prayer Connect.</p>
+  </div>`;
+};
+function questionView(step){
+  const m = MOODS[flow.mood];
+  const q = step===1 ? {q:m.q, opts:m.opts} : (m.low?NEED_LOW:NEED_HIGH);
+  const picked = step===1 ? flow.causeLabel : flow.needLabel;
+  const opts = q.opts.map((o,i)=>`<button class="opt ${picked===o[0]?'picked':''}" data-act="${step===1?'cause':'need'}" data-arg="${i}">${o[0]}</button>`).join('');
+  return `<div class="pad">
+    <div class="topline">
+      <button class="back" data-act="go" data-arg="${step===1?'mood':'q1'}">${ICON.back}Back</button>
+      <span class="chip"><span class="dot" style="background:${m.color}"></span>${m.label}</span>
+    </div>
+    <div class="progress" aria-label="Question ${step} of 2"><span class="on"></span><span class="${step===2?'on':''}"></span></div>
+    <div class="eyebrow">Question ${step} of 2</div>
+    <h1 class="h1">${q.q}</h1>
+    <div class="opts">${opts}</div>
+  </div>`;
+}
+views.q1 = () => questionView(1);
+views.q2 = () => questionView(2);
+views.loading = () => `<div class="loading"><div><div class="orb"></div><h2 class="h2">Finding a word for you</h2><p class="muted">Matching scripture to your morning</p></div></div>`;
+function verseCard(id, e){
+  const v=V[id], saved=S.saved.includes(id), r=reasonsFor(id,e);
+  return `<article class="verse">
+    <div class="ref">${v.ref}</div>
+    <blockquote>${v.t}</blockquote>
+    ${r.length?`<div class="why">Matches: ${r.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>`:''}
+    <div class="vactions">
+      <button class="vact ${saved?'on':''}" data-act="save" data-arg="${id}">${saved?ICON.markOn:ICON.mark}${saved?'Saved':'Save'}</button>
+      <button class="vact" data-act="share" data-arg="${id}">${ICON.share}Share to my circle</button>
+    </div>
+  </article>`;
+}
+views.verses = () => {
+  const e = todayEntry(); if(!e) return views.today();
+  const m = MOODS[e.mood];
+  const reflectQ = m.low ? 'What’s one thing you’re placing in God’s hands today?' : 'Who could you encourage today?';
+  return `<div class="vhead">
+      <div class="eyebrow" style="color:#7A5310">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</div>
+      <h1 class="h1">Your word for this morning</h1>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="chip" style="background:#fff"><span class="dot" style="background:${m.color}"></span>${m.label}</span>
+        ${e.causeLabel?`<span class="chip" style="background:#fff;color:var(--ink-2)">${esc(e.causeLabel)}</span>`:''}
+        <span class="chip" style="background:#fff;color:var(--ink-2)">${esc(e.needLabel)}</span>
+      </div>
+    </div>
+    <div class="pad stack" style="padding-top:4px">
+      ${e.crisis?`<div class="care" role="note">
+        <h3>You don’t have to carry this alone</h3>
+        <p>If you feel hopeless or have thoughts of harming yourself, please reach out today to someone you trust, your pastor, or a local crisis line or emergency service.</p>
+        <p style="font-size:13px;opacity:.8">In the full app, this card links to verified local helplines and lets you alert a trusted contact.</p>
+      </div>`:''}
+      ${e.verses.map(id=>verseCard(id,e)).join('')}
+      <div class="prayer"><div class="eyebrow" style="color:#2F5446">A prayer for today</div><p>${PRAYERS[e.needKey]||PRAYERS.peace}</p></div>
+      <div class="reflect"><div class="eyebrow">Reflect</div><div style="font-weight:600;margin-top:6px">${reflectQ}</div>
+        <textarea id="note" placeholder="Write a line, or leave it blank">${esc(e.note||'')}</textarea></div>
+      <button class="btn" data-act="startday">Start my day</button>
+    </div>`;
+};
+views.today = () => {
+  const e = todayEntry();
+  if(!e) return `<div class="pad">
+    <div class="eyebrow">Today</div><h1 class="h1">You haven’t checked in yet</h1>
+    <p class="muted" style="line-height:1.5">Your morning check-in usually starts when your alarm rings. You can also do it now.</p>
+    <div class="stack" style="margin-top:20px"><button class="btn gold" data-act="checkin">Check in now</button></div>
+  </div>`;
+  const m=MOODS[e.mood], n=streak();
+  return `<div class="pad">
+    <div class="eyebrow">Today · checked in at ${esc(e.time)}</div>
+    <h1 class="h1">${celebrate?'Go in peace':'Your morning'}</h1>
+    <div class="streak" style="margin-top:16px">
+      <div class="n">${n}</div>
+      <div><div style="font-weight:700">${n===1?'day':'days'} rising in peace</div><div style="font-size:14px;opacity:.8">You started today feeling <b>${m.label.toLowerCase()}</b> and asked for <b>${esc(e.needLabel.toLowerCase())}</b>.</div></div>
+    </div>
+    <div class="section"><div class="section-h"><h2 class="h2">Today’s verses</h2><button class="chip" data-act="go" data-arg="verses">Open</button></div>
+      <div class="list">${e.verses.map(id=>`<div class="li"><div class="main"><div class="ttl">${V[id].ref}</div><div class="sub">${V[id].t}</div></div></div>`).join('')}</div>
+    </div>
+    ${e.note?`<div class="section"><h2 class="h2">You wrote</h2><div class="li"><div class="main" style="font-family:var(--word);font-size:17px;font-style:italic">“${esc(e.note)}”</div></div></div>`:''}
+    <div class="section"><div class="circle" style="gap:10px">
+      <div class="eyebrow" style="color:#CFE5D9">Prayer Connect</div>
+      <div style="font-family:var(--display);font-size:20px">${circleFor().start} Risers are praying now</div>
+      <button class="btn" style="background:#fff;color:var(--sage);padding:12px" data-act="go" data-arg="connect">Join your circle</button>
+    </div></div>
+    <div class="stack" style="margin-top:18px"><button class="btn soft" style="color:var(--ink)" data-act="checkin">Check in again</button></div>
+  </div>`;
+};
+views.journal = () => {
+  const n = streak();
+  const days=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(d); }
+  const week = days.map((d,i)=>{ const e=S.history.find(h=>h.date===keyFor(d)); const c=e?MOODS[e.mood].color:'';
+    return `<div class="wd ${i===6?'today':''}"><div class="c ${e?'has':''}" style="${e?'background:'+c:''}" title="${e?MOODS[e.mood].label:'No check-in'}"></div>${DAYS[d.getDay()]}</div>`; }).join('');
+  const counts={}; S.history.forEach(h=>counts[h.mood]=(counts[h.mood]||0)+1);
+  const max=Math.max(1,...Object.values(counts));
+  const bars = Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`<div class="moodbar"><span>${MOODS[k].label}</span><span class="track"><span class="fill" style="display:block;width:${c/max*100}%;background:${MOODS[k].color}"></span></span><span class="ct">${c}</span></div>`).join('');
+  const saved = S.saved.map(id=>`<div class="li"><div class="main"><div class="ttl">${V[id].ref}</div><div class="sub">${V[id].t}</div></div><button class="vact on" data-act="save" data-arg="${id}" aria-label="Remove from saved">${ICON.markOn}</button></div>`).join('') || `<p class="muted">Verses you save will appear here.</p>`;
+  const hist = [...S.history].sort((a,b)=>b.date.localeCompare(a.date)).map(h=>{ const d=new Date(h.date+'T12:00:00');
+    return `<div class="li"><span class="dot" style="width:14px;height:14px;background:${MOODS[h.mood].color}"></span><div class="main"><div class="ttl">${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})} · ${MOODS[h.mood].label}</div><div class="sub">${h.verses.map(id=>V[id].ref).join(' · ')}</div></div></div>`; }).join('');
+  return `<div class="pad">
+    <div class="eyebrow">Journal</div><h1 class="h1">Your mornings with God</h1>
+    <div class="streak" style="margin-top:16px"><div class="n">${n}</div><div><div style="font-weight:700">day streak</div><div style="font-size:14px;opacity:.8">Mornings in a row you’ve checked in</div></div></div>
+    <div class="section"><h2 class="h2">This week</h2><div class="week">${week}</div></div>
+    <div class="section"><h2 class="h2">How you’ve been waking up</h2><div class="stack" style="gap:10px">${bars}</div></div>
+    <div class="section"><h2 class="h2">Saved verses</h2><div class="list">${saved}</div></div>
+    <div class="section"><h2 class="h2">Past mornings</h2><div class="list">${hist}</div></div>
+  </div>`;
+};
+views.connect = () => {
+  const c = circleFor();
+  const avs = MEMBERS.slice(0,5).map(m=>`<span class="av" style="background:${m[2]}">${m[0][0]}</span>`).join('');
+  let body='';
+  if(connectTab==='requests'){
+    body = `<div class="compose">
+        <textarea id="reqInput" rows="2" placeholder="Share a prayer request with your circle"></textarea>
+        <div class="r"><label><input type="checkbox" id="anon"> Post anonymously</label><button class="small-btn" data-act="post">Post</button></div>
+      </div>
+      ${S.feed.map(r=>{ const on=!!S.prayed[r.id]; const nm=r.name;
+        return `<div class="req">
+          <div class="who"><span class="av" style="background:${nm==='You'?'#F2B544':avColor(nm)}">${nm==='Anonymous'?'?':nm[0]}</span><div><b>${esc(nm)}</b>${r.praise?' · <span style="color:var(--gold-ink);font-weight:700">Praise report</span>':''}<div class="muted" style="font-size:12px">${esc(r.when)}</div></div></div>
+          ${r.verse?`<p class="vq">“${V[r.verse].t}”</p><p class="muted" style="font-size:13px;font-weight:600">${V[r.verse].ref}</p>`:`<p>${esc(r.text)}</p>`}
+          <button class="pray ${on?'on':''}" data-act="pray" data-arg="${r.id}">${ICON.hands}${on?'You prayed':'I prayed'} · ${r.count+(on?1:0)}</button>
+        </div>`; }).join('')}`;
+  } else if(connectTab==='chat'){
+    body = `<div class="msgs" id="msgs">${S.chat.map(m=>`<div class="msg ${m.name==='You'?'me':''}"><div class="n">${esc(m.name)} · ${esc(m.when)}</div><div class="b">${esc(m.text)}</div></div>`).join('')}</div>
+      <div class="chatin"><input id="chatInput" type="text" placeholder="Message your circle" autocomplete="off"><button class="small-btn" data-act="send">Send</button></div>`;
+  } else {
+    const list=[['4:30 AM','Watchmen',32],['5:00 AM','First Light',58],[c.start,'Risers',14,true],['6:00 AM','Daybreak',87],['6:30 AM','Morning Glory',41]];
+    const seen={}; const rows=list.filter(x=>{ if(seen[x[0]]) return false; seen[x[0]]=1; return true; });
+    body = `<p class="muted" style="margin:0;line-height:1.5">Circles group people by the time their alarm rings, so you pray with others who are awake when you are.</p>
+      ${rows.map(([t,name,n,mine])=>{ const k=t+name; const on=mine||S.joined.includes(k);
+        return `<div class="ci"><div class="tm">${t.replace(/ (AM|PM)/,'')}<small>${t.slice(-2)}</small></div><div class="main"><div class="ttl" style="font-weight:700">${t} ${name}</div><div class="muted" style="font-size:13px">${n+(on&&!mine?1:0)} members${mine?' · matched to your alarm':''}</div></div>
+        ${mine?'<span class="chip" style="background:var(--sage-soft);color:var(--sage)">Your circle</span>':`<button class="join ${on?'on':''}" data-act="join" data-arg="${esc(k)}">${on?'Joined':'Join'}</button>`}</div>`; }).join('')}
+      <div class="safety"><b>Safety in the full app:</b> members are 18+ and phone-verified, requests can be posted anonymously, and anyone can be muted or reported to a moderator.</div>`;
+  }
+  return `<div class="pad">
+    <div class="eyebrow">Prayer Connect</div><h1 class="h1">Pray with people who wake when you do</h1>
+    <div class="circle" style="margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>4 praying now</span><span style="font-size:12px;opacity:.85">Your alarm: ${c.alarm.t} ${c.alarm.ap}</span></div>
+      <div style="font-family:var(--display);font-size:24px">${c.start} Risers</div>
+      <div style="display:flex;align-items:center;gap:16px"><div class="avatars">${avs}</div><span style="font-size:13px;opacity:.9">14 members · Lagos, Abuja, Ibadan +4</span></div>
+    </div>
+    <div class="seg" role="tablist">
+      <button class="${connectTab==='requests'?'on':''}" data-act="ctab" data-arg="requests" role="tab">Requests</button>
+      <button class="${connectTab==='chat'?'on':''}" data-act="ctab" data-arg="chat" role="tab">Circle chat</button>
+      <button class="${connectTab==='find'?'on':''}" data-act="ctab" data-arg="find" role="tab">Find circles</button>
+    </div>
+    <div class="stack" style="margin-top:16px">${body}</div>
+  </div>`;
+};
+function sheetHTML(){
+  if(!sheet) return '';
+  if(sheet.sound) return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="Sound check">
+    <div class="soundico" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z"/><path d="M10 21h4"/><path d="M3 4l3 2M21 4l-3 2"/></svg></div>
+    <h2 class="h2" style="text-align:center;font-size:24px">Can you hear your alarm?</h2>
+    <p class="muted" style="margin:0;line-height:1.5;text-align:center">Your phone must not be on Silent, or the chime won’t play.</p>
+    <ol class="soundsteps">
+      <li>Turn off <b>Silent mode</b>: flip the switch on the side of your iPhone so no orange shows. On newer iPhones, use the Action button or the bell in Control Centre.</li>
+      <li>Turn the <b>volume up</b> with the side buttons.</li>
+      <li>Tap <b>Play test chime</b> below.</li>
+    </ol>
+    <button class="btn soft" style="color:var(--night-fg)" data-act="testchime">Play test chime</button>
+    <button class="btn gold" data-act="soundok">I heard it, ring the alarm</button>
+    <p class="muted" style="margin:0;font-size:12px;text-align:center;line-height:1.5">In the full iOS app, alarms use Apple’s AlarmKit and ring even when the phone is on Silent.</p>
+  </div></div>`;
+  const a = sheet;
+  return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="${a.id?'Edit alarm':'New alarm'}">
+    <div class="section-h"><h2 class="h2">${a.id?'Edit alarm':'New alarm'}</h2><button class="muted" data-act="closesheet" style="font-weight:600">Cancel</button></div>
+    <input type="time" id="sTime" value="${a.time}">
+    <input type="text" id="sLabel" value="${esc(a.label)}" placeholder="Label" maxlength="30">
+    <div><div class="eyebrow" style="margin-bottom:8px">Repeat</div><div class="days">${DAYS.map((d,i)=>`<button class="day ${a.days.includes(i)?'on':''}" data-act="sday" data-arg="${i}" aria-pressed="${a.days.includes(i)}" aria-label="${DAYNAMES[i]}">${d}</button>`).join('')}</div></div>
+    <button class="btn gold" data-act="savealarm">Save alarm</button>
+    ${a.id?`<button class="btn soft" style="color:#F1A08A" data-act="delalarm">Delete alarm</button>`:''}
+  </div></div>`;
+}
+
+/* ---------------- Render ---------------- */
+const screenEl = document.getElementById('screen'), app = document.getElementById('app'), tabbar = document.getElementById('tabbar');
+const MODE = {alarms:'night', ring:'dawn'};
+const FLOW_VIEWS = ['ring','mood','q1','q2','loading'];
+function render(keepScroll){
+  const st = screenEl.scrollTop;
+  app.dataset.mode = MODE[view] || 'day';
+  screenEl.innerHTML = views[view]() + sheetHTML();
+  if(keepScroll) screenEl.scrollTop = st; else screenEl.scrollTop = 0;
+  const tabs=[['alarms','Alarms',ICON.moon],['today','Today',ICON.sun],['journal','Journal',ICON.book],['connect','Connect',ICON.people]];
+  const active = view==='verses'?'today':view;
+  tabbar.hidden = FLOW_VIEWS.includes(view);
+  tabbar.innerHTML = tabs.map(([k,l,ic])=>`<button class="tab ${active===k?'on':''}" data-act="go" data-arg="${k}" aria-current="${active===k?'page':'false'}">${ic}${l}</button>`).join('');
+  if(view==='connect' && connectTab==='chat'){ const m=document.getElementById('msgs'); if(m) screenEl.scrollTop = screenEl.scrollHeight; }
+}
+function go(v){ view=v; if(v!=='today') celebrate=false; render(); }
+
+/* ---------------- Actions ---------------- */
+function triggerRing(alarm){
+  ringAlarm = alarm || S.alarms[0]; ringing = true; sheet=null; flow={}; startRing(); go('ring');
+}
+function startCheckin(){ flow={}; go('mood'); }
+const A = {
+  go: a => { if(a==='today'||a==='alarms'||a==='journal'||a==='connect'){ /* tab nav */ } go(a); },
+  toggle: id => { const a=S.alarms.find(x=>x.id===id); a.on=!a.on; save(); render(true); toast(a.on?'Alarm on':'Alarm off'); },
+  new: () => { sheet={time:'05:45',label:'Rise & pray',days:[1,2,3,4,5]}; render(true); },
+  edit: id => { const a=S.alarms.find(x=>x.id===id); sheet=JSON.parse(JSON.stringify(a)); render(true); },
+  closesheet: () => { sheet=null; render(true); },
+  sday: i => { i=+i; syncSheet(); sheet.days = sheet.days.includes(i)? sheet.days.filter(d=>d!==i) : [...sheet.days,i]; render(true); },
+  savealarm: () => { syncSheet(); if(!sheet.time){ toast('Choose a time first'); return; }
+    if(sheet.id){ const i=S.alarms.findIndex(x=>x.id===sheet.id); S.alarms[i]={...sheet,on:true}; } else { S.alarms.push({...sheet,id:'a'+Date.now(),on:true}); }
+    S.alarms.sort((a,b)=>a.time.localeCompare(b.time)); const f=fmt12(sheet.time); sheet=null; save(); render(true); toast('Alarm set for '+f.t+' '+f.ap); },
+  delalarm: () => { S.alarms=S.alarms.filter(x=>x.id!==sheet.id); sheet=null; save(); render(true); toast('Alarm deleted'); },
+  ring: () => { if(!soundChecked){ sheet={sound:true}; render(true); return; } triggerRing(S.alarms.find(a=>a.on)); },
+  soundcheck: () => { sheet={sound:true}; render(true); },
+  testchime: () => { ensureAudio(); if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(0.45,t); master.gain.setValueAtTime(0.45,t+2.2); master.gain.linearRampToValueAtTime(0,t+3); phrase(); },
+  soundok: () => { soundChecked=true; sheet=null; triggerRing(S.alarms.find(a=>a.on)); },
+  awake: () => { softenRing(); go('mood'); },
+  snooze: () => { stopRing(); const d=new Date(Date.now()+9*60000); go('alarms'); toast('Snoozed until '+(d.getHours()%12||12)+':'+pad(d.getMinutes()));
+    clearTimeout(A._snz); A._snz=setTimeout(()=>triggerRing(ringAlarm),9*60000); },
+  mood: k => { flow={mood:k}; if(ringing){ stopRing(); toast('Alarm silenced. Good morning.'); } render(true); setTimeout(()=>go('q1'),280); },
+  cause: i => { const o=MOODS[flow.mood].opts[+i]; flow.causeLabel=o[0]; flow.causeTags=o[1]; flow.crisis=!!o[2]; render(true); setTimeout(()=>go('q2'),250); },
+  need: i => { const m=MOODS[flow.mood]; const o=(m.low?NEED_LOW:NEED_HIGH).opts[+i]; flow.needLabel=o[0]; flow.needTags=o[1]; flow.needKey=o[2]; render(true); setTimeout(finishFlow,250); },
+  save: id => { S.saved = S.saved.includes(id)? S.saved.filter(x=>x!==id) : [id,...S.saved]; save(); render(true); toast(S.saved.includes(id)?'Saved to your journal':'Removed from saved'); },
+  share: id => { S.feed.unshift({id:'r'+Date.now(),name:'You',when:nowLabel(),verse:id,count:0}); save(); toast('Shared with '+circleFor().start+' Risers'); },
+  startday: () => { syncNote(); celebrate=true; go('today'); },
+  checkin: () => startCheckin(),
+  ctab: t => { connectTab=t; render(true); },
+  pray: id => { S.prayed[id]=!S.prayed[id]; save(); render(true); if(S.prayed[id]) toast('Thank you for praying'); },
+  post: () => { const el=document.getElementById('reqInput'); const txt=(el.value||'').trim(); if(!txt){ toast('Write your request first'); el.focus(); return; }
+    const anon=document.getElementById('anon').checked; S.feed.unshift({id:'r'+Date.now(),name:anon?'Anonymous':'You',when:nowLabel(),text:txt,count:0}); save(); render(true); toast('Posted to your circle');
+    const rid=S.feed[0].id; setTimeout(()=>{ const r=S.feed.find(x=>x.id===rid); if(r){ r.count+=3; save(); if(view==='connect'&&connectTab==='requests') render(true); toast('3 people prayed for your request'); } },4000); },
+  send: () => { const el=document.getElementById('chatInput'); const txt=(el.value||'').trim(); if(!txt) return; S.chat.push({name:'You',text:txt,when:nowLabel()}); save(); render(true);
+    const replies=[['Adaeze','Amen! Praying with you this morning.'],['Grace','Thank you for sharing. Have a blessed day.'],['Samuel','Amen. See you at the 6:00 voice prayer.'],['Bisi','Praying for you right now.']];
+    const r=replies[S.chat.length%replies.length]; setTimeout(()=>{ S.chat.push({name:r[0],text:r[1],when:nowLabel()}); save(); if(view==='connect'&&connectTab==='chat') render(true); },1800);
+    setTimeout(()=>{ const i=document.getElementById('chatInput'); if(i) i.focus(); },0); },
+  reset: () => { stopRing(); S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; go('alarms'); toast('Demo reset'); },
+  join: k => { S.joined = S.joined.includes(k)? S.joined.filter(x=>x!==k) : [...S.joined,k]; save(); render(true); }
+};
+function syncSheet(){ if(!sheet) return; const t=document.getElementById('sTime'), l=document.getElementById('sLabel'); if(t) sheet.time=t.value; if(l) sheet.label=l.value.trim()||'Alarm'; }
+function syncNote(){ const n=document.getElementById('note'); const e=todayEntry(); if(n&&e){ e.note=n.value.trim(); save(); } }
+function finishFlow(){
+  go('loading');
+  const verses = pickVerses({cause:flow.causeTags||[], need:flow.needTags||[]}, flow.mood);
+  const entry = {date:todayKey(), mood:flow.mood, causeLabel:flow.causeLabel, causeTags:flow.causeTags, needLabel:flow.needLabel, needTags:flow.needTags, needKey:flow.needKey, verses, time:nowLabel(), note:'', crisis:flow.crisis};
+  S.history = S.history.filter(h=>h.date!==entry.date); S.history.push(entry); save();
+  setTimeout(()=>go('verses'),1300);
+}
+
+screenEl.addEventListener('click', e=>{
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  if(el.dataset.self && e.target!==el) return;
+  if(view==='verses' && el.dataset.act!=='save' && el.dataset.act!=='share') syncNote();
+  const f = A[el.dataset.act]; if(f) f(el.dataset.arg, el);
+});
+tabbar.addEventListener('click', e=>{ const el=e.target.closest('[data-act]'); if(!el) return; if(view==='verses') syncNote(); A.go(el.dataset.arg); });
+screenEl.addEventListener('input', e=>{ if(e.target.id==='note') syncNote(); });
+screenEl.addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  if(e.target.id==='chatInput'){ e.preventDefault(); A.send(); }
+  if(e.target.id==='reqInput' && !e.shiftKey){ e.preventDefault(); A.post(); }
+});
+document.querySelectorAll('[data-side]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.side; ensureAudio(); sheet=null;
+  if(ringing && k!=='ring') stopRing();
+  if(k==='ring') A.ring();
+  else if(k==='checkin') startCheckin();
+  else if(k==='reset'){ S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; go('alarms'); toast('Demo reset'); }
+  else { if(k==='connect') connectTab='requests'; go(k); }
+}));
+
+/* ---------------- Clock + alarm watcher ---------------- */
+function tick(){
+  const d=new Date(); const t=(d.getHours()%12||12)+':'+pad(d.getMinutes());
+  document.getElementById('sbTime').textContent=t;
+  const rc=document.getElementById('ringClock'); if(rc) rc.textContent=t;
+  const hhmm=pad(d.getHours())+':'+pad(d.getMinutes());
+  S.alarms.forEach(a=>{ if(!a.on||a.time!==hhmm) return; if(a.days.length && !a.days.includes(d.getDay())) return;
+    const k=todayKey()+a.id+hhmm; if(firedKeys[k]||ringing) return; firedKeys[k]=1; triggerRing(a); });
+}
+setInterval(tick,1000); tick();
+
+/* ---------------- Fit phone to screen ---------------- */
+function fit(){
+  const wrap=document.getElementById('wrap');
+  if(window.innerWidth<=560){ wrap.style.setProperty('--s',1); return; }
+  const s=Math.min(1,(window.innerHeight-48)/852, (window.innerWidth-48)/393);
+  wrap.style.setProperty('--s',Math.max(.5,s).toFixed(3));
+}
+window.addEventListener('resize',fit); fit();
+render();
+})();
+</script>
+
+</body>
+</html>
