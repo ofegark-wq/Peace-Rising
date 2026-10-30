@@ -211,7 +211,8 @@ input,textarea{font:inherit}
 .li{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
 .li .main{flex:1;min-width:0}
 .li .ttl{font-weight:600}
-.li .sub{font-size:13px;color:var(--ink-2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .sub{font-size:13px;color:var(--ink-2);margin-top:3px;line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.list,.section,.stack{grid-template-columns:minmax(0,1fr)}
 .moodbar{display:grid;grid-template-columns:96px 1fr 22px;gap:10px;align-items:center;font-size:13px;font-weight:600}
 .moodbar .track{height:10px;border-radius:6px;background:var(--line);overflow:hidden}
 .moodbar .fill{height:100%;border-radius:6px}
@@ -259,9 +260,327 @@ input,textarea{font:inherit}
 .safety{font-size:12px;color:var(--ink-2);line-height:1.5;padding:12px 14px;border-radius:14px;background:#EAECE6}
 
 /* Toast */
-.toast{position:absolute;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:90%}
+.toast{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translate(-50%,-16px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:90%}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* Onboarding */
+.app[data-mode="night"] .back{color:var(--night-muted)}
+.ob{min-height:100%;display:flex;flex-direction:column;padding:8px 24px 28px}
+.ob-welcome{text-align:center;background:radial-gradient(90% 45% at 50% 22%,rgba(242,169,59,.16),rgba(19,27,45,0) 70%)}
+.ob-hero{display:flex;justify-content:center;margin:26px 0 4px}
+.ob-title{font-family:var(--display);font-weight:400;font-size:31px;line-height:1.15;margin:14px 0 8px;text-wrap:balance}
+.ob-sub{color:var(--night-muted);line-height:1.5;margin:0;font-size:16px}
+.ob-points{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px;text-align:left}
+.ob-points li{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:16px;background:var(--night-2);border:1px solid var(--night-line);font-weight:600;font-size:15px}
+.ob-points li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.ob-actions{margin-top:auto;display:grid;gap:10px;padding-top:24px}
+.btn.line{background:transparent;border:1.5px solid var(--night-line);color:var(--night-fg);font-weight:600}
+.authbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;font-weight:700;font-size:16px;border:1.5px solid var(--night-line);color:var(--night-fg);background:transparent}
+.authbtn:hover{border-color:#46527A}
+.authbtn.apple{background:#fff;color:#0B0B0B;border-color:#fff}
+.authbtn svg{width:20px;height:20px}
+.ob-or{display:flex;align-items:center;gap:12px;color:var(--night-muted);font-size:13px;margin:4px 0}
+.ob-or::before,.ob-or::after{content:"";flex:1;height:1px;background:var(--night-line)}
+.ob-field{display:grid;gap:8px}
+.ob-field label{font-size:13px;font-weight:600;color:var(--night-muted)}
+.ob-input{width:100%;min-width:0;background:#0F1626;color:var(--night-fg);border:1.5px solid var(--night-line);border-radius:14px;padding:14px 16px;font-size:17px}
+.ob-input:focus{border-color:var(--gold);outline:none}
+.ob-input.otp{font-size:30px;letter-spacing:12px;text-align:center;font-variant-numeric:tabular-nums}
+.ob-input.ob-time{font-family:var(--display);font-size:46px;text-align:center;padding:10px 16px}
+.pwrap{position:relative}
+.pwrap .ob-input{padding-right:70px}
+.pshow{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--gold);padding:6px 8px}
+.ob-note{font-size:12.5px;color:var(--night-muted);line-height:1.5;text-align:center;margin:0}
+.ob-link{color:var(--gold);font-weight:700;font-size:inherit}
+.ob-stepno{font-size:12px;font-weight:700;color:var(--night-muted)}
+.app[data-mode="night"] .progress span{background:var(--night-line)}
+.app[data-mode="night"] .progress span.on{background:var(--gold)}
+.fchip{padding:12px 18px;border-radius:999px;border:1.5px solid var(--night-line);font-weight:600;font-size:15px;color:var(--night-fg)}
+.fchip.on{background:var(--gold);color:#2A1C04;border-color:var(--gold)}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 16px;border-radius:14px;border:1.5px solid var(--night-line);font-size:14.5px}
+.trow.on{border-color:var(--gold)}
+.trow.on .tick{color:var(--gold);font-weight:700;font-size:13px}
+.trow.off{opacity:.5}
+.trow.off span:last-child{font-size:12px;font-weight:600}
+.ob-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;color:var(--night-fg);cursor:pointer}
+.ob-check input{width:20px;height:20px;accent-color:#F2B544;margin:1px 0 0;flex:none}
+.sumlist{display:grid;gap:0;margin-top:22px;text-align:left;border:1px solid var(--night-line);border-radius:18px;background:var(--night-2)}
+.sumlist div{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;border-top:1px solid var(--night-line);font-size:14px}
+.sumlist div:first-child{border-top:0}
+.sumlist span{color:var(--night-muted)}
+.sumlist b{text-align:right}
+.ob-spin{width:44px;height:44px;border-radius:50%;border:4px solid var(--night-line);border-top-color:var(--gold);animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatarbtn{width:42px;height:42px;border-radius:50%;background:var(--gold);color:#2A1C04;font-weight:700;font-size:17px;display:grid;place-items:center;flex:none;margin-top:4px}
+.acct{display:flex;align-items:center;gap:14px}
+.acct .avatarbtn{width:52px;height:52px;font-size:21px;margin:0}
+.avatarbtn.guest{background:transparent;color:var(--night-fg);border:1.5px solid var(--night-line)}
+.avatarbtn svg{width:21px;height:21px}
+.app[data-mode="day"] .authbtn{color:var(--ink);border-color:#D5D8D0;background:var(--card)}
+.app[data-mode="day"] .authbtn.apple{background:#0B0B0B;color:#fff;border-color:#0B0B0B}
+.perks{display:grid;margin-top:16px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.perks div{display:grid;gap:3px;padding:14px 16px;border-top:1px solid var(--line)}
+.perks div:first-child{border-top:0}
+.perks span{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+.ringcta{display:grid;gap:10px;margin-top:16px;padding:20px;border-radius:22px;background:var(--sage-soft)}
+.soundico svg{width:32px;height:32px}
+/* Join nudge + app-window sign-in */
+.layer{position:absolute;inset:0;z-index:45;pointer-events:none}
+.layer>*{pointer-events:auto}
+.joinstrip{display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 14px 14px 18px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.js-txt{display:grid;gap:2px;flex:1;min-width:0}
+.js-txt b{font-size:15.5px}
+.js-txt span{font-size:13px;color:var(--ink-2);line-height:1.4}
+.joinbtn{flex:none;padding:11px 18px;border-radius:999px;background:var(--gold);color:#2A1C04;font-weight:700;font-size:14.5px;white-space:nowrap}
+.xbtn{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:var(--night-fg);z-index:6}
+.xbtn:hover{background:rgba(255,255,255,.18)}
+.xbtn svg{width:16px;height:16px}
+.nudge{position:absolute;left:14px;right:14px;bottom:94px;display:grid;gap:10px;padding:20px 18px 16px;border-radius:28px;background:rgba(19,27,45,.76);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);border:1px solid rgba(255,255,255,.14);color:var(--night-fg);box-shadow:0 24px 60px rgba(10,15,30,.4);
+  opacity:0;transform:translateY(34px) scale(.96);transition:transform .55s cubic-bezier(.34,1.35,.5,1),opacity .3s ease}
+.nudge.in{opacity:1;transform:none}
+.nudge.out{opacity:0;transform:translateY(80px) scale(.94);transition:transform .38s cubic-bezier(.55,0,.8,.3),opacity .32s ease}
+.nudge-ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(242,181,68,.15);color:var(--gold)}
+.nudge-ic svg{width:24px;height:24px}
+.nudge-t{font-family:var(--display);font-size:24px;line-height:1.18}
+.nudge-t span{display:block;white-space:nowrap}
+.nudge p{margin:0 0 4px;color:var(--night-muted);font-size:14.5px;line-height:1.5}
+.win-dim{position:absolute;inset:0;background:rgba(6,10,20,.55);opacity:0;transition:opacity .45s ease}
+.win-dim.on{opacity:1}
+.win{position:absolute;left:8px;right:8px;top:58px;bottom:8px;border-radius:32px;background-color:var(--night);color:var(--night-fg);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);will-change:transform}
+.win.anim{transition:transform .58s cubic-bezier(.32,.72,0,1),background-color .35s ease,opacity .35s ease}
+.win-body{position:absolute;inset:0;opacity:0;transition:opacity .18s ease}
+.win.open .win-body{opacity:1;transition:opacity .3s ease .17s}
+.win-page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--night);transition:transform .44s cubic-bezier(.32,.72,0,1),opacity .44s ease;scrollbar-width:none}
+.win-page::-webkit-scrollbar{display:none}
+.win-page.from-right{transform:translateX(100%)}
+.win-page.from-left{transform:translateX(-28%);opacity:.5}
+.win-page.to-left{transform:translateX(-28%);opacity:0}
+.win-page.to-right{transform:translateX(100%);z-index:2}
+.win .ob{padding-top:16px}
+.win .back,.win .muted,.win .eyebrow{color:var(--night-muted)}
+.win .progress span{background:var(--night-line)}
+.win .progress span.on{background:var(--gold)}
+.app[data-mode] .win .authbtn{color:var(--night-fg);border-color:var(--night-line);background:transparent}
+.app[data-mode] .win .authbtn.apple{background:#fff;color:#0B0B0B;border-color:#fff}
+.screen > .pagein{animation:pagein .34s cubic-bezier(.32,.72,0,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(10px)}}
+.authgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.authtile{aspect-ratio:1/1;max-width:100%;min-width:0;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:16px;border-radius:22px;border:1.5px solid var(--night-line);background:var(--night-2);color:var(--night-fg);text-align:left;
+  transition:transform .18s ease,border-color .18s ease;animation:tilein .5s cubic-bezier(.34,1.3,.5,1) both}
+.authtile:nth-child(1){animation-delay:.2s}.authtile:nth-child(2){animation-delay:.26s}.authtile:nth-child(3){animation-delay:.32s}.authtile:nth-child(4){animation-delay:.38s}
+.authtile:hover{border-color:var(--gold)}
+.authtile:active{transform:scale(.96)}
+.authtile svg{width:30px;height:30px;color:var(--gold)}
+.authtile span{display:grid;gap:2px;font-size:19px;font-weight:700}
+.authtile small{font-size:12px;font-weight:600;color:var(--night-muted)}
+.authtile.light{background:#fff;color:#0B0B0B;border-color:#fff}
+.authtile.light svg{color:#0B0B0B}
+.authtile.light small{color:#5B6170}
+@keyframes tilein{from{opacity:0;transform:translateY(14px) scale(.92)}}
+.authgrid.compact{gap:10px;margin-top:4px}
+.authgrid.compact .authtile{aspect-ratio:auto;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;padding:12px;border-radius:18px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.authgrid.compact .authtile.light{background:#fff;border-color:#fff}
+.authgrid.compact .authtile svg{width:24px;height:24px;flex:none}
+.authgrid.compact .authtile span{font-size:16px;gap:0}
+.authgrid.compact .authtile small{font-size:11px}
+.nudge-ic{width:40px;height:40px}
+.nudge p{color:rgba(238,241,247,.8)}
+.nudge .authtile small{color:rgba(238,241,247,.7)}
+.nudge .authtile.light small{color:#5B6170}
+.nudge-in{margin:2px 0 0!important;text-align:center;font-size:13.5px!important}
+.nudge .nudge-in .ob-link{font-size:13.5px}
+/* Profile */
+.app[data-mode="day"] .avatarbtn.guest{color:var(--ink);border-color:#CFD3CA;background:var(--card)}
+.hdr-av{margin-top:4px}
+.prof-head{display:flex;gap:16px;align-items:center;margin-top:12px}
+.prof-av{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:32px;color:#2A1C04;flex:none}
+.psec{display:grid;gap:8px;margin-top:24px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-top:1px solid var(--line);font-size:15px}
+.pcard>.prow:first-child{border-top:0}
+.prow.col{flex-direction:column;align-items:stretch;gap:8px}
+.plabel{color:var(--ink);font-weight:600;font-size:14.5px}
+.prow.col .plabel{color:var(--ink-2);font-size:13px}
+.plabel em{font-style:normal;font-weight:500;opacity:.75;margin-left:6px}
+.prow b{font-weight:600;text-align:right;font-size:14px}
+.pin{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px;background:var(--day);color:var(--ink)}
+.pin:focus{border-color:var(--sage);outline:none}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.swatch{width:34px;height:34px;border-radius:50%;border:2.5px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.swatch.on{border-color:var(--ink)}
+.pchip{padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);font-weight:600;font-size:14px;background:var(--card);color:var(--ink)}
+.pchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.plink{color:var(--sage);font-weight:700;font-size:14.5px}
+.plink.danger,.btn.danger{color:#B4432A}
+.btn.soft.danger{border-color:#E3B9AE;margin-top:18px;opacity:1}
+.app[data-mode="day"] .switch{background:#CFD3CA}
+.app[data-mode="day"] .switch.on{background:var(--sage)}
+.pav{width:44px;height:44px;margin-top:4px;color:#2A1C04}
+/* Settings, accents, dark mode */
+.hdr-acts{display:flex;gap:8px;align-items:center;flex:none;margin-top:4px}
+.hdr-acts .hdr-av{margin-top:0}
+.iconbtn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1.5px solid #CFD3CA;background:var(--card);color:var(--ink)}
+.iconbtn svg{width:20px;height:20px}
+.app[data-mode="night"] .iconbtn{background:transparent;border-color:var(--night-line);color:var(--night-fg)}
+.sseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--day);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.sseg button{padding:9px 4px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--ink-2)}
+.sseg button.on{background:var(--ink);color:var(--day)}
+.psub{display:block;font-size:12.5px;font-weight:500;color:var(--ink-2);margin-top:2px}
+.trange{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+.pin.tin{width:auto;padding:8px 10px;font-size:15px}
+.accents{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.accent{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);font-weight:600;font-size:14px;text-align:left;color:var(--ink)}
+.accent i{width:20px;height:20px;border-radius:50%;flex:none}
+.accent.on{border-color:var(--ink)}
+.olist{display:grid;gap:6px}
+.orow{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:2px 8px 2px 2px}
+.orow.on{border-color:var(--gold)}
+.opick{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:9px;text-align:left;color:var(--ink)}
+.opick b{display:block;font-size:15px}
+.opick small{display:block;font-size:12.5px;color:var(--ink-2);margin-top:1px}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid #C3C7BE;flex:none}
+.orow.on .radio{border:6px solid var(--gold)}
+.playbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold-ink);flex:none}
+.playbtn svg{width:14px;height:14px;margin-left:2px}
+.app[data-accent="rose"]{--gold:#EE9A86;--gold-ink:#A9482F;--gold-soft:#FBE3DC}
+.app[data-accent="lavender"]{--gold:#B7A3EC;--gold-ink:#6650A6;--gold-soft:#ECE6FB}
+.app[data-accent="sky"]{--gold:#86BFEA;--gold-ink:#2D6A99;--gold-soft:#E0EEF9}
+.app[data-dark]{--day:#111A2B;--card:#1A2338;--ink:#E8ECF4;--ink-2:#9BA5BB;--line:#2A3552;--sage:#7FB39A;--sage-soft:#1D3229;--gold-ink:var(--gold);--gold-soft:rgba(255,255,255,.08);--danger-soft:#3A2320;color-scheme:dark}
+.app[data-dark] .tabbar{background:rgba(17,26,43,.96);border-top-color:var(--line)}
+.app[data-dark] .btn:not(.gold):not(.sage):not(.soft):not(.line){color:#131B2D}
+.app[data-dark] .mood.picked,.app[data-dark] .opt.picked,.app[data-dark] .pchip.on,.app[data-dark] .toast{color:#131B2D}
+.app[data-dark] .seg,.app[data-dark] .safety{background:#1E2840}
+.app[data-dark] .vhead{background:linear-gradient(180deg,#3B2F1C 0%,var(--day) 100%)}
+.app[data-dark] .vhead .eyebrow{color:#E9C68A!important}
+.app[data-dark] .vhead .chip{background:var(--card)!important}
+.app[data-dark] .prayer{color:#CFE7DA}
+.app[data-dark] .prayer .eyebrow{color:#9FD0B6!important}
+.app[data-dark] .care{color:#F3B4A3}
+.app[data-dark] .ringbar{color:#F3A58C}
+.app[data-dark] .wd .c{border-color:#3A4562}
+.app[data-dark] .switch{background:#3A4562}
+.app[data-dark] .switch.on{background:var(--sage)}
+.app[data-dark] .iconbtn,.app[data-dark] .avatarbtn.guest{border-color:var(--line)}
+.app[data-dark] .radio{border-color:#4A5574}
+.app[data-dark] .orow.on .radio{border-color:var(--gold)}
+.opick>span:last-child{flex:1;min-width:0;text-align:left}
+.app[data-dark] .join{color:var(--sage)}
+.join-dim{position:absolute;inset:0;background:rgba(6,10,20,.3);opacity:0;transition:opacity .4s ease}
+.join-dim.on{opacity:1}
+.nudge.nobar{bottom:calc(env(safe-area-inset-bottom,0px) + 18px)}
+.nudge-terms{margin:0!important;text-align:center;font-size:11.5px!important;color:rgba(238,241,247,.55)!important;line-height:1.4!important}
+/* ---------- Desktop experience ---------- */
+.deskbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:16px 20px;border-radius:18px;font-weight:700;font-size:16px;color:#EEF1F7;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:background .2s ease,border-color .2s ease,transform .15s ease}
+.deskbtn:hover{background:rgba(255,255,255,.12);border-color:rgba(242,181,68,.6)}
+.deskbtn:active{transform:scale(.98)}
+.deskbtn svg{width:22px;height:22px;color:var(--gold)}
+.deskbg{position:fixed;inset:0;background:#0C1752;overflow:hidden;display:none;z-index:0}
+.deskbg i{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform}
+.deskbg .b1{width:46vw;height:40vw;left:-8vw;top:-10vw;background:#26A6B6;opacity:.75;animation:bd1 38s ease-in-out infinite alternate}
+.deskbg .b2{width:34vw;height:30vw;right:-6vw;top:10vh;background:#1FB5A6;opacity:.6;animation:bd2 46s ease-in-out infinite alternate}
+.deskbg .b3{width:40vw;height:34vw;left:30vw;bottom:-18vw;background:#2A9FC0;opacity:.65;animation:bd3 52s ease-in-out infinite alternate}
+.deskbg .b4{width:22vw;height:22vw;left:55vw;top:30vh;background:#3BC2B4;opacity:.45;animation:bd4 34s ease-in-out infinite alternate}
+.deskbg .b5{width:28vw;height:24vw;left:8vw;bottom:-6vw;background:#1A7FA0;opacity:.55;animation:bd5 60s ease-in-out infinite alternate}
+@keyframes bd1{to{transform:translate(38vw,30vh) scale(1.25)}}
+@keyframes bd2{to{transform:translate(-44vw,40vh) scale(.8)}}
+@keyframes bd3{to{transform:translate(-26vw,-55vh) scale(1.2)}}
+@keyframes bd4{to{transform:translate(-40vw,-20vh) scale(1.5)}}
+@keyframes bd5{to{transform:translate(50vw,-35vh) scale(.9)}}
+body.desk{background:#0C1752}
+body.desk .deskbg{display:block}
+body.desk .pitch{display:none}
+body.desk .stage{display:block;padding:0;background:none;min-height:100%;position:relative;z-index:1}
+body.desk .device-wrap{position:fixed!important;inset:0;width:auto!important;height:auto!important;z-index:1}
+body.desk .phone{position:absolute;inset:0;width:100%;height:100%;transform:none;border-radius:0;padding:0;box-shadow:none;background:transparent}
+body.desk .app{border-radius:0;flex-direction:row;background:transparent!important;
+  --day:transparent;--card:rgba(255,255,255,.07);--ink:#EEF1F7;--ink-2:rgba(238,241,247,.7);--line:rgba(255,255,255,.13);--sage:#4FC8BA;--sage-soft:rgba(38,166,182,.2);--gold-ink:var(--gold);--gold-soft:rgba(255,255,255,.09);--danger-soft:rgba(226,116,84,.2);--night:transparent;--night-2:rgba(255,255,255,.07);--night-line:rgba(255,255,255,.14)}
+body.desk .island,body.desk .statusbar{display:none}
+body.desk .app .tabbar{order:-1;width:256px;flex:none;display:flex;flex-direction:column;gap:4px;padding:28px 16px 24px;border-top:0;border-right:1px solid rgba(255,255,255,.1);background:rgba(6,12,44,.38)!important;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+body.desk .app .tab{flex-direction:row;justify-content:flex-start;gap:14px;font-size:15px;padding:12px 14px;color:rgba(238,241,247,.72);border-radius:12px}
+body.desk .app .tab:hover{background:rgba(255,255,255,.06)}
+body.desk .app .tab.on{background:rgba(255,255,255,.11);color:var(--gold)}
+body.desk .app .tab svg{width:22px;height:22px}
+.dk-brand{display:none}
+body.desk .dk-brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;color:#EEF1F7;padding:0 10px 22px}
+body.desk .dk-brand svg{width:46px;height:auto}
+body.desk .dk-foot{margin-top:auto;display:grid;gap:4px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+body.desk .screen{flex:1;min-width:0}
+body.desk .screen > *{max-width:780px;margin-left:auto;margin-right:auto}
+body.desk .screen > .ring,body.desk .screen > .loading{max-width:none}
+body.desk .pad{padding:44px 36px 64px}
+body.desk .h1{font-size:40px}
+body.desk .ob{padding:40px 36px}
+body.desk .vhead{padding:40px 36px 20px;background:linear-gradient(180deg,rgba(242,181,68,.16),rgba(0,0,0,0))!important}
+body.desk .nextcard,body.desk .verse,body.desk .li,body.desk .pcard,body.desk .perks,body.desk .req,body.desk .compose,body.desk .joinstrip,body.desk .mood,body.desk .opt,body.desk .ci,body.desk .ob-points li,body.desk .sumlist{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.13)!important}
+body.desk .seg,body.desk .safety{background:rgba(255,255,255,.07)}
+body.desk .circle{background:linear-gradient(155deg,rgba(38,166,182,.45),rgba(31,181,166,.2));border:1px solid rgba(255,255,255,.14)}
+body.desk .moods{grid-template-columns:repeat(4,1fr)}
+body.desk .pin,body.desk .compose textarea,body.desk .chatin input{background:rgba(255,255,255,.06)}
+body.desk .splash{background:rgba(12,23,82,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.desk .win{left:calc(50% - 220px + 128px);right:auto;top:6vh;bottom:6vh;width:440px}
+body.desk .nudge{left:calc(50% - 220px + 128px);right:auto;width:440px;bottom:32px}
+body.desk .nudge.nobar{left:calc(50% - 220px)}
+body.desk .toast{left:calc(50% + 128px)}
+body.desk .backdrop{max-width:none}
+body.desk .sheet{max-width:520px;margin:0 auto;border-radius:28px 28px 0 0}
+@media (prefers-reduced-motion: reduce){.deskbg i{animation:none}}
+body.desk .ring .actions{max-width:440px}
+body.desk .sunbox{max-width:560px}
+body.desk .ring{padding-top:48px}
+body.desk .win{background-color:rgba(13,22,72,.92);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12)}
+body.desk .win-page{background:#0E1A55}
+body.desk .sheet{background:rgba(14,24,70,.95);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+/* Phone-view stage: drifting dusk glow */
+.stagebg{position:fixed;inset:0;background:#0E1524;overflow:hidden;z-index:0}
+.stagebg i{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
+.stagebg .s1{width:55vw;height:38vw;left:30vw;bottom:-22vw;background:#4A2F45;opacity:.75;animation:bd3 48s ease-in-out infinite alternate}
+.stagebg .s2{width:40vw;height:30vw;left:-10vw;bottom:-12vw;background:#3A2C4A;opacity:.6;animation:bd5 56s ease-in-out infinite alternate}
+.stagebg .s3{width:30vw;height:24vw;right:-6vw;bottom:-8vw;background:#5C3B33;opacity:.5;animation:bd2 44s ease-in-out infinite alternate}
+.stagebg .s4{width:34vw;height:28vw;left:10vw;top:-14vw;background:#1F2A52;opacity:.55;animation:bd1 60s ease-in-out infinite alternate}
+.stagebg .s5{width:18vw;height:16vw;left:60vw;top:40vh;background:#6B4A2E;opacity:.28;animation:bd4 40s ease-in-out infinite alternate}
+.stage{position:relative;z-index:1;background:none!important}
+body.desk .stagebg{display:none}
+@media (max-width:560px){.stagebg{display:none}}
+@media (prefers-reduced-motion: reduce){.stagebg i{animation:none}}
+/* Compact header on scroll */
+.cbar{position:absolute;right:14px;top:60px;z-index:25;display:flex;align-items:center;padding:5px;border-radius:999px;
+  background:rgba(243,244,240,.82);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--line);box-shadow:0 6px 20px rgba(20,30,50,.12);
+  transform:translateY(-10px) scale(.92);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.32,.72,0,1),opacity .2s ease}
+.cbar.show{transform:none;opacity:1;pointer-events:auto}
+.cbar-t{display:none!important;font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;color:var(--ink)}
+.cbar .hdr-acts{margin:0;gap:6px}
+.cbar .iconbtn,.cbar .avatarbtn{width:34px;height:34px;font-size:14px}
+.cbar .iconbtn svg,.cbar .avatarbtn svg{width:17px;height:17px}
+.app[data-mode="night"] .cbar{background:rgba(19,27,45,.82);border-color:var(--night-line)}
+.app[data-mode="night"] .cbar-t{color:var(--night-fg)}
+.app[data-dark] .cbar{background:rgba(17,26,43,.86)}
+body.desk .cbar{top:16px;right:36px;background:rgba(10,18,60,.55);border-color:rgba(255,255,255,.14)}
+body.desk .cbar-t{color:#EEF1F7}
+@media (max-width:560px){.cbar{top:calc(env(safe-area-inset-top,0px) + 10px)}}
+/* Find rings */
+.rsearch{display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink-2);width:100%;text-align:left}
+.rsearch svg{width:19px;height:19px;flex:none}
+.rsearch input{flex:1;min-width:0;border:0;background:transparent;padding:13px 0;font-size:16px;color:var(--ink);outline:none}
+.rsearch:focus-within{border-color:var(--sage)}
+.rsearch.fake{margin-top:16px;padding:13px 14px;font-size:15px;font-weight:500}
+.campusrow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--ink-2)}
+.campusrow select{min-width:0;max-width:65%;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--card);color:var(--ink);font-weight:600;font-size:14px}
+.rfilters{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin:0 -22px;padding-left:22px;padding-right:22px}
+.rfilters::-webkit-scrollbar{display:none}
+.rfilters .pchip{white-space:nowrap;flex:none}
+.ring-r{display:grid;gap:10px;padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.rr-top{display:flex;gap:12px;align-items:center}
+.rr-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:700;color:#1C2537;flex:none}
+.ring-r .ttl{font-weight:700;font-size:15.5px;line-height:1.3}
+.rr-where{font-size:13px;color:var(--ink-2);margin-top:2px}
+.vbadge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--sage);background:var(--sage-soft);padding:2px 7px;border-radius:99px;vertical-align:2px;white-space:nowrap}
+.vbadge svg{width:11px;height:11px}
+.rr-desc{margin:0;font-size:14px;line-height:1.5;color:var(--ink)}
+.rr-meta{display:flex;flex-wrap:wrap;gap:6px}
+.rr-meta span{font-size:12px;font-weight:600;color:var(--ink-2);background:var(--day);border:1px solid var(--line);padding:4px 9px;border-radius:99px}
+.ring-r .join{justify-self:start}
+body.desk .rfilters{margin:0;padding-left:0;padding-right:0;flex-wrap:wrap}
 /* Launch animation */
 .splash{position:absolute;inset:0;z-index:35;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0F1626;color:#EEF1F7;cursor:pointer;overflow:hidden;transition:opacity .6s ease}
 .splash.out{opacity:0;pointer-events:none}
@@ -281,6 +600,8 @@ input,textarea{font:inherit}
 .splash.play .sp-w2{animation:spdraw .5s ease-out 1.25s forwards}
 .splash.play .sp-name{animation:spup .7s ease-out 1.6s forwards}
 .splash.play .sp-tag{animation:spup .7s ease-out 1.9s forwards}
+.splash.play{animation:sphide .55s ease 3.3s forwards}
+@keyframes sphide{to{opacity:0;visibility:hidden}}
 @keyframes spdraw{to{stroke-dashoffset:0}}
 @keyframes sprise{to{transform:translateY(0)}}
 @keyframes spglow{to{opacity:1;transform:scale(1)}}
@@ -301,6 +622,8 @@ input,textarea{font:inherit}
   .app{border-radius:0;padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
   .screen{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
   .splash{padding-top:env(safe-area-inset-top,0px)}
+  .win{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+  .nudge{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
   .island{display:none}
   .statusbar{display:none}
   .screen .pad{padding-top:16px}
@@ -314,12 +637,14 @@ input,textarea{font:inherit}
 <body>
 
 
+<div class="stagebg" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="s4"></i><i class="s5"></i></div>
+<div class="deskbg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i><i class="b5"></i></div>
 <div class="stage">
   <aside class="pitch" aria-label="About Peace Rising">
     <div class="brand">
       <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true">
-        <circle cx="26" cy="34" r="13" fill="#F2B544"/>
-        <rect x="0" y="34" width="52" height="18" fill="#0E1524"/>
+        <defs><clipPath id="brandclip"><rect x="0" y="0" width="52" height="34"/></clipPath></defs>
+        <circle cx="26" cy="34" r="13" fill="#F2B544" clip-path="url(#brandclip)"/>
         <path d="M4 34h44" stroke="#F2B544" stroke-width="2.5" stroke-linecap="round"/>
         <g stroke="#F2B544" stroke-width="2.5" stroke-linecap="round">
           <path d="M26 8v6"/><path d="M9 17l4 4"/><path d="M43 17l-4 4"/>
@@ -334,7 +659,7 @@ input,textarea{font:inherit}
       <li><span><b>Wake to a gentle chime</b> that grows slowly, with a sunrise on screen.</span></li>
       <li><span><b>Silence it by checking in.</b> Say how you feel and answer two quick questions.</span></li>
       <li><span><b>Receive scripture</b> matched to your morning, a short prayer and a moment to reflect.</span></li>
-      <li><span><b>Pray together</b> in Prayer Connect with people who wake when you do.</span></li>
+      <li><span><b>Pray together</b> in Peace Rings, small groups of people who wake when you do. An account is only needed here.</span></li>
     </ol>
     <div class="qrcard">
       <div class="qr"><svg viewBox="0 0 33 33" width="124" height="124" role="img" aria-label="QR code with the Peace Rising logo, linking to peace-rising.vercel.app"><g fill="#131B2D"><circle cx="8.5" cy="0.5" r=".46"/><circle cx="9.5" cy="0.5" r=".46"/><circle cx="10.5" cy="0.5" r=".46"/><circle cx="13.5" cy="0.5" r=".46"/><circle cx="15.5" cy="0.5" r=".46"/><circle cx="18.5" cy="0.5" r=".46"/><circle cx="20.5" cy="0.5" r=".46"/><circle cx="21.5" cy="0.5" r=".46"/><circle cx="23.5" cy="0.5" r=".46"/><circle cx="24.5" cy="0.5" r=".46"/><circle cx="8.5" cy="1.5" r=".46"/><circle cx="10.5" cy="1.5" r=".46"/><circle cx="11.5" cy="1.5" r=".46"/><circle cx="12.5" cy="1.5" r=".46"/><circle cx="14.5" cy="1.5" r=".46"/><circle cx="18.5" cy="1.5" r=".46"/><circle cx="24.5" cy="1.5" r=".46"/><circle cx="8.5" cy="2.5" r=".46"/><circle cx="9.5" cy="2.5" r=".46"/><circle cx="10.5" cy="2.5" r=".46"/><circle cx="13.5" cy="2.5" r=".46"/><circle cx="15.5" cy="2.5" r=".46"/><circle cx="16.5" cy="2.5" r=".46"/><circle cx="21.5" cy="2.5" r=".46"/><circle cx="23.5" cy="2.5" r=".46"/><circle cx="24.5" cy="2.5" r=".46"/><circle cx="9.5" cy="3.5" r=".46"/><circle cx="12.5" cy="3.5" r=".46"/><circle cx="13.5" cy="3.5" r=".46"/><circle cx="17.5" cy="3.5" r=".46"/><circle cx="22.5" cy="3.5" r=".46"/><circle cx="23.5" cy="3.5" r=".46"/><circle cx="24.5" cy="3.5" r=".46"/><circle cx="9.5" cy="4.5" r=".46"/><circle cx="10.5" cy="4.5" r=".46"/><circle cx="15.5" cy="4.5" r=".46"/><circle cx="16.5" cy="4.5" r=".46"/><circle cx="21.5" cy="4.5" r=".46"/><circle cx="8.5" cy="5.5" r=".46"/><circle cx="9.5" cy="5.5" r=".46"/><circle cx="10.5" cy="5.5" r=".46"/><circle cx="11.5" cy="5.5" r=".46"/><circle cx="12.5" cy="5.5" r=".46"/><circle cx="15.5" cy="5.5" r=".46"/><circle cx="16.5" cy="5.5" r=".46"/><circle cx="23.5" cy="5.5" r=".46"/><circle cx="24.5" cy="5.5" r=".46"/><circle cx="8.5" cy="6.5" r=".46"/><circle cx="10.5" cy="6.5" r=".46"/><circle cx="12.5" cy="6.5" r=".46"/><circle cx="14.5" cy="6.5" r=".46"/><circle cx="16.5" cy="6.5" r=".46"/><circle cx="18.5" cy="6.5" r=".46"/><circle cx="20.5" cy="6.5" r=".46"/><circle cx="22.5" cy="6.5" r=".46"/><circle cx="24.5" cy="6.5" r=".46"/><circle cx="8.5" cy="7.5" r=".46"/><circle cx="10.5" cy="7.5" r=".46"/><circle cx="13.5" cy="7.5" r=".46"/><circle cx="15.5" cy="7.5" r=".46"/><circle cx="21.5" cy="7.5" r=".46"/><circle cx="23.5" cy="7.5" r=".46"/><circle cx="2.5" cy="8.5" r=".46"/><circle cx="3.5" cy="8.5" r=".46"/><circle cx="4.5" cy="8.5" r=".46"/><circle cx="6.5" cy="8.5" r=".46"/><circle cx="8.5" cy="8.5" r=".46"/><circle cx="13.5" cy="8.5" r=".46"/><circle cx="15.5" cy="8.5" r=".46"/><circle cx="16.5" cy="8.5" r=".46"/><circle cx="17.5" cy="8.5" r=".46"/><circle cx="18.5" cy="8.5" r=".46"/><circle cx="19.5" cy="8.5" r=".46"/><circle cx="22.5" cy="8.5" r=".46"/><circle cx="23.5" cy="8.5" r=".46"/><circle cx="25.5" cy="8.5" r=".46"/><circle cx="26.5" cy="8.5" r=".46"/><circle cx="27.5" cy="8.5" r=".46"/><circle cx="30.5" cy="8.5" r=".46"/><circle cx="31.5" cy="8.5" r=".46"/><circle cx="32.5" cy="8.5" r=".46"/><circle cx="4.5" cy="9.5" r=".46"/><circle cx="5.5" cy="9.5" r=".46"/><circle cx="9.5" cy="9.5" r=".46"/><circle cx="11.5" cy="9.5" r=".46"/><circle cx="13.5" cy="9.5" r=".46"/><circle cx="14.5" cy="9.5" r=".46"/><circle cx="16.5" cy="9.5" r=".46"/><circle cx="18.5" cy="9.5" r=".46"/><circle cx="19.5" cy="9.5" r=".46"/><circle cx="21.5" cy="9.5" r=".46"/><circle cx="23.5" cy="9.5" r=".46"/><circle cx="25.5" cy="9.5" r=".46"/><circle cx="26.5" cy="9.5" r=".46"/><circle cx="32.5" cy="9.5" r=".46"/><circle cx="0.5" cy="10.5" r=".46"/><circle cx="2.5" cy="10.5" r=".46"/><circle cx="4.5" cy="10.5" r=".46"/><circle cx="6.5" cy="10.5" r=".46"/><circle cx="27.5" cy="10.5" r=".46"/><circle cx="29.5" cy="10.5" r=".46"/><circle cx="30.5" cy="10.5" r=".46"/><circle cx="31.5" cy="10.5" r=".46"/><circle cx="0.5" cy="11.5" r=".46"/><circle cx="1.5" cy="11.5" r=".46"/><circle cx="2.5" cy="11.5" r=".46"/><circle cx="4.5" cy="11.5" r=".46"/><circle cx="7.5" cy="11.5" r=".46"/><circle cx="8.5" cy="11.5" r=".46"/><circle cx="25.5" cy="11.5" r=".46"/><circle cx="26.5" cy="11.5" r=".46"/><circle cx="29.5" cy="11.5" r=".46"/><circle cx="30.5" cy="11.5" r=".46"/><circle cx="4.5" cy="12.5" r=".46"/><circle cx="5.5" cy="12.5" r=".46"/><circle cx="6.5" cy="12.5" r=".46"/><circle cx="8.5" cy="12.5" r=".46"/><circle cx="25.5" cy="12.5" r=".46"/><circle cx="28.5" cy="12.5" r=".46"/><circle cx="0.5" cy="13.5" r=".46"/><circle cx="4.5" cy="13.5" r=".46"/><circle cx="5.5" cy="13.5" r=".46"/><circle cx="9.5" cy="13.5" r=".46"/><circle cx="23.5" cy="13.5" r=".46"/><circle cx="26.5" cy="13.5" r=".46"/><circle cx="29.5" cy="13.5" r=".46"/><circle cx="32.5" cy="13.5" r=".46"/><circle cx="1.5" cy="14.5" r=".46"/><circle cx="3.5" cy="14.5" r=".46"/><circle cx="5.5" cy="14.5" r=".46"/><circle cx="6.5" cy="14.5" r=".46"/><circle cx="25.5" cy="14.5" r=".46"/><circle cx="26.5" cy="14.5" r=".46"/><circle cx="30.5" cy="14.5" r=".46"/><circle cx="31.5" cy="14.5" r=".46"/><circle cx="0.5" cy="15.5" r=".46"/><circle cx="8.5" cy="15.5" r=".46"/><circle cx="9.5" cy="15.5" r=".46"/><circle cx="26.5" cy="15.5" r=".46"/><circle cx="27.5" cy="15.5" r=".46"/><circle cx="30.5" cy="15.5" r=".46"/><circle cx="31.5" cy="15.5" r=".46"/><circle cx="32.5" cy="15.5" r=".46"/><circle cx="0.5" cy="16.5" r=".46"/><circle cx="1.5" cy="16.5" r=".46"/><circle cx="4.5" cy="16.5" r=".46"/><circle cx="6.5" cy="16.5" r=".46"/><circle cx="8.5" cy="16.5" r=".46"/><circle cx="23.5" cy="16.5" r=".46"/><circle cx="25.5" cy="16.5" r=".46"/><circle cx="27.5" cy="16.5" r=".46"/><circle cx="28.5" cy="16.5" r=".46"/><circle cx="31.5" cy="16.5" r=".46"/><circle cx="32.5" cy="16.5" r=".46"/><circle cx="2.5" cy="17.5" r=".46"/><circle cx="3.5" cy="17.5" r=".46"/><circle cx="7.5" cy="17.5" r=".46"/><circle cx="8.5" cy="17.5" r=".46"/><circle cx="23.5" cy="17.5" r=".46"/><circle cx="24.5" cy="17.5" r=".46"/><circle cx="25.5" cy="17.5" r=".46"/><circle cx="26.5" cy="17.5" r=".46"/><circle cx="27.5" cy="17.5" r=".46"/><circle cx="32.5" cy="17.5" r=".46"/><circle cx="0.5" cy="18.5" r=".46"/><circle cx="1.5" cy="18.5" r=".46"/><circle cx="4.5" cy="18.5" r=".46"/><circle cx="5.5" cy="18.5" r=".46"/><circle cx="6.5" cy="18.5" r=".46"/><circle cx="7.5" cy="18.5" r=".46"/><circle cx="9.5" cy="18.5" r=".46"/><circle cx="28.5" cy="18.5" r=".46"/><circle cx="30.5" cy="18.5" r=".46"/><circle cx="31.5" cy="18.5" r=".46"/><circle cx="0.5" cy="19.5" r=".46"/><circle cx="2.5" cy="19.5" r=".46"/><circle cx="7.5" cy="19.5" r=".46"/><circle cx="23.5" cy="19.5" r=".46"/><circle cx="24.5" cy="19.5" r=".46"/><circle cx="29.5" cy="19.5" r=".46"/><circle cx="30.5" cy="19.5" r=".46"/><circle cx="31.5" cy="19.5" r=".46"/><circle cx="0.5" cy="20.5" r=".46"/><circle cx="1.5" cy="20.5" r=".46"/><circle cx="3.5" cy="20.5" r=".46"/><circle cx="4.5" cy="20.5" r=".46"/><circle cx="5.5" cy="20.5" r=".46"/><circle cx="6.5" cy="20.5" r=".46"/><circle cx="8.5" cy="20.5" r=".46"/><circle cx="24.5" cy="20.5" r=".46"/><circle cx="25.5" cy="20.5" r=".46"/><circle cx="27.5" cy="20.5" r=".46"/><circle cx="28.5" cy="20.5" r=".46"/><circle cx="29.5" cy="20.5" r=".46"/><circle cx="31.5" cy="20.5" r=".46"/><circle cx="0.5" cy="21.5" r=".46"/><circle cx="3.5" cy="21.5" r=".46"/><circle cx="5.5" cy="21.5" r=".46"/><circle cx="7.5" cy="21.5" r=".46"/><circle cx="24.5" cy="21.5" r=".46"/><circle cx="25.5" cy="21.5" r=".46"/><circle cx="26.5" cy="21.5" r=".46"/><circle cx="29.5" cy="21.5" r=".46"/><circle cx="30.5" cy="21.5" r=".46"/><circle cx="32.5" cy="21.5" r=".46"/><circle cx="0.5" cy="22.5" r=".46"/><circle cx="2.5" cy="22.5" r=".46"/><circle cx="3.5" cy="22.5" r=".46"/><circle cx="5.5" cy="22.5" r=".46"/><circle cx="6.5" cy="22.5" r=".46"/><circle cx="9.5" cy="22.5" r=".46"/><circle cx="24.5" cy="22.5" r=".46"/><circle cx="29.5" cy="22.5" r=".46"/><circle cx="30.5" cy="22.5" r=".46"/><circle cx="31.5" cy="22.5" r=".46"/><circle cx="0.5" cy="23.5" r=".46"/><circle cx="3.5" cy="23.5" r=".46"/><circle cx="4.5" cy="23.5" r=".46"/><circle cx="5.5" cy="23.5" r=".46"/><circle cx="8.5" cy="23.5" r=".46"/><circle cx="9.5" cy="23.5" r=".46"/><circle cx="10.5" cy="23.5" r=".46"/><circle cx="11.5" cy="23.5" r=".46"/><circle cx="14.5" cy="23.5" r=".46"/><circle cx="16.5" cy="23.5" r=".46"/><circle cx="20.5" cy="23.5" r=".46"/><circle cx="21.5" cy="23.5" r=".46"/><circle cx="22.5" cy="23.5" r=".46"/><circle cx="24.5" cy="23.5" r=".46"/><circle cx="27.5" cy="23.5" r=".46"/><circle cx="29.5" cy="23.5" r=".46"/><circle cx="30.5" cy="23.5" r=".46"/><circle cx="31.5" cy="23.5" r=".46"/><circle cx="32.5" cy="23.5" r=".46"/><circle cx="0.5" cy="24.5" r=".46"/><circle cx="2.5" cy="24.5" r=".46"/><circle cx="6.5" cy="24.5" r=".46"/><circle cx="7.5" cy="24.5" r=".46"/><circle cx="11.5" cy="24.5" r=".46"/><circle cx="12.5" cy="24.5" r=".46"/><circle cx="15.5" cy="24.5" r=".46"/><circle cx="16.5" cy="24.5" r=".46"/><circle cx="17.5" cy="24.5" r=".46"/><circle cx="20.5" cy="24.5" r=".46"/><circle cx="22.5" cy="24.5" r=".46"/><circle cx="24.5" cy="24.5" r=".46"/><circle cx="25.5" cy="24.5" r=".46"/><circle cx="26.5" cy="24.5" r=".46"/><circle cx="27.5" cy="24.5" r=".46"/><circle cx="28.5" cy="24.5" r=".46"/><circle cx="8.5" cy="25.5" r=".46"/><circle cx="12.5" cy="25.5" r=".46"/><circle cx="13.5" cy="25.5" r=".46"/><circle cx="14.5" cy="25.5" r=".46"/><circle cx="15.5" cy="25.5" r=".46"/><circle cx="16.5" cy="25.5" r=".46"/><circle cx="18.5" cy="25.5" r=".46"/><circle cx="24.5" cy="25.5" r=".46"/><circle cx="28.5" cy="25.5" r=".46"/><circle cx="29.5" cy="25.5" r=".46"/><circle cx="31.5" cy="25.5" r=".46"/><circle cx="32.5" cy="25.5" r=".46"/><circle cx="11.5" cy="26.5" r=".46"/><circle cx="14.5" cy="26.5" r=".46"/><circle cx="15.5" cy="26.5" r=".46"/><circle cx="16.5" cy="26.5" r=".46"/><circle cx="22.5" cy="26.5" r=".46"/><circle cx="23.5" cy="26.5" r=".46"/><circle cx="24.5" cy="26.5" r=".46"/><circle cx="26.5" cy="26.5" r=".46"/><circle cx="28.5" cy="26.5" r=".46"/><circle cx="31.5" cy="26.5" r=".46"/><circle cx="9.5" cy="27.5" r=".46"/><circle cx="10.5" cy="27.5" r=".46"/><circle cx="11.5" cy="27.5" r=".46"/><circle cx="13.5" cy="27.5" r=".46"/><circle cx="16.5" cy="27.5" r=".46"/><circle cx="18.5" cy="27.5" r=".46"/><circle cx="20.5" cy="27.5" r=".46"/><circle cx="23.5" cy="27.5" r=".46"/><circle cx="24.5" cy="27.5" r=".46"/><circle cx="28.5" cy="27.5" r=".46"/><circle cx="29.5" cy="27.5" r=".46"/><circle cx="30.5" cy="27.5" r=".46"/><circle cx="31.5" cy="27.5" r=".46"/><circle cx="32.5" cy="27.5" r=".46"/><circle cx="8.5" cy="28.5" r=".46"/><circle cx="9.5" cy="28.5" r=".46"/><circle cx="11.5" cy="28.5" r=".46"/><circle cx="15.5" cy="28.5" r=".46"/><circle cx="16.5" cy="28.5" r=".46"/><circle cx="17.5" cy="28.5" r=".46"/><circle cx="21.5" cy="28.5" r=".46"/><circle cx="22.5" cy="28.5" r=".46"/><circle cx="24.5" cy="28.5" r=".46"/><circle cx="25.5" cy="28.5" r=".46"/><circle cx="26.5" cy="28.5" r=".46"/><circle cx="27.5" cy="28.5" r=".46"/><circle cx="28.5" cy="28.5" r=".46"/><circle cx="31.5" cy="28.5" r=".46"/><circle cx="32.5" cy="28.5" r=".46"/><circle cx="8.5" cy="29.5" r=".46"/><circle cx="10.5" cy="29.5" r=".46"/><circle cx="13.5" cy="29.5" r=".46"/><circle cx="14.5" cy="29.5" r=".46"/><circle cx="18.5" cy="29.5" r=".46"/><circle cx="19.5" cy="29.5" r=".46"/><circle cx="20.5" cy="29.5" r=".46"/><circle cx="25.5" cy="29.5" r=".46"/><circle cx="28.5" cy="29.5" r=".46"/><circle cx="29.5" cy="29.5" r=".46"/><circle cx="31.5" cy="29.5" r=".46"/><circle cx="8.5" cy="30.5" r=".46"/><circle cx="10.5" cy="30.5" r=".46"/><circle cx="12.5" cy="30.5" r=".46"/><circle cx="14.5" cy="30.5" r=".46"/><circle cx="16.5" cy="30.5" r=".46"/><circle cx="17.5" cy="30.5" r=".46"/><circle cx="18.5" cy="30.5" r=".46"/><circle cx="19.5" cy="30.5" r=".46"/><circle cx="21.5" cy="30.5" r=".46"/><circle cx="23.5" cy="30.5" r=".46"/><circle cx="24.5" cy="30.5" r=".46"/><circle cx="25.5" cy="30.5" r=".46"/><circle cx="26.5" cy="30.5" r=".46"/><circle cx="9.5" cy="31.5" r=".46"/><circle cx="11.5" cy="31.5" r=".46"/><circle cx="13.5" cy="31.5" r=".46"/><circle cx="14.5" cy="31.5" r=".46"/><circle cx="15.5" cy="31.5" r=".46"/><circle cx="17.5" cy="31.5" r=".46"/><circle cx="18.5" cy="31.5" r=".46"/><circle cx="19.5" cy="31.5" r=".46"/><circle cx="20.5" cy="31.5" r=".46"/><circle cx="22.5" cy="31.5" r=".46"/><circle cx="25.5" cy="31.5" r=".46"/><circle cx="27.5" cy="31.5" r=".46"/><circle cx="29.5" cy="31.5" r=".46"/><circle cx="30.5" cy="31.5" r=".46"/><circle cx="10.5" cy="32.5" r=".46"/><circle cx="12.5" cy="32.5" r=".46"/><circle cx="14.5" cy="32.5" r=".46"/><circle cx="15.5" cy="32.5" r=".46"/><circle cx="17.5" cy="32.5" r=".46"/><circle cx="20.5" cy="32.5" r=".46"/><circle cx="24.5" cy="32.5" r=".46"/><circle cx="25.5" cy="32.5" r=".46"/><circle cx="31.5" cy="32.5" r=".46"/></g><rect x="0.5" y="0.5" width="6" height="6" rx="1.8" fill="none" stroke="#131B2D" stroke-width="1"/><rect x="2" y="2" width="3" height="3" rx=".9" fill="#E0A12E"/><rect x="26.5" y="0.5" width="6" height="6" rx="1.8" fill="none" stroke="#131B2D" stroke-width="1"/><rect x="28" y="2" width="3" height="3" rx=".9" fill="#E0A12E"/><rect x="0.5" y="26.5" width="6" height="6" rx="1.8" fill="none" stroke="#131B2D" stroke-width="1"/><rect x="2" y="28" width="3" height="3" rx=".9" fill="#E0A12E"/><g transform="translate(11 11) scale(0.2115)"><rect width="52" height="52" rx="12" fill="#131B2D"/><clipPath id="qrsun"><rect x="0" y="0" width="52" height="31"/></clipPath><circle cx="26" cy="31" r="11" fill="#F2B544" clip-path="url(#qrsun)"/><path d="M9 31h34" stroke="#F2B544" stroke-width="2.6" stroke-linecap="round"/><g stroke="#F2B544" stroke-width="2.6" stroke-linecap="round"><path d="M26 8v5"/><path d="M12 15l3.5 3.5"/><path d="M40 15l-3.5 3.5"/></g><path d="M17 38h18M21 43.5h10" stroke="#97A1B7" stroke-width="2.2" stroke-linecap="round"/></g></svg></div>
@@ -344,6 +669,7 @@ input,textarea{font:inherit}
         <div class="qrurl">peace-rising.vercel.app</div>
       </div>
     </div>
+    <button class="deskbtn" data-side="desk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Explore on Desktop</button>
     <div class="controls">
       <div class="lbl">Demo controls</div>
       <div class="row">
@@ -353,19 +679,20 @@ input,textarea{font:inherit}
       <div class="row">
         <button class="sbtn ghost" data-side="alarms">Alarms</button>
         <button class="sbtn ghost" data-side="journal">Journal</button>
-        <button class="sbtn ghost" data-side="connect">Prayer Connect</button>
+        <button class="sbtn ghost" data-side="connect">Peace Rings</button>
+        <button class="sbtn ghost" data-side="onboard">Replay onboarding</button>
         <button class="sbtn ghost" data-side="intro">Replay intro</button>
         <button class="sbtn ghost" data-side="reset">Reset demo</button>
       </div>
     </div>
-    <p class="foot">Working prototype. Turn your sound on for the alarm. Scripture is from the King James Version (public domain). Journal history and Prayer Connect members are sample data.</p>
+    <p class="foot">Working prototype. Turn your sound on for the alarm. Scripture is from the King James Version (public domain). Journal history and Peace Rings members are sample data.</p>
   </aside>
 
   <div class="device-wrap" id="wrap">
     <div class="phone" id="phone">
       <div class="app" id="app" data-mode="night">
         <div class="island" aria-hidden="true"></div>
-        <div class="splash" id="splash" hidden>
+        <div class="splash play" id="splash">
           <div class="sp-glow"></div>
           <svg class="sp-mark" viewBox="0 0 120 96" width="168" height="134" aria-hidden="true">
             <defs><clipPath id="spclip"><rect x="0" y="0" width="120" height="62"/></clipPath>
@@ -387,8 +714,10 @@ input,textarea{font:inherit}
             <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
           </span>
         </div>
+        <div class="cbar" id="cbar" aria-hidden="true" inert><span class="cbar-t"></span><div class="cbar-a"></div></div>
         <main class="screen" id="screen"></main>
         <nav class="tabbar" id="tabbar" aria-label="App sections"></nav>
+        <div class="layer" id="layer"></div>
         <div class="toast" id="toast" role="status"></div>
       </div>
     </div>
@@ -497,7 +826,7 @@ const MEMBERS = [['Adaeze','Lagos','#F6C9A8'],['Tunde','Ibadan','#BFD8C9'],['Gra
 const avColor = n => (MEMBERS.find(m=>m[0]===n)||[0,0,'#E2E4DE'])[2];
 
 /* ---------------- State ---------------- */
-const STORE = 'peace-rising-demo-v1';
+const STORE = 'peace-rising-demo-v2';
 function seed(){
   const hist = [];
   const sample = [
@@ -520,12 +849,12 @@ function seed(){
       {id:'r4',name:'Grace',when:'Yesterday',text:'Praise report: I passed my exams! Thank you all for praying with me last week.',count:21,praise:true}
     ],
     chat:[
-      {name:'Emeka',text:'Good morning, Risers! Today’s circle verse is Psalm 5:3.',when:'5:32 AM'},
+      {name:'Emeka',text:'Good morning, everyone! Today’s ring verse is Psalm 5:3.',when:'5:32 AM'},
       {name:'Bisi',text:'Morning all. Up, and grateful for another day.',when:'5:35 AM'},
       {name:'Ruth',text:'Praying for everyone with exams and interviews today.',when:'5:38 AM'},
       {name:'Samuel',text:'Amen. Who’s joining the 6:00 voice prayer?',when:'5:40 AM'}
     ],
-    prayed:{}, joined:[]
+    prayed:{}, joined:[], onboarded:false, user:{name:''}, account:null, ring:false, backup:false, prefs:{focus:[],translation:'KJV'}
   };
 }
 let S;
@@ -536,37 +865,66 @@ let view = 'alarms', connectTab = 'requests', sheet = null, ringing = false, rin
 let flow = {}, soundChecked = false;
 const firedKeys = {};
 
-/* ---------------- Audio: gentle bell that grows ---------------- */
-let actx=null, master=null, loopTimer=null;
+/* ---------------- Audio: chimes + nature sounds ---------------- */
+let actx=null, master=null, loopTimer=null, natureH=null, prevGain=null, prevTimers=[], noiseBuf=null;
 function ensureAudio(){
   try{
     if(!actx){ actx = new (window.AudioContext||window.webkitAudioContext)(); master = actx.createGain(); master.gain.value = 0; master.connect(actx.destination); }
     if(actx.state === 'suspended') actx.resume();
   }catch(e){}
 }
-function bell(freq, t, dur){
-  const g = actx.createGain(); g.connect(master);
-  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.5,t+0.015); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-  [[1,1],[2.76,0.25],[5.4,0.08]].forEach(([mult,amp])=>{
-    const o = actx.createOscillator(), og = actx.createGain(); o.type='sine'; o.frequency.value=freq*mult; og.gain.value=amp;
-    o.connect(og); og.connect(g); o.start(t); o.stop(t+dur+0.05);
-  });
+function tone(dest, freq, t, dur, partials, type, peak){
+  const g=actx.createGain(); g.connect(dest);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(peak||0.5,t+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  partials.forEach(([m,a])=>{ const o=actx.createOscillator(), og=actx.createGain(); o.type=type||'sine'; o.frequency.value=freq*m; og.gain.value=a; o.connect(og); og.connect(g); o.start(t); o.stop(t+dur+0.05); });
 }
-function phrase(){
-  if(!actx) return; const t = actx.currentTime + 0.05;
-  [523.25,659.25,783.99,1046.5,783.99,659.25].forEach((f,i)=>bell(f, t+i*0.34, 1.8));
+const BELL=[[1,1],[2.76,0.25],[5.4,0.08]];
+const CHIMES={
+  bells:{name:'Morning bells', desc:'Warm, rising bells', every:3200, play:(d,t)=>[523.25,659.25,783.99,1046.5,783.99,659.25].forEach((f,i)=>tone(d,f,t+i*0.34,1.8,BELL))},
+  harp:{name:'Soft harp', desc:'A gentle rolling arpeggio', every:2600, play:(d,t)=>[261.63,329.63,392,523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(d,f,t+i*0.13,1.6,[[1,1],[2,0.3],[3,0.1]],'triangle',0.35))},
+  wind:{name:'Wind chimes', desc:'Light, airy and unhurried', every:3000, play:(d,t)=>{ const n=[1046.5,1174.66,1318.51,1567.98,1760,2093]; for(let i=0;i<7;i++) tone(d,n[Math.floor(Math.random()*n.length)],t+Math.random()*2.4,2.6,BELL,'sine',0.28); }},
+  piano:{name:'Hymn piano', desc:'A slow, calm melody', every:3800, play:(d,t)=>[[329.63,0],[392,0.45],[523.25,0.9],[493.88,1.35],[392,1.8],[440,2.25],[392,2.7]].forEach(([f,o])=>tone(d,f,t+o,1.4,[[1,1],[2,0.4],[3,0.15],[4,0.05]],'sine',0.42))}
+};
+const NATURE={none:'None', birds:'Birdsong', rain:'Gentle rain', ocean:'Ocean waves', stream:'Stream'};
+function noise(){ if(noiseBuf) return noiseBuf; const len=actx.sampleRate*2; noiseBuf=actx.createBuffer(1,len,actx.sampleRate); const d=noiseBuf.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1; return noiseBuf; }
+function startNature(kind, dest){
+  const nodes=[]; let timer=null;
+  const src=()=>{ const s=actx.createBufferSource(); s.buffer=noise(); s.loop=true; nodes.push(s); return s; };
+  const lfo=(rate,depth,param)=>{ const o=actx.createOscillator(), g=actx.createGain(); o.frequency.value=rate; g.gain.value=depth; o.connect(g); g.connect(param); o.start(); nodes.push(o); };
+  if(kind==='rain'){ const s=src(), hp=actx.createBiquadFilter(), lp=actx.createBiquadFilter(), g=actx.createGain(); hp.type='highpass'; hp.frequency.value=900; lp.type='lowpass'; lp.frequency.value=6000; g.gain.value=0.22; s.connect(hp); hp.connect(lp); lp.connect(g); g.connect(dest); s.start(); }
+  else if(kind==='ocean'){ const s=src(), lp=actx.createBiquadFilter(), g=actx.createGain(); lp.type='lowpass'; lp.frequency.value=600; g.gain.value=0.25; s.connect(lp); lp.connect(g); g.connect(dest); lfo(0.11,0.22,g.gain); s.start(); }
+  else if(kind==='stream'){ const s=src(), bp=actx.createBiquadFilter(), g=actx.createGain(); bp.type='bandpass'; bp.frequency.value=1100; bp.Q.value=0.9; g.gain.value=0.35; s.connect(bp); bp.connect(g); g.connect(dest); lfo(3.1,350,bp.frequency); lfo(0.7,0.08,g.gain); s.start(); }
+  else if(kind==='birds'){ const chirp=()=>{ const t=actx.currentTime+0.02, n=2+Math.floor(Math.random()*4), base=2200+Math.random()*1600;
+      for(let i=0;i<n;i++){ const o=actx.createOscillator(), g=actx.createGain(), s=t+i*0.11; o.type='sine'; o.frequency.setValueAtTime(base,s); o.frequency.exponentialRampToValueAtTime(base*(1.25+Math.random()*0.3),s+0.07);
+        g.gain.setValueAtTime(0.0001,s); g.gain.exponentialRampToValueAtTime(0.16,s+0.015); g.gain.exponentialRampToValueAtTime(0.0001,s+0.09); o.connect(g); g.connect(dest); o.start(s); o.stop(s+0.12); } };
+    chirp(); timer=setInterval(chirp, 900); }
+  return {stop(){ clearInterval(timer); nodes.forEach(n=>{ try{ n.stop(); }catch(e){} }); }};
 }
+function phrase(){ if(!actx) return; (CHIMES[sett().chime]||CHIMES.bells).play(master, actx.currentTime+0.05); }
 function startRing(){
-  ensureAudio(); if(!actx) return;
-  const t = actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(0.06,t); master.gain.linearRampToValueAtTime(0.55,t+18);
-  phrase(); clearInterval(loopTimer); loopTimer = setInterval(phrase, 3200);
-  try{ navigator.vibrate && navigator.vibrate([400,300,400]); }catch(e){}
+  ensureAudio(); if(!actx) return; stopPreview();
+  const st=sett(), ch=CHIMES[st.chime]||CHIMES.bells, t=actx.currentTime;
+  master.gain.cancelScheduledValues(t);
+  if(st.gentle){ master.gain.setValueAtTime(0.06,t); master.gain.linearRampToValueAtTime(0.55,t+30); } else master.gain.setValueAtTime(0.55,t);
+  ch.play(master, t+0.05); clearInterval(loopTimer); loopTimer=setInterval(()=>ch.play(master, actx.currentTime+0.05), ch.every);
+  if(natureH) natureH.stop(); natureH = st.nature!=='none' ? startNature(st.nature, master) : null;
+  if(st.vibrate){ try{ navigator.vibrate && navigator.vibrate([400,300,400]); }catch(e){} }
 }
 function softenRing(){ if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value,t); master.gain.linearRampToValueAtTime(0.18,t+0.8); }
 function stopRing(){
   ringing = false;
   if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value,t); master.gain.linearRampToValueAtTime(0,t+1.2);
-  setTimeout(()=>clearInterval(loopTimer),1300);
+  setTimeout(()=>{ clearInterval(loopTimer); if(natureH){ natureH.stop(); natureH=null; } },1300);
+}
+function stopPreview(){
+  prevTimers.forEach(clearTimeout); prevTimers=[];
+  if(prevGain && actx){ const g=prevGain; prevGain=null; try{ g.gain.cancelScheduledValues(actx.currentTime); g.gain.setTargetAtTime(0,actx.currentTime,0.08); }catch(e){} setTimeout(()=>{ if(g._n) g._n.stop(); g.disconnect(); },500); }
+}
+function preview(kind, id){
+  ensureAudio(); if(!actx) return; stopPreview();
+  const g=actx.createGain(); g.connect(actx.destination); prevGain=g; const t=actx.currentTime+0.05;
+  if(kind==='chime'){ g.gain.value=0.5; (CHIMES[id]||CHIMES.bells).play(g,t); prevTimers.push(setTimeout(stopPreview,3800)); }
+  else if(id!=='none'){ g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.7,t+0.6); g._n=startNature(id,g); prevTimers.push(setTimeout(stopPreview,4500)); }
 }
 document.addEventListener('pointerdown', ensureAudio, {once:true});
 
@@ -596,13 +954,14 @@ function circleFor(){
 }
 function pickVerses(tags, mood){
   const seedN = new Date().getDate();
+  const FOCUS_T = ((S.prefs&&S.prefs.focus)||[]).map(f=>FOCUS[f]||[]).flat();
   const scored = Object.entries(V).map(([id,v],i)=>{
     let s=0, hits=[];
-    v.tags.forEach(t=>{ if(t===mood){s+=3;} if(tags.cause.includes(t)){s+=2;} if(tags.need.includes(t)){s+=2.5;} if(t==='morning') s+=0.4; });
+    v.tags.forEach(t=>{ if(t===mood){s+=3;} if(tags.cause.includes(t)){s+=2;} if(tags.need.includes(t)){s+=2.5;} if(t==='morning') s+=0.4; if(FOCUS_T.includes(t)) s+=0.6; });
     s += ((i*7+seedN)%10)/100;
     return {id,s};
   }).filter(x=>x.s>=2).sort((a,b)=>b.s-a.s);
-  return scored.slice(0,3).map(x=>x.id);
+  return scored.slice(0,sett().verses).map(x=>x.id);
 }
 function reasonsFor(id, e){
   const v=V[id], out=[];
@@ -645,9 +1004,10 @@ views.alarms = () => {
       </button>
       <button class="switch ${a.on?'on':''}" role="switch" aria-checked="${a.on}" aria-label="Turn ${esc(a.label)} ${a.on?'off':'on'}" data-act="toggle" data-arg="${a.id}"></button>
     </div>`; }).join('');
+  const nm = S.user && S.user.name;
   return `<div class="pad">
-    <div class="eyebrow">${greet}</div>
-    <h1 class="h1">Rest well tonight</h1>
+    <div class="topline" style="align-items:flex-start;margin:0"><div><div class="eyebrow">${greet}${nm?', '+esc(nm):''}</div>
+    <h1 class="h1">Rest well tonight</h1></div>${avatarBtn()}</div>
     ${next}
     <div style="margin-top:22px" class="section-h"><h2 class="h2">Alarms</h2><button class="chip" data-act="new">+ New alarm</button></div>
     <div>${rows}</div>
@@ -665,14 +1025,14 @@ views.alarms = () => {
 views.ring = () => {
   const d=new Date(); const f=fmt12(pad(d.getHours())+':'+pad(d.getMinutes()));
   return `<div class="ring">
-    <div class="label">${esc(ringAlarm?ringAlarm.label:'Rise & pray')}</div>
+    <div class="label">Good morning${S.user&&S.user.name?', '+esc(S.user.name):''} · ${esc(ringAlarm?ringAlarm.label:'Rise & pray')}</div>
     <div class="clock" id="ringClock">${f.t}</div>
     <div class="date">${d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</div>
     <div class="sunbox"><div class="sun"></div><div class="horizon"></div></div>
     <p class="ringword">“His compassions fail not. They are new every morning.”<cite>Lamentations 3:22–23</cite></p>
     <div class="actions">
       <button class="btn gold" data-act="awake">I’m awake</button>
-      <button class="btn soft" data-act="snooze">Snooze 9 minutes</button>
+      <button class="btn soft" data-act="snooze">Snooze ${sett().snooze} minutes</button>
     </div>
   </div>`;
 };
@@ -683,7 +1043,7 @@ views.mood = () => {
     <div class="eyebrow">Morning check-in</div>
     <h1 class="h1">How are you feeling this morning?</h1>
     <div class="moods">${bubbles}</div>
-    <p class="muted" style="font-size:13px;margin-top:18px;line-height:1.5">There’s no wrong answer. What you share stays private to you unless you choose to post it in Prayer Connect.</p>
+    <p class="muted" style="font-size:13px;margin-top:18px;line-height:1.5">There’s no wrong answer. What you share stays private to you unless you choose to post it in Peace Rings.</p>
   </div>`;
 };
 function questionView(step){
@@ -713,7 +1073,7 @@ function verseCard(id, e){
     ${r.length?`<div class="why">Matches: ${r.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>`:''}
     <div class="vactions">
       <button class="vact ${saved?'on':''}" data-act="save" data-arg="${id}">${saved?ICON.markOn:ICON.mark}${saved?'Saved':'Save'}</button>
-      <button class="vact" data-act="share" data-arg="${id}">${ICON.share}Share to my circle</button>
+      <button class="vact" data-act="share" data-arg="${id}">${ICON.share}Share to my ring</button>
     </div>
   </article>`;
 }
@@ -746,14 +1106,13 @@ views.verses = () => {
 views.today = () => {
   const e = todayEntry();
   if(!e) return `<div class="pad">
-    <div class="eyebrow">Today</div><h1 class="h1">You haven’t checked in yet</h1>
+    ${hdr('Today','You haven’t checked in yet')}
     <p class="muted" style="line-height:1.5">Your morning check-in usually starts when your alarm rings. You can also do it now.</p>
     <div class="stack" style="margin-top:20px"><button class="btn gold" data-act="checkin">Check in now</button></div>
   </div>`;
   const m=MOODS[e.mood], n=streak();
   return `<div class="pad">
-    <div class="eyebrow">Today · checked in at ${esc(e.time)}</div>
-    <h1 class="h1">${celebrate?'Go in peace':'Your morning'}</h1>
+    ${hdr('Today · checked in at '+esc(e.time), celebrate?'Go in peace':'Your morning')}
     <div class="streak" style="margin-top:16px">
       <div class="n">${n}</div>
       <div><div style="font-weight:700">${n===1?'day':'days'} rising in peace</div><div style="font-size:14px;opacity:.8">You started today feeling <b>${m.label.toLowerCase()}</b> and asked for <b>${esc(e.needLabel.toLowerCase())}</b>.</div></div>
@@ -763,9 +1122,9 @@ views.today = () => {
     </div>
     ${e.note?`<div class="section"><h2 class="h2">You wrote</h2><div class="li"><div class="main" style="font-family:var(--word);font-size:17px;font-style:italic">“${esc(e.note)}”</div></div></div>`:''}
     <div class="section"><div class="circle" style="gap:10px">
-      <div class="eyebrow" style="color:#CFE5D9">Prayer Connect</div>
-      <div style="font-family:var(--display);font-size:20px">${circleFor().start} Risers are praying now</div>
-      <button class="btn" style="background:#fff;color:var(--sage);padding:12px" data-act="go" data-arg="connect">Join your circle</button>
+      <div class="eyebrow" style="color:#CFE5D9">Peace Rings</div>
+      <div style="font-family:var(--display);font-size:20px">The ${circleFor().start} Ring is praying now</div>
+      <button class="btn" style="background:#fff;color:var(--sage);padding:12px" data-act="go" data-arg="connect">${S.account&&S.ring?'Open your ring':'Join Peace Rings'}</button>
     </div></div>
     <div class="stack" style="margin-top:18px"><button class="btn soft" style="color:var(--ink)" data-act="checkin">Check in again</button></div>
   </div>`;
@@ -782,7 +1141,7 @@ views.journal = () => {
   const hist = [...S.history].sort((a,b)=>b.date.localeCompare(a.date)).map(h=>{ const d=new Date(h.date+'T12:00:00');
     return `<div class="li"><span class="dot" style="width:14px;height:14px;background:${MOODS[h.mood].color}"></span><div class="main"><div class="ttl">${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})} · ${MOODS[h.mood].label}</div><div class="sub">${h.verses.map(id=>V[id].ref).join(' · ')}</div></div></div>`; }).join('');
   return `<div class="pad">
-    <div class="eyebrow">Journal</div><h1 class="h1">Your mornings with God</h1>
+    ${hdr('Journal','Your mornings with God')}
     <div class="streak" style="margin-top:16px"><div class="n">${n}</div><div><div style="font-weight:700">day streak</div><div style="font-size:14px;opacity:.8">Mornings in a row you’ve checked in</div></div></div>
     <div class="section"><h2 class="h2">This week</h2><div class="week">${week}</div></div>
     <div class="section"><h2 class="h2">How you’ve been waking up</h2><div class="stack" style="gap:10px">${bars}</div></div>
@@ -793,47 +1152,86 @@ views.journal = () => {
 views.connect = () => {
   const c = circleFor();
   const avs = MEMBERS.slice(0,5).map(m=>`<span class="av" style="background:${m[2]}">${m[0][0]}</span>`).join('');
+  const nmP=(S.user&&S.user.name)||'';
+  const head = `<div class="topline" style="align-items:flex-start;margin:0"><div><div class="eyebrow">Peace Rings</div><h1 class="h1">Pray with people who wake when you do</h1></div>${avatarBtn()}</div>`;
+  const ringCard = mine => `<div class="circle" style="margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>4 praying now</span><span style="font-size:12px;opacity:.85">Your alarm: ${c.alarm.t} ${c.alarm.ap}</span></div>
+      ${mine?'':'<div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;opacity:.8">Matched to your alarm</div>'}<div style="font-family:var(--display);font-size:24px;margin-top:-6px">${c.start} Ring</div>
+      <div style="display:flex;align-items:center;gap:16px"><div class="avatars">${avs}</div><span style="font-size:13px;opacity:.9">14 members · Lagos, Abuja, Ibadan +4</span></div>
+    </div>`;
+  if(!S.account) return `<div class="pad">${head}
+    <p class="muted" style="margin:8px 0 0;line-height:1.5">A ring is a small group of believers whose alarms go off around the same time as yours.</p>
+    <div class="joinstrip">
+      <div class="js-txt"><b>Join Peace Rings</b><span>Create a free account today. Your journal and saved verses are backed up to the cloud.</span></div>
+      <button class="joinbtn" data-act="joinnow">Join Now</button>
+    </div>
+    <div class="eyebrow" style="margin-top:26px">Find a ring near your campus</div>
+    <div class="stack" style="margin-top:10px">${findHTML()}</div>
+    <div class="eyebrow" style="margin-top:26px">Inside Peace Rings</div>
+    ${ringCard(false)}
+    <div class="perks">
+      <div><b>Share prayer requests</b><span>Post openly or anonymously, and see who prayed for you.</span></div>
+      <div><b>Pray for each other</b><span>Tap “I prayed”, chat with your ring and join a short voice prayer each morning.</span></div>
+      <div><b>Safe by design</b><span>Members are 18+ and verified. Anyone can be muted or reported.</span></div>
+    </div>
+  </div>`;
+  if(!S.ring) return `<div class="pad">${head}${ringCard(false)}
+    <div class="li" style="margin-top:16px;display:grid;gap:10px"><div class="ttl">You haven’t joined your ring yet</div><div class="sub" style="white-space:normal">Join to share requests, pray for others and chat with people who wake around ${c.start}.</div><button class="small-btn" style="justify-self:start" data-act="go" data-arg="ob-ring">Join the ${c.start} Ring</button></div>
+  </div>`;
   let body='';
   if(connectTab==='requests'){
     body = `<div class="compose">
-        <textarea id="reqInput" rows="2" placeholder="Share a prayer request with your circle"></textarea>
-        <div class="r"><label><input type="checkbox" id="anon"> Post anonymously</label><button class="small-btn" data-act="post">Post</button></div>
+        <textarea id="reqInput" rows="2" placeholder="Share a prayer request with your ring"></textarea>
+        <div class="r"><label><input type="checkbox" id="anon" ${prof().anonDefault?'checked':''}> Post anonymously</label><button class="small-btn" data-act="post">Post</button></div>
       </div>
       ${S.feed.map(r=>{ const on=!!S.prayed[r.id]; const nm=r.name;
         return `<div class="req">
-          <div class="who"><span class="av" style="background:${nm==='You'?'#F2B544':avColor(nm)}">${nm==='Anonymous'?'?':nm[0]}</span><div><b>${esc(nm)}</b>${r.praise?' · <span style="color:var(--gold-ink);font-weight:700">Praise report</span>':''}<div class="muted" style="font-size:12px">${esc(r.when)}</div></div></div>
+          <div class="who"><span class="av" style="background:${nm==='You'?prof().color:avColor(nm)}">${nm==='Anonymous'?'?':nm[0]}</span><div><b>${esc(nm)}</b>${r.praise?' · <span style="color:var(--gold-ink);font-weight:700">Praise report</span>':''}<div class="muted" style="font-size:12px">${esc(r.when)}</div></div></div>
           ${r.verse?`<p class="vq">“${V[r.verse].t}”</p><p class="muted" style="font-size:13px;font-weight:600">${V[r.verse].ref}</p>`:`<p>${esc(r.text)}</p>`}
           <button class="pray ${on?'on':''}" data-act="pray" data-arg="${r.id}">${ICON.hands}${on?'You prayed':'I prayed'} · ${r.count+(on?1:0)}</button>
         </div>`; }).join('')}`;
   } else if(connectTab==='chat'){
     body = `<div class="msgs" id="msgs">${S.chat.map(m=>`<div class="msg ${m.name==='You'?'me':''}"><div class="n">${esc(m.name)} · ${esc(m.when)}</div><div class="b">${esc(m.text)}</div></div>`).join('')}</div>
-      <div class="chatin"><input id="chatInput" type="text" placeholder="Message your circle" autocomplete="off"><button class="small-btn" data-act="send">Send</button></div>`;
+      <div class="chatin"><input id="chatInput" type="text" placeholder="Message your ring" autocomplete="off"><button class="small-btn" data-act="send">Send</button></div>`;
   } else {
-    const list=[['4:30 AM','Watchmen',32],['5:00 AM','First Light',58],[c.start,'Risers',14,true],['6:00 AM','Daybreak',87],['6:30 AM','Morning Glory',41]];
-    const seen={}; const rows=list.filter(x=>{ if(seen[x[0]]) return false; seen[x[0]]=1; return true; });
-    body = `<p class="muted" style="margin:0;line-height:1.5">Circles group people by the time their alarm rings, so you pray with others who are awake when you are.</p>
-      ${rows.map(([t,name,n,mine])=>{ const k=t+name; const on=mine||S.joined.includes(k);
-        return `<div class="ci"><div class="tm">${t.replace(/ (AM|PM)/,'')}<small>${t.slice(-2)}</small></div><div class="main"><div class="ttl" style="font-weight:700">${t} ${name}</div><div class="muted" style="font-size:13px">${n+(on&&!mine?1:0)} members${mine?' · matched to your alarm':''}</div></div>
-        ${mine?'<span class="chip" style="background:var(--sage-soft);color:var(--sage)">Your circle</span>':`<button class="join ${on?'on':''}" data-act="join" data-arg="${esc(k)}">${on?'Joined':'Join'}</button>`}</div>`; }).join('')}
-      <div class="safety"><b>Safety in the full app:</b> members are 18+ and phone-verified, requests can be posted anonymously, and anyone can be muted or reported to a moderator.</div>`;
+    body = findHTML();
   }
-  return `<div class="pad">
-    <div class="eyebrow">Prayer Connect</div><h1 class="h1">Pray with people who wake when you do</h1>
-    <div class="circle" style="margin-top:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>4 praying now</span><span style="font-size:12px;opacity:.85">Your alarm: ${c.alarm.t} ${c.alarm.ap}</span></div>
-      <div style="font-family:var(--display);font-size:24px">${c.start} Risers</div>
-      <div style="display:flex;align-items:center;gap:16px"><div class="avatars">${avs}</div><span style="font-size:13px;opacity:.9">14 members · Lagos, Abuja, Ibadan +4</span></div>
-    </div>
+  return `<div class="pad">${head}<button class="rsearch fake" data-act="ringsearchgo">${ICON_SEARCH}Find rings near your campus</button>${ringCard(true)}
     <div class="seg" role="tablist">
       <button class="${connectTab==='requests'?'on':''}" data-act="ctab" data-arg="requests" role="tab">Requests</button>
-      <button class="${connectTab==='chat'?'on':''}" data-act="ctab" data-arg="chat" role="tab">Circle chat</button>
-      <button class="${connectTab==='find'?'on':''}" data-act="ctab" data-arg="find" role="tab">Find circles</button>
+      <button class="${connectTab==='chat'?'on':''}" data-act="ctab" data-arg="chat" role="tab">Ring chat</button>
+      <button class="${connectTab==='find'?'on':''}" data-act="ctab" data-arg="find" role="tab">Find rings</button>
     </div>
     <div class="stack" style="margin-top:16px">${body}</div>
   </div>`;
 };
 function sheetHTML(){
   if(!sheet) return '';
+  if(sheet.del) return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="Delete account">
+    <h2 class="h2" style="font-size:22px">Delete your account?</h2>
+    <p class="muted" style="margin:0;line-height:1.5">You’ll leave your ring and your cloud backup will be removed. Your alarms and journal stay on this phone.</p>
+    <button class="btn" style="background:#B4432A;color:#fff" data-act="pfdeleteyes">Delete account</button>
+    <button class="btn line" data-act="closesheet">Cancel</button>
+  </div></div>`;
+  if(sheet.account){ const nm=(S.user&&S.user.name)||'', acc=S.account;
+    if(!acc) return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="Account">
+    <div class="acct"><span class="avatarbtn guest">${nm?esc(nm[0].toUpperCase()):ICON_USER}</span><div><div class="h2">${nm?esc(nm):'Guest'}</div><div class="muted" style="font-size:14px;margin-top:2px">Using Peace Rising without an account</div></div></div>
+    <p class="muted" style="margin:0;line-height:1.5">Your alarms, check-ins and journal are saved on this phone. Create a free account to join Peace Rings and back up your journal.</p>
+    <div class="authgrid compact" style="margin-top:2px">
+      <button class="authtile light" data-act="sheetauth" data-arg="apple">${ICON_IDCARD}<span><small>Continue with</small>Apple</span></button>
+      <button class="authtile" data-act="sheetauth" data-arg="google">${ICON_ACCT}<span><small>Continue with</small>Google</span></button>
+      <button class="authtile" data-act="sheetauth" data-arg="phone">${ICON_PHONE}<span><small>Continue with</small>Phone</span></button>
+      <button class="authtile" data-act="sheetauth" data-arg="email">${ICON_MAIL}<span><small>Continue with</small>Email</span></button>
+    </div>
+    <p class="ob-note" style="font-size:13.5px;margin:0">Already have an account? <button class="ob-link" data-act="sheetsignin">Sign in</button></p>
+    <button class="ob-link" style="padding:4px" data-act="closesheet">Not now</button>
+  </div></div>`;
+    return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="Account">
+    <div class="acct"><span class="avatarbtn">${esc((nm||'?')[0].toUpperCase())}</span><div><div class="h2">${esc(nm||'Your account')}</div><div class="muted" style="font-size:14px;margin-top:2px">${esc(methodText(acc))}</div></div></div>
+    <div class="sumlist" style="margin-top:0"><div><span>Your ring</span><b>${S.ring?circleFor().start+' Ring':'Not joined'}</b></div><div><span>Journal backup</span><b>${S.backup?'On':'Off'}</b></div><div><span>Bible translation</span><b>King James Version</b></div><div><span>Morning themes</span><b>${esc(((S.prefs&&S.prefs.focus)||[]).join(', ')||'None chosen')}</b></div></div>
+    <button class="btn line" data-act="signout">Sign out</button>
+    <button class="btn gold" data-act="closesheet">Done</button>
+  </div></div>`; }
   if(sheet.sound) return `<div class="backdrop" data-act="closesheet" data-self="1"><div class="sheet" role="dialog" aria-label="Sound check">
     <div class="soundico" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z"/><path d="M10 21h4"/><path d="M3 4l3 2M21 4l-3 2"/></svg></div>
     <h2 class="h2" style="text-align:center;font-size:24px">Can you hear your alarm?</h2>
@@ -864,16 +1262,26 @@ const MODE = {alarms:'night', ring:'dawn'};
 const FLOW_VIEWS = ['ring','mood','q1','q2','loading'];
 function render(keepScroll){
   const st = screenEl.scrollTop;
-  app.dataset.mode = MODE[view] || 'day';
+  app.dataset.mode = view.startsWith('ob-') ? 'night' : (MODE[view] || 'day');
+  applyTheme(); if(view!=='settings') stopPreview();
   screenEl.innerHTML = views[view]() + sheetHTML();
-  if(keepScroll) screenEl.scrollTop = st; else screenEl.scrollTop = 0;
-  const tabs=[['alarms','Alarms',ICON.moon],['today','Today',ICON.sun],['journal','Journal',ICON.book],['connect','Connect',ICON.people]];
-  const active = view==='verses'?'today':view;
-  tabbar.hidden = FLOW_VIEWS.includes(view);
-  tabbar.innerHTML = tabs.map(([k,l,ic])=>`<button class="tab ${active===k?'on':''}" data-act="go" data-arg="${k}" aria-current="${active===k?'page':'false'}">${ic}${l}</button>`).join('');
+  if(keepScroll) screenEl.scrollTop = st; else { screenEl.scrollTop = 0; if(screenEl.firstElementChild) screenEl.firstElementChild.classList.add('pagein'); }
+  if(winOpen && winEl){ const pg=winEl.querySelector('.win-page:last-child'); if(pg) pg.innerHTML=views[winView](); }
+  const tabs=[['alarms','Alarms',ICON.moon],['today','Today',ICON.sun],['journal','Journal',ICON.book],['connect','Peace Rings',ICON.people]];
+  const backV = view==='settings'?setBack:view==='profile'?profBack:view;
+  const active = view==='verses'?'today':(['alarms','today','journal','connect'].includes(backV)?backV:'connect');
+  tabbar.hidden = FLOW_VIEWS.includes(view) || view.startsWith('ob-');
+  const desk=document.body.classList.contains('desk');
+  tabbar.innerHTML = (desk?`<div class="dk-brand">${MARK}<span>Peace Rising</span></div>`:'') + tabs.map(([k,l,ic])=>`<button class="tab ${active===k?'on':''}" data-act="go" data-arg="${k}" aria-current="${active===k?'page':'false'}">${ic}${l}</button>`).join('') + (desk?`<div class="dk-foot"><button class="tab ${view==='settings'?'on':''}" data-act="settings">${ICON_GEAR}Settings</button><button class="tab" data-act="deskexit">${ICON_PHONE}Phone view</button></div>`:'');
   if(view==='connect' && connectTab==='chat'){ const m=document.getElementById('msgs'); if(m) screenEl.scrollTop = screenEl.scrollHeight; }
+  scheduleNudge();
+  updateCbar();
 }
-function go(v){ view=v; if(v!=='today') celebrate=false; render(); }
+function go(v){
+  if(AUTH_VIEWS.includes(v)){ if(winOpen) winGo(v); else openWin(v, null); return; }
+  if(winOpen){ if(v===view){ closeWin('collapse'); return; } closeWin('fade'); }
+  view=v; if(v!=='today') celebrate=false; render();
+}
 
 /* ---------------- Actions ---------------- */
 function triggerRing(alarm){
@@ -895,28 +1303,443 @@ const A = {
   soundcheck: () => { sheet={sound:true}; render(true); },
   testchime: () => { ensureAudio(); if(!actx) return; const t=actx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(0.45,t); master.gain.setValueAtTime(0.45,t+2.2); master.gain.linearRampToValueAtTime(0,t+3); phrase(); },
   soundok: () => { soundChecked=true; sheet=null; triggerRing(S.alarms.find(a=>a.on)); },
-  awake: () => { softenRing(); go('mood'); },
-  snooze: () => { stopRing(); const d=new Date(Date.now()+9*60000); go('alarms'); toast('Snoozed until '+(d.getHours()%12||12)+':'+pad(d.getMinutes()));
-    clearTimeout(A._snz); A._snz=setTimeout(()=>triggerRing(ringAlarm),9*60000); },
+  awake: () => { if(sett().requireCheckin) softenRing(); else stopRing(); go('mood'); },
+  snooze: () => { stopRing(); const sn=sett().snooze; const d=new Date(Date.now()+sn*60000); go('alarms'); toast('Snoozed until '+(d.getHours()%12||12)+':'+pad(d.getMinutes()));
+    clearTimeout(A._snz); A._snz=setTimeout(()=>triggerRing(ringAlarm),sn*60000); },
   mood: k => { flow={mood:k}; if(ringing){ stopRing(); toast('Alarm silenced. Good morning.'); } render(true); setTimeout(()=>go('q1'),280); },
   cause: i => { const o=MOODS[flow.mood].opts[+i]; flow.causeLabel=o[0]; flow.causeTags=o[1]; flow.crisis=!!o[2]; render(true); setTimeout(()=>go('q2'),250); },
   need: i => { const m=MOODS[flow.mood]; const o=(m.low?NEED_LOW:NEED_HIGH).opts[+i]; flow.needLabel=o[0]; flow.needTags=o[1]; flow.needKey=o[2]; render(true); setTimeout(finishFlow,250); },
   save: id => { S.saved = S.saved.includes(id)? S.saved.filter(x=>x!==id) : [id,...S.saved]; save(); render(true); toast(S.saved.includes(id)?'Saved to your journal':'Removed from saved'); },
-  share: id => { S.feed.unshift({id:'r'+Date.now(),name:'You',when:nowLabel(),verse:id,count:0}); save(); toast('Shared with '+circleFor().start+' Risers'); },
+  share: id => { if(!S.account||!S.ring){ syncNote(); connectTab='requests'; go('connect'); toast('Join Peace Rings to share with your ring'); return; } S.feed.unshift({id:'r'+Date.now(),name:'You',when:nowLabel(),verse:id,count:0}); save(); toast('Shared with the '+circleFor().start+' Ring'); },
   startday: () => { syncNote(); celebrate=true; go('today'); },
   checkin: () => startCheckin(),
   ctab: t => { connectTab=t; render(true); },
   pray: id => { S.prayed[id]=!S.prayed[id]; save(); render(true); if(S.prayed[id]) toast('Thank you for praying'); },
   post: () => { const el=document.getElementById('reqInput'); const txt=(el.value||'').trim(); if(!txt){ toast('Write your request first'); el.focus(); return; }
-    const anon=document.getElementById('anon').checked; S.feed.unshift({id:'r'+Date.now(),name:anon?'Anonymous':'You',when:nowLabel(),text:txt,count:0}); save(); render(true); toast('Posted to your circle');
+    const anon=document.getElementById('anon').checked; S.feed.unshift({id:'r'+Date.now(),name:anon?'Anonymous':'You',when:nowLabel(),text:txt,count:0}); save(); render(true); toast('Posted to your ring');
     const rid=S.feed[0].id; setTimeout(()=>{ const r=S.feed.find(x=>x.id===rid); if(r){ r.count+=3; save(); if(view==='connect'&&connectTab==='requests') render(true); toast('3 people prayed for your request'); } },4000); },
   send: () => { const el=document.getElementById('chatInput'); const txt=(el.value||'').trim(); if(!txt) return; S.chat.push({name:'You',text:txt,when:nowLabel()}); save(); render(true);
     const replies=[['Adaeze','Amen! Praying with you this morning.'],['Grace','Thank you for sharing. Have a blessed day.'],['Samuel','Amen. See you at the 6:00 voice prayer.'],['Bisi','Praying for you right now.']];
     const r=replies[S.chat.length%replies.length]; setTimeout(()=>{ S.chat.push({name:r[0],text:r[1],when:nowLabel()}); save(); if(view==='connect'&&connectTab==='chat') render(true); },1800);
     setTimeout(()=>{ const i=document.getElementById('chatInput'); if(i) i.focus(); },0); },
-  reset: () => { stopRing(); S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; go('alarms'); toast('Demo reset'); },
+  reset: () => { stopRing(); S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; ob={}; go('ob-welcome'); toast('Demo reset'); },
   join: k => { S.joined = S.joined.includes(k)? S.joined.filter(x=>x!==k) : [...S.joined,k]; save(); render(true); }
 };
+/* ---------------- Onboarding (no account) + Peace Rings accounts (simulated) ---------------- */
+const FOCUS = {Peace:['peace'],Strength:['strength'],Guidance:['direction','wisdom'],Gratitude:['thanks'],Healing:['health'],Hope:['hope'],Patience:['patience'],Joy:['joy']};
+const OB_STEPS = ['ob-name','ob-time','ob-prefs','ob-notify'];
+let obMode='signup', obCtx='rings', obProvider='apple', ob={};
+const ICON_PHONE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>';
+const ICON_MAIL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>';
+const ICON_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1-3.8 3.9-5.6 7.5-5.6s6.5 1.8 7.5 5.6"/></svg>';
+const ICON_IDCARD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16c.6-1.6 1.6-2.4 3-2.4s2.4.8 3 2.4M14.5 10h4M14.5 13.5h3"/></svg>';
+const ICON_ACCT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M6.3 18.6c1.2-2.4 3.2-3.6 5.7-3.6s4.5 1.2 5.7 3.6"/></svg>';
+const MARK = '<svg viewBox="0 0 120 96" width="120" height="96" aria-hidden="true"><defs><radialGradient id="obsun" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#FFF1C9"/><stop offset=".55" stop-color="#F6C25C"/><stop offset="1" stop-color="#F2A93B"/></radialGradient><clipPath id="obclip"><rect width="120" height="62"/></clipPath></defs><circle cx="60" cy="62" r="25" fill="url(#obsun)" clip-path="url(#obclip)"/><g stroke="#F2B544" stroke-width="4" stroke-linecap="round"><path d="M60 10v11"/><path d="M27 24l7.5 7.5"/><path d="M93 24l-7.5 7.5"/><path d="M12 46h9"/><path d="M108 46h-9"/></g><path d="M8 62h104" stroke="#F2B544" stroke-width="4" stroke-linecap="round"/><path d="M36 76h48M48 88h24" stroke="#5E6A88" stroke-width="3.5" stroke-linecap="round"/></svg>';
+function methodText(a){ if(!a||!a.method) return 'Guest'; if(a.method==='phone') return 'Phone · '+a.contact; if(a.method==='email') return 'Email · '+a.contact; return a.method==='apple'?'Signed in with Apple':'Signed in with Google'; }
+function guessName(method, contact){ if(method!=='email') return ''; const g=(contact.split('@')[0].replace(/[^a-zA-Z]+/g,' ').trim().split(' ')[0])||''; return g?g.charAt(0).toUpperCase()+g.slice(1):''; }
+function obTop(back, step){
+  return `<div class="topline">${back?`<button class="back" data-act="go" data-arg="${back}">${ICON.back}Back</button>`:'<span></span>'}${step?`<span class="ob-stepno">Step ${step} of ${OB_STEPS.length}</span>`:''}</div>`+
+    (step?`<div class="progress" aria-hidden="true">${OB_STEPS.map((_,i)=>`<span class="${i<step?'on':''}"></span>`).join('')}</div>`:'');
+}
+/* First launch: no account */
+views['ob-welcome'] = () => `<div class="ob ob-welcome">
+  <div class="ob-hero">${MARK}</div>
+  <h1 class="ob-title">Start each day with God</h1>
+  <p class="ob-sub">Peace Rising wakes you gently, asks how you feel, and gives you scripture for your morning.</p>
+  <ul class="ob-points"><li>A gentle alarm that wakes you to a sunrise</li><li>Bible verses matched to how you feel</li><li>Peace Rings: pray with people who wake when you do</li></ul>
+  <div class="ob-actions"><button class="btn gold" data-act="obstart">Get started</button><button class="btn line" data-act="obsigninwelcome">I already have an account</button><p class="ob-note">No account needed to start.</p></div>
+</div>`;
+views['ob-name'] = () => `<div class="ob">${obTop('ob-welcome',1)}
+  <h1 class="ob-title">What should we call you?</h1>
+  <p class="ob-sub">Optional. It stays on this phone and is used to greet you each morning.</p>
+  <div class="ob-field" style="margin-top:24px"><label for="obName">First name</label><input id="obName" class="ob-input" autocomplete="given-name" placeholder="Your first name" maxlength="24" value="${esc(ob.name||'')}"></div>
+  <div class="ob-actions"><button class="btn gold" data-act="obname">Continue</button><button class="ob-link" style="padding:10px" data-act="obnameskip">Skip</button></div>
+</div>`;
+views['ob-time'] = () => { const days=ob.days||[1,2,3,4,5]; return `<div class="ob">${obTop('ob-name',2)}
+  <h1 class="ob-title">When do you want to wake up?</h1>
+  <p class="ob-sub">This sets your first alarm. You can change it anytime.</p>
+  <input id="obTime" type="time" class="ob-input ob-time" aria-label="Wake-up time" value="${ob.time||'05:45'}" style="margin-top:22px">
+  <div style="margin-top:18px"><div class="eyebrow" style="margin-bottom:8px">Repeat</div><div class="days">${DAYS.map((d,i)=>`<button class="day ${days.includes(i)?'on':''}" data-act="obday" data-arg="${i}" aria-pressed="${days.includes(i)}" aria-label="${DAYNAMES[i]}">${d}</button>`).join('')}</div></div>
+  <div class="ob-actions"><button class="btn gold" data-act="obtime">Continue</button></div>
+</div>`; };
+views['ob-prefs'] = () => { const f=ob.focus||[]; return `<div class="ob">${obTop('ob-time',3)}
+  <h1 class="ob-title">What would you like your mornings to bring?</h1>
+  <p class="ob-sub">Choose any. We’ll lean towards verses on these themes.</p>
+  <div class="opts">${Object.keys(FOCUS).map(k=>`<button class="fchip ${f.includes(k)?'on':''}" data-act="obfocus" data-arg="${k}" aria-pressed="${f.includes(k)}">${k}</button>`).join('')}</div>
+  <div style="margin-top:24px"><div class="eyebrow" style="margin-bottom:8px">Bible translation</div>
+    <div class="stack" style="gap:8px"><div class="trow on"><span><b>King James Version</b></span><span class="tick">Selected</span></div>
+    ${['New King James Version','New International Version','English Standard Version'].map(n=>`<div class="trow off"><span>${n}</span><span>Coming soon</span></div>`).join('')}</div></div>
+  <div class="ob-actions"><button class="btn gold" data-act="go" data-arg="ob-notify">Continue</button></div>
+</div>`; };
+views['ob-notify'] = () => `<div class="ob">${obTop('ob-prefs',4)}
+  <div class="soundico" style="margin-top:24px" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z"/><path d="M10 21h4"/><path d="M3 4l3 2M21 4l-3 2"/></svg></div>
+  <h1 class="ob-title" style="text-align:center">Rise with a Peace so Divine</h1>
+  <p class="ob-sub" style="text-align:center">Allow notifications so your alarm can ring, and keep Silent mode off so you can hear it.</p>
+  <div class="ob-actions"><button class="btn line" data-act="testchime">Play test chime</button><button class="btn gold" data-act="obnotify">Allow notifications</button><button class="ob-link" style="padding:10px" data-act="obfinish">Not now</button></div>
+</div>`;
+views['ob-done'] = () => { const nm=(S.user&&S.user.name)||''; const a=S.alarms.find(x=>x.id==='a1')||S.alarms[0]; const f=fmt12(a.time); return `<div class="ob ob-welcome">
+  <div class="ob-hero">${MARK}</div>
+  <h1 class="ob-title">You’re all set${nm?', '+esc(nm):''}</h1>
+  <p class="ob-sub">Your alarm, check-in and journal are ready. When you’d like to pray with others, join Peace Rings.</p>
+  <div class="sumlist">
+    <div><span>First alarm</span><b>${f.t} ${f.ap} · ${daysText(a.days)}</b></div>
+    <div><span>Account</span><b>Not needed</b></div>
+    <div><span>Your data</span><b>Saved on this phone</b></div>
+  </div>
+  <div class="ob-actions"><button class="btn gold" data-act="go" data-arg="alarms">Go to my alarms</button></div>
+</div>`; };
+/* Peace Rings: account screens */
+views['ob-auth'] = () => { const up=obMode==='signup'; return `<div class="ob">${obTop('')}
+  <h1 class="ob-title">${up?'Join Peace Rings':'Welcome back'}</h1>
+  <p class="ob-sub">${up?'Create a free account to pray with people who wake when you do, and back up your journal to the cloud.':'Sign in to rejoin your ring and restore your journal.'}</p>
+  <div class="authgrid">
+    <button class="authtile light" data-act="oauth" data-arg="apple">${ICON_IDCARD}<span><small>Continue with</small>Apple</span></button>
+    <button class="authtile" data-act="oauth" data-arg="google">${ICON_ACCT}<span><small>Continue with</small>Google</span></button>
+    <button class="authtile" data-act="go" data-arg="ob-phone">${ICON_PHONE}<span><small>Continue with</small>Phone</span></button>
+    <button class="authtile" data-act="go" data-arg="ob-email">${ICON_MAIL}<span><small>Continue with</small>Email</span></button>
+  </div>
+  <p class="ob-note" style="margin-top:18px">${up?'Already have an account?':'New to Peace Rings?'} <button class="ob-link" data-act="obmode" data-arg="${up?'signin':'signup'}">${up?'Sign in':'Create an account'}</button></p>
+  <p class="ob-note" style="margin-top:auto;padding-top:20px">By continuing you agree to the Terms and Privacy Policy. Demo only: no real account is created and nothing leaves this device.</p>
+</div>`; };
+views['ob-wait'] = () => `<div class="ob" style="justify-content:center;text-align:center"><div class="ob-spin"></div><h2 class="h2" style="margin-top:20px">Connecting to ${obProvider==='apple'?'Apple':'Google'}…</h2><p class="ob-sub" style="font-size:14px;margin-top:6px">Demo sign-in</p></div>`;
+views['ob-phone'] = () => `<div class="ob"><div class="topline"><button class="back" data-act="winback">${ICON.back}Back</button></div>
+  <h1 class="ob-title">What’s your phone number?</h1>
+  <p class="ob-sub">We’ll text you a 6-digit code to confirm it’s you.</p>
+  <div class="ob-field" style="margin-top:24px"><label for="obPhone">Phone number</label>
+    <div style="display:flex;gap:8px"><select id="obCc" class="ob-input" style="width:auto;flex:none" aria-label="Country code">${[['+234','NG'],['+233','GH'],['+254','KE'],['+27','ZA'],['+44','UK'],['+1','US']].map(([c,n])=>`<option value="${c}" ${(ob.cc||'+234')===c?'selected':''}>${n} ${c}</option>`).join('')}</select>
+    <input id="obPhone" class="ob-input" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="803 123 4567" value="${esc(ob.phone||'')}"></div></div>
+  <div class="ob-actions"><button class="btn gold" data-act="sendcode">Send code</button></div>
+</div>`;
+views['ob-otp'] = () => `<div class="ob">${obTop('ob-phone')}
+  <h1 class="ob-title">Enter your code</h1>
+  <p class="ob-sub">We sent a 6-digit code to ${esc((ob.cc||'+234')+' '+(ob.phone||''))}.</p>
+  <div class="ob-field" style="margin-top:24px"><label for="otp">6-digit code</label><input id="otp" class="ob-input otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······"></div>
+  <p class="ob-note" style="text-align:left;margin-top:12px">Demo: any 6 digits will work. <button class="ob-link" data-act="resend">Resend code</button></p>
+  <div class="ob-actions"><button class="btn gold" data-act="verify">Verify</button></div>
+</div>`;
+views['ob-email'] = () => { const up=obMode==='signup'; return `<div class="ob"><div class="topline"><button class="back" data-act="winback">${ICON.back}Back</button></div>
+  <h1 class="ob-title">${up?'Sign up with email':'Sign in with email'}</h1>
+  <div class="stack" style="margin-top:22px">
+    <div class="ob-field"><label for="obEmail">Email</label><input id="obEmail" class="ob-input" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(ob.email||'')}"></div>
+    <div class="ob-field"><label for="obPass">Password</label><div class="pwrap"><input id="obPass" class="ob-input" type="${ob.show?'text':'password'}" autocomplete="${up?'new-password':'current-password'}" placeholder="${up?'At least 8 characters':'Your password'}" value="${esc(ob.pass||'')}"><button class="pshow" data-act="pshow">${ob.show?'Hide':'Show'}</button></div></div>
+    ${up?'':'<button class="ob-link" style="justify-self:start;font-size:14px" data-act="forgot">Forgot password?</button>'}
+  </div>
+  <div class="ob-actions"><button class="btn gold" data-act="emailgo">${up?'Create account':'Sign in'}</button></div>
+</div>`; };
+views['ob-rname'] = () => `<div class="ob">${obTop('')}
+  <h1 class="ob-title">How should your ring know you?</h1>
+  <p class="ob-sub">Your first name is shown to members of your ring. You can still post requests anonymously.</p>
+  <div class="ob-field" style="margin-top:24px"><label for="obName">First name</label><input id="obName" class="ob-input" autocomplete="given-name" placeholder="Your first name" maxlength="24" value="${esc(ob.name||'')}"></div>
+  <div class="ob-actions"><button class="btn gold" data-act="obrname">Continue</button></div>
+</div>`;
+views['ob-ring'] = () => `<div class="ob">${obTop('connect')}
+  <h1 class="ob-title">Join your ring</h1>
+  <p class="ob-sub">We matched you with believers whose alarms go off around the same time as yours.</p>
+  <div class="circle" style="margin-top:22px">
+    <div style="font-family:var(--display);font-size:22px">${circleFor().start} Ring</div>
+    <div style="display:flex;align-items:center;gap:16px"><div class="avatars">${MEMBERS.slice(0,5).map(m=>`<span class="av" style="background:${m[2]}">${m[0][0]}</span>`).join('')}</div><span style="font-size:13px;opacity:.9">14 members</span></div>
+    <div style="font-size:13.5px;opacity:.9;line-height:1.45">Share prayer requests, pray for each other and join a short voice prayer each morning.</div>
+  </div>
+  <label class="ob-check" style="margin-top:18px"><input type="checkbox" id="obAdult" ${ob.adult?'checked':''}><span>I’m 18 or older and agree to the community guidelines.</span></label>
+  <div class="ob-actions"><button class="btn gold" data-act="objoin">Join the ${circleFor().start} Ring</button><button class="btn line" data-act="obskipjoin">Not now</button></div>
+</div>`;
+views['ob-backup'] = () => `<div class="ob">${obTop('')}
+  <div class="soundico" style="margin-top:24px" aria-hidden="true">${ICON.book}</div>
+  <h1 class="ob-title" style="text-align:center">Back up your journal?</h1>
+  <p class="ob-sub" style="text-align:center">Your ${S.history.length} mornings, ${S.saved.length} saved verses and your alarms are on this phone. Back them up so they’re safe if you change phones.</p>
+  <div class="ob-actions"><button class="btn gold" data-act="obbackup" data-arg="yes">Back up my journal</button><button class="btn line" data-act="obbackup" data-arg="no">Not now</button></div>
+</div>`;
+function focusEl(id){ setTimeout(()=>{ const e=document.getElementById(id); if(e) e.focus(); },60); }
+function obSync(){
+  const m={obPhone:'phone',obCc:'cc',obEmail:'email',obPass:'pass',obName:'name',obTime:'time'};
+  Object.entries(m).forEach(([id,k])=>{ const e=document.getElementById(id); if(e) ob[k]=e.value; });
+  const ad=document.getElementById('obAdult'); if(ad) ob.adult=ad.checked;
+}
+function authDone(method, contact){
+  S.account={method, contact};
+  if(!S.user) S.user={name:''};
+  if(obMode==='signin'){
+    if(!S.user.name) S.user.name=guessName(method,contact);
+    S.ring=true; S.backup=true; S.onboarded=true; save();
+    connectTab='requests'; finishAuth(obCtx==='welcome'?'alarms':'connect');
+    toast('Welcome back'+(S.user.name?', '+S.user.name:'')+'. Your journal is synced.'); return;
+  }
+  if(obCtx==='welcome') S.onboarded=true;
+  save();
+  if(!S.user.name){ ob.name=''; go('ob-rname'); focusEl('obName'); return; }
+  go('ob-ring');
+}
+function finishOnboarding(){
+  obSync();
+  S.user={name:(ob.name||'').trim()};
+  S.prefs={focus:ob.focus||[], translation:'KJV'};
+  const time=ob.time||'05:45', days=ob.days||[1,2,3,4,5];
+  const a1=S.alarms.find(a=>a.id==='a1');
+  if(a1) Object.assign(a1,{time,days,on:true,label:'Rise & pray'}); else S.alarms.unshift({id:'a1',time,days,on:true,label:'Rise & pray'});
+  S.alarms.sort((a,b)=>a.time.localeCompare(b.time));
+  S.onboarded=true; save(); go('ob-done');
+}
+Object.assign(A, {
+  obstart: () => { ob={}; go('ob-name'); focusEl('obName'); },
+  obmode: m => { obMode=m; render(true); },
+  oauth: p => { obProvider=p; go('ob-wait'); setTimeout(()=>{ if(curView()==='ob-wait') authDone(p, p==='apple'?'Apple ID':'Google account'); },1300); },
+  sendcode: () => { obSync(); ob.cc=ob.cc||'+234'; const d=(ob.phone||'').replace(/\D/g,''); if(d.length<7){ toast('Enter a valid phone number'); focusEl('obPhone'); return; } go('ob-otp'); toast('Code sent'); focusEl('otp'); },
+  resend: () => toast('A new code is on its way'),
+  verify: () => { const v=((document.getElementById('otp')||{}).value)||''; if(!/^\d{6}$/.test(v)){ toast('Enter the 6-digit code'); focusEl('otp'); return; } authDone('phone', (ob.cc||'+234')+' '+ob.phone); },
+  pshow: () => { obSync(); ob.show=!ob.show; render(true); },
+  forgot: () => { obSync(); toast(/@/.test(ob.email||'')?'Reset link sent to '+ob.email:'Enter your email first'); },
+  emailgo: () => { obSync(); if(!/^\S+@\S+\.\S+$/.test(ob.email||'')){ toast('Enter a valid email address'); focusEl('obEmail'); return; }
+    if(obMode==='signup' && (ob.pass||'').length<8){ toast('Use at least 8 characters'); focusEl('obPass'); return; }
+    if(obMode==='signin' && !ob.pass){ toast('Enter your password'); focusEl('obPass'); return; }
+    authDone('email', ob.email.trim()); },
+  obname: () => { obSync(); go('ob-time'); },
+  obnameskip: () => { ob.name=''; go('ob-time'); },
+  obday: i => { obSync(); i=+i; const d=ob.days||[1,2,3,4,5]; ob.days=d.includes(i)?d.filter(x=>x!==i):[...d,i]; render(true); },
+  obtime: () => { obSync(); if(!ob.time){ toast('Choose a wake-up time'); return; } go('ob-prefs'); },
+  obfocus: k => { const f=ob.focus||[]; ob.focus=f.includes(k)?f.filter(x=>x!==k):[...f,k]; render(true); },
+  obnotify: () => { toast('Notifications allowed'); finishOnboarding(); },
+  obfinish: () => finishOnboarding(),
+  ringauth: p => { obCtx='rings'; obMode='signup'; ob={}; if(p==='apple'||p==='google') A.oauth(p); else go(p==='phone'?'ob-phone':'ob-email'); },
+  ringsignin: () => { obCtx='rings'; obMode='signin'; ob={}; go('ob-auth'); },
+  ringauthsheet: m => { sheet=null; obCtx='rings'; obMode=m; ob={}; go('ob-auth'); },
+  obrname: () => { obSync(); const n=(ob.name||'').trim(); if(!n){ toast('Please enter your first name'); focusEl('obName'); return; } S.user.name=n; save(); go('ob-ring'); },
+  objoin: () => { obSync(); if(!ob.adult){ toast('Please confirm you’re 18 or older'); return; } S.ring=true; save(); go('ob-backup'); },
+  obskipjoin: () => { go('ob-backup'); },
+  obbackup: a => { S.backup = a==='yes'; save(); connectTab='requests'; finishAuth('connect'); toast(S.ring?'Welcome to the '+circleFor().start+' Ring':(S.backup?'Journal backed up':'You’re signed in')); },
+  account: () => { if(S.account){ A.profile(); return; } showJoin('signup','rings'); },
+  signout: () => { const fromP=view==='profile'; sheet=null; S.account=null; S.backup=false; save(); connectTab='requests'; go(fromP?'connect':'alarms'); toast('Signed out. Your alarms and journal stay on this phone.'); }
+});
+/* ---------------- Join nudge + app-window sign-in ---------------- */
+const AUTH_VIEWS=['ob-auth','ob-wait','ob-phone','ob-otp','ob-email','ob-rname','ob-ring','ob-backup'];
+const ICON_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const layer=document.getElementById('layer');
+let winOpen=false, winEl=null, dimEl=null, winView='', winStack=[], winOrigin=null;
+let nudgeT=null, nudgeDone=false, nudgeEl=null;
+const curView=()=> winOpen?winView:view;
+function appScale(){ const r=app.getBoundingClientRect(); return (r.width/app.offsetWidth)||1; }
+function originRect(el, fr){
+  const ar=app.getBoundingClientRect();
+  const ok=e=>{ if(!e||!e.isConnected) return null; const r=e.getBoundingClientRect(); return (r.width>0&&r.top>=ar.top&&r.bottom<=ar.bottom)?r:null; };
+  return ok(el)||ok(document.querySelector('.joinbtn'))||{left:fr.left+fr.width/2-70,top:fr.top+fr.height/2-26,width:140,height:52};
+}
+function flipT(or,fr,k){ return `translate(${(or.left-fr.left)/k}px,${(or.top-fr.top)/k}px) scale(${or.width/fr.width},${or.height/fr.height})`; }
+function openWin(v, origin){
+  if(winOpen){ winGo(v); return; }
+  hideNudge(false);
+  winOpen=true; winView=v; winStack=[v]; winOrigin=origin||null;
+  dimEl=document.createElement('div'); dimEl.className='win-dim'; dimEl.dataset.act='winclose';
+  winEl=document.createElement('div'); winEl.className='win'; winEl.setAttribute('role','dialog'); winEl.setAttribute('aria-modal','true'); winEl.setAttribute('aria-label','Peace Rings account');
+  winEl.innerHTML=`<button class="xbtn" data-act="winclose" aria-label="Close">${ICON_X}</button><div class="win-body"><div class="win-page">${views[v]()}</div></div>`;
+  layer.append(dimEl, winEl);
+  const w=winEl, d=dimEl, k=appScale(), fr=w.getBoundingClientRect(), or=originRect(origin, fr);
+  w.style.transformOrigin='0 0'; w.style.transform=flipT(or,fr,k); w.style.backgroundColor='#F2B544';
+  w.getBoundingClientRect();
+  w.classList.add('anim');
+  requestAnimationFrame(()=>{ w.style.transform=''; w.style.backgroundColor=''; w.classList.add('open'); d.classList.add('on'); });
+}
+function closeWin(mode){
+  if(!winOpen) return;
+  const w=winEl, d=dimEl; winOpen=false; winEl=dimEl=null; winStack=[];
+  w.classList.remove('open'); d.classList.remove('on');
+  if(mode==='fade'){ w.style.transform='scale(.9)'; w.style.opacity='0'; }
+  else { const k=appScale(), fr=w.getBoundingClientRect(), or=originRect(winOrigin, fr); w.style.transform=flipT(or,fr,k); w.style.backgroundColor='#F2B544'; }
+  setTimeout(()=>{ w.remove(); d.remove(); scheduleNudge(); },600);
+}
+function winGo(v){
+  const body=winEl.querySelector('.win-body'), old=body.querySelector('.win-page:last-child');
+  const idx=winStack.indexOf(v), back=idx>=0;
+  if(back) winStack=winStack.slice(0,idx+1); else winStack.push(v);
+  winView=v;
+  const pg=document.createElement('div'); pg.className='win-page '+(back?'from-left':'from-right'); pg.innerHTML=views[v]();
+  body.appendChild(pg);
+  old.classList.add(back?'to-right':'to-left');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>pg.classList.remove('from-left','from-right')));
+  setTimeout(()=>old.remove(),460);
+}
+function finishAuth(target){ view=target; celebrate=false; render(); closeWin('fade'); }
+let joinMode='signup', joinCtx='rings', nudgeAuto=false, joinDim=null;
+function joinHTML(){ const up=joinMode==='signup';
+  return `<button class="xbtn" data-act="nudgeclose" aria-label="Close">${ICON_X}</button>
+    <div class="nudge-ic">${ICON.people}</div>
+    <div class="nudge-t">${up?'<span>Create a free account to join</span><span>Peace Rings and more.</span>':'<span>Welcome back</span>'}</div>
+    <p>${up?`Pray each morning with the ${circleFor().start} Ring. Get your journal and saved verses backed up across multiple devices.`:'Sign in to rejoin your ring and restore your journal and saved verses.'}</p>
+    <div class="authgrid compact">
+      <button class="authtile light" data-act="nudgeauth" data-arg="apple">${ICON_IDCARD}<span><small>Continue with</small>Apple</span></button>
+      <button class="authtile" data-act="nudgeauth" data-arg="google">${ICON_ACCT}<span><small>Continue with</small>Google</span></button>
+      <button class="authtile" data-act="nudgeauth" data-arg="phone">${ICON_PHONE}<span><small>Continue with</small>Phone</span></button>
+      <button class="authtile" data-act="nudgeauth" data-arg="email">${ICON_MAIL}<span><small>Continue with</small>Email</span></button>
+    </div>
+    <p class="nudge-in">${up?'Already have an account?':'New to Peace Rings?'} <button class="ob-link" data-act="joinmode" data-arg="${up?'signin':'signup'}">${up?'Sign in':'Create an account'}</button></p>
+    <p class="nudge-terms">By continuing you agree to the Terms and Privacy Policy. Demo only: no real account is created.</p>`;
+}
+function showJoin(mode, ctx, auto){
+  joinMode=mode||'signup'; joinCtx=ctx||'rings';
+  if(nudgeEl){ nudgeEl.innerHTML=joinHTML(); fitTitle(); nudgeAuto=nudgeAuto&&!!auto; return; }
+  nudgeDone=true; nudgeAuto=!!auto; sheet=null;
+  joinDim=document.createElement('div'); joinDim.className='join-dim'; joinDim.dataset.act='nudgeclose';
+  nudgeEl=document.createElement('div'); nudgeEl.className='nudge'+(tabbar.hidden?' nobar':''); nudgeEl.setAttribute('role','dialog'); nudgeEl.setAttribute('aria-label', joinMode==='signup'?'Join Peace Rings':'Sign in');
+  nudgeEl.innerHTML=joinHTML();
+  layer.append(joinDim, nudgeEl); fitTitle();
+  const n=nudgeEl, d=joinDim; requestAnimationFrame(()=>requestAnimationFrame(()=>{ n.classList.add('in'); d.classList.add('on'); }));
+}
+function fitTitle(){ const t=nudgeEl&&nudgeEl.querySelector('.nudge-t'); if(!t) return; t.style.fontSize='20px'; const w=t.getBoundingClientRect().width; let tw=0; const ref=document.createElement('span'); ref.textContent='to join Peace Rings and more.'; ref.style.cssText='position:absolute;visibility:hidden;white-space:nowrap'; t.appendChild(ref); t.querySelectorAll('span').forEach(sp=>{ const rg=document.createRange(); rg.selectNodeContents(sp); tw=Math.max(tw, rg.getBoundingClientRect().width); }); ref.remove(); if(!w||!tw) return; t.style.fontSize=Math.min(32, Math.floor(20*w/tw*0.98*10)/10)+'px'; }
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitTitle);
+window.addEventListener('resize', fitTitle);
+function showNudge(){ if(!nudgeEl) showJoin('signup','rings',true); }
+function hideNudge(instant){
+  const n=nudgeEl, d=joinDim; if(!n) return; nudgeEl=null; joinDim=null; nudgeAuto=false;
+  if(instant){ n.remove(); if(d) d.remove(); return; }
+  n.classList.remove('in'); n.classList.add('out'); if(d) d.classList.remove('on'); setTimeout(()=>{ n.remove(); if(d) d.remove(); },400);
+}
+function scheduleNudge(){
+  if(view!=='connect'){ clearTimeout(nudgeT); nudgeT=null; nudgeDone=false; if(nudgeAuto) hideNudge(true); return; }
+  if(S.account||winOpen||nudgeDone||nudgeT||nudgeEl) return;
+  nudgeT=setTimeout(()=>{ nudgeT=null; if(view==='connect'&&!S.account&&!winOpen&&!sheet&&!nudgeEl) showNudge(); },4000);
+}
+Object.assign(A, {
+  joinnow: () => showJoin('signup','rings'),
+  joinmode: m => showJoin(m, joinCtx),
+  winclose: () => closeWin('collapse'),
+  winback: () => { if(winStack.length>1){ go(winStack[winStack.length-2]); return; } closeWin('collapse'); setTimeout(()=>showJoin(obMode, obCtx), 380); },
+  sheetauth: (p, el) => { A.nudgeauth(p, el); sheet=null; render(true); },
+  sheetsignin: () => { sheet=null; render(true); showJoin('signin','rings'); },
+  nudgeauth: (p, el) => { obCtx=joinCtx; obMode=joinMode; ob={};
+    if(p==='apple'||p==='google'){ obProvider=p; openWin('ob-wait', el); setTimeout(()=>{ if(curView()==='ob-wait') authDone(p, p==='apple'?'Apple ID':'Google account'); },1300); return; }
+    openWin(p==='phone'?'ob-phone':'ob-email', el); focusEl(p==='phone'?'obPhone':'obEmail'); },
+  nudgesignin: () => showJoin('signin', joinCtx),
+  nudgeclose: () => hideNudge(false),
+  obsigninwelcome: () => showJoin('signin','welcome'),
+  ringauthsheet: m => { sheet=null; render(true); showJoin(m,'rings'); }
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(winOpen) closeWin('collapse'); else hideNudge(false); } });
+/* ---------------- Profile ---------------- */
+const ICON_GEAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+function avatarBtn(){ const nm=(S.user&&S.user.name)||''; return `<div class="hdr-acts"><button class="iconbtn" data-act="settings" aria-label="Settings">${ICON_GEAR}</button><button class="avatarbtn hdr-av ${S.account?'':'guest'}" style="${S.account?'background:'+prof().color:''}" data-act="account" aria-label="${S.account?'Your profile':'Sign in or create an account'}">${nm?esc(nm[0].toUpperCase()):ICON_USER}</button></div>`; }
+function hdr(eyebrow, title){ return `<div class="topline" style="align-items:flex-start;margin:0"><div style="min-width:0"><div class="eyebrow">${eyebrow}</div><h1 class="h1">${title}</h1></div>${avatarBtn()}</div>`; }
+let profBack='connect';
+function prof(){ if(!S.profile) S.profile={color:'#F2B544',bio:'',city:'',anonDefault:false,showCity:true}; return S.profile; }
+const SWATCHES=['#F2B544','#F6C9A8','#BFD8C9','#C5CDEB','#EBC2CF','#E1D2F0'];
+function ptog(key, label, on){ return `<div class="prow"><span class="plabel">${label}</span><button class="switch ${on?'on':''}" role="switch" aria-checked="${on}" aria-label="${label}" data-act="pftoggle" data-arg="${key}"></button></div>`; }
+views.profile = () => {
+  const nm=(S.user&&S.user.name)||'', pr=prof(), acc=S.account, f=(S.prefs&&S.prefs.focus)||[];
+  return `<div class="pad">
+    <div class="topline"><button class="back" data-act="go" data-arg="${profBack}">${ICON.back}Back</button><span class="eyebrow">Profile</span></div>
+    <div class="prof-head"><span class="prof-av" style="background:${pr.color}">${esc((nm||'?')[0].toUpperCase())}</span>
+      <div style="min-width:0"><h1 class="h1" style="margin:0">${esc(nm||'Your profile')}</h1><div class="muted" style="font-size:14px;margin-top:4px">${esc(methodText(acc))}</div>
+      ${S.ring?`<span class="chip" style="margin-top:8px;background:var(--sage-soft);color:var(--sage)">${circleFor().start} Ring</span>`:''}</div></div>
+    <div class="psec"><div class="eyebrow">About you</div><div class="pcard">
+      <label class="prow col"><span class="plabel">First name</span><input id="pfName" class="pin" value="${esc(nm)}" maxlength="24" placeholder="Your first name" autocomplete="given-name"></label>
+      <label class="prow col"><span class="plabel">Campus</span><select id="pfCampus" class="pin">${Object.keys(CAMPUSES).map(c=>`<option ${c===myCampus()?'selected':''}>${c}</option>`).join('')}</select></label>
+      <label class="prow col"><span class="plabel">City</span><input id="pfCity" class="pin" value="${esc(pr.city)}" maxlength="30" placeholder="e.g. Lagos"></label>
+      <label class="prow col"><span class="plabel">A line about you <em>Shown to your ring</em></span><input id="pfBio" class="pin" value="${esc(pr.bio)}" maxlength="80" placeholder="e.g. Nurse, mum of two, early riser"></label>
+      <div class="prow col"><span class="plabel">Avatar colour</span><div class="swatches">${SWATCHES.map(c=>`<button class="swatch ${pr.color===c?'on':''}" style="background:${c}" data-act="pfcolor" data-arg="${c}" aria-label="Avatar colour" aria-pressed="${pr.color===c}"></button>`).join('')}</div></div>
+    </div></div>
+    <div class="psec"><div class="eyebrow">Your mornings</div><div class="pcard">
+      <div class="prow col"><span class="plabel">Morning themes <em>Verses lean towards these</em></span><div class="opts" style="margin-top:2px;gap:8px">${Object.keys(FOCUS).map(k=>`<button class="pchip ${f.includes(k)?'on':''}" data-act="pffocus" data-arg="${k}" aria-pressed="${f.includes(k)}">${k}</button>`).join('')}</div></div>
+      <div class="prow"><span class="plabel">Bible translation</span><b>King James Version</b></div>
+    </div></div>
+    <div class="psec"><div class="eyebrow">Peace Rings</div><div class="pcard">
+      <div class="prow"><span class="plabel">Your ring</span><button class="plink" data-act="pfring">${S.ring?circleFor().start+' Ring':'Join a ring'}</button></div>
+      ${ptog('anonDefault','Post requests anonymously by default',pr.anonDefault)}
+      ${ptog('showCity','Show my city to my ring',pr.showCity)}
+    </div></div>
+    <div class="psec"><div class="eyebrow">Account</div><div class="pcard">
+      <div class="prow"><span class="plabel">Signed in with</span><b>${esc(methodText(acc))}</b></div>
+      ${ptog('backup','Back up journal to the cloud',!!S.backup)}
+    </div>
+    <button class="btn soft danger" data-act="signout">Sign out</button>
+    <button class="plink danger" style="display:block;margin:6px auto 0;padding:8px" data-act="pfdelete">Delete account</button>
+    </div>
+  </div>`;
+};
+Object.assign(A, {
+  profile: () => { if(!S.account){ showJoin('signup','rings'); return; } profBack = (view==='profile')?profBack:view; go('profile'); },
+  pfcolor: c => { prof().color=c; save(); render(true); },
+  pffocus: k => { if(!S.prefs) S.prefs={focus:[],translation:'KJV'}; const f=S.prefs.focus||[]; S.prefs.focus=f.includes(k)?f.filter(x=>x!==k):[...f,k]; save(); render(true); },
+  pftoggle: k => { if(k==='backup'){ S.backup=!S.backup; toast(S.backup?'Journal backup on':'Journal backup off'); } else { prof()[k]=!prof()[k]; toast('Saved'); } save(); render(true); },
+  pfring: () => { if(S.ring){ connectTab='find'; go('connect'); } else go('ob-ring'); },
+  pfdelete: () => { sheet={del:true}; render(true); },
+  pfdeleteyes: () => { sheet=null; S.account=null; S.ring=false; S.backup=false; save(); connectTab='requests'; go('connect'); toast('Account deleted. Your alarms and journal stay on this phone.'); }
+});
+app.addEventListener('change', e=>{
+  const id=e.target.id, v=(e.target.value||'').trim();
+  if(id==='pfName'){ if(!v){ e.target.value=(S.user&&S.user.name)||''; toast('Your name can’t be empty'); return; } S.user.name=v; }
+  else if(id==='pfCity') prof().city=v;
+  else if(id==='pfBio') prof().bio=v;
+  else return;
+  save(); toast('Profile saved'); if(id==='pfName') render(true);
+});
+/* ---------------- Compact header on scroll ---------------- */
+const cbar=document.getElementById('cbar');
+function updateCbar(){
+  const acts=screenEl.querySelector('.hdr-acts'), h=screenEl.querySelector('.h1');
+  const show=!!acts && !!h && screenEl.scrollTop > (h.offsetTop + h.offsetHeight - 10);
+  if(show && !cbar.classList.contains('show')){ cbar.querySelector('.cbar-t').textContent=h.textContent; cbar.querySelector('.cbar-a').innerHTML=avatarBtn(); }
+  cbar.classList.toggle('show', show); if(show) cbar.removeAttribute('inert'); else cbar.setAttribute('inert','');
+  cbar.setAttribute('aria-hidden', show?'false':'true');
+}
+screenEl.addEventListener('scroll', updateCbar, {passive:true});
+/* ---------------- Find rings (local search) ---------------- */
+const CAMPUSES={'University of Manchester':'Manchester','University of Leeds':'Leeds','University of Toronto':'Toronto','University of Lagos':'Lagos'};
+const RTYPE={campus:['Campus fellowship','#C5CDEB'],church:['Church','#F2DD9B'],mentoring:['Mentoring','#BFD8C9'],diaspora:['From home','#F6C9A8'],language:['Language group','#E1D2F0'],online:['Online','#CFE3E8']};
+const RINGS=[
+ {id:'g1',name:'Postgrad Morning Prayer',type:'campus',campus:'University of Manchester',city:'Manchester',km:0.4,meets:'Weekdays · 6:30 AM',lang:'English',members:23,verified:true,join:'join',tags:['postgrad','international','masters'],desc:'Masters and PhD students praying before lectures. A short Bible reading, then ten minutes of prayer.'},
+ {id:'g2',name:'International Students’ Ring',type:'campus',campus:'University of Manchester',city:'Manchester',km:0.6,meets:'Weekdays · 7:00 AM',lang:'English',members:41,verified:true,join:'join',tags:['international','new arrivals','postgrad'],desc:'For students new to the country. Prayer, practical help settling in, and a Sunday lunch once a month.'},
+ {id:'g3',name:'New Believers’ Circle',type:'mentoring',campus:'University of Manchester',city:'Manchester',km:1.2,meets:'Mon, Wed, Fri · 6:00 AM',lang:'English',members:12,verified:true,join:'request',tags:['new believers','mentoring','international'],desc:'New to faith, or coming back to it? Pair up with a mentor and read the Gospel of John together.'},
+ {id:'g4',name:'Women in Faith (Postgrad)',type:'campus',campus:'University of Manchester',city:'Manchester',km:0.5,meets:'Tue & Thu · 6:00 AM',lang:'English',members:18,verified:true,join:'request',tags:['women','postgrad','mentoring'],desc:'A ring for women in postgraduate study. Prayer, Bible study and mentoring from older believers.'},
+ {id:'g5',name:'Grace Community Church · Students',type:'church',campus:'Manchester city centre',city:'Manchester',km:1.8,meets:'Daily · 6:30 AM online · Sundays 11 AM',lang:'English',members:64,verified:true,join:'join',tags:['church','sunday','international','students'],desc:'A city-centre church with a student team. Morning prayer online and a welcome lunch after Sunday service.'},
+ {id:'g6',name:'Nigerian Christian Students',type:'diaspora',campus:'University of Manchester',city:'Manchester',km:2.1,meets:'Weekdays · 5:30 AM',lang:'English & Yoruba',members:37,verified:false,join:'join',tags:['nigeria','africa','home','international'],desc:'Prayer in English and Yoruba, and a taste of home at monthly fellowship meals.'},
+ {id:'g7',name:'Francophone Prayer Ring',type:'language',campus:'Manchester',city:'Manchester',km:3.0,meets:'Weekdays · 6:00 AM',lang:'French',members:15,verified:false,join:'join',tags:['french','africa','international'],desc:'Prière du matin en français, for students from Francophone Africa and beyond.'},
+ {id:'g8',name:'Chinese Christian Fellowship',type:'language',campus:'University of Manchester',city:'Manchester',km:0.8,meets:'Weekdays · 7:00 AM',lang:'Mandarin & English',members:30,verified:true,join:'join',tags:['chinese','asia','international','new arrivals'],desc:'Morning prayer in Mandarin and English. New arrivals are always welcome.'},
+ {id:'g9',name:'Leeds Uni Morning Ring',type:'campus',campus:'University of Leeds',city:'Leeds',meets:'Weekdays · 6:30 AM',lang:'English',members:29,verified:true,join:'join',tags:['postgrad','international'],desc:'Undergraduates and postgraduates praying together before the day starts.'},
+ {id:'g10',name:'Toronto Grad Christians',type:'campus',campus:'University of Toronto',city:'Toronto',meets:'Weekdays · 7:00 AM',lang:'English',members:52,verified:true,join:'join',tags:['postgrad','international','masters'],desc:'Graduate students from around the world. Prayer, Bible study and community dinners.'},
+ {id:'g11',name:'UNILAG Morning Ring',type:'campus',campus:'University of Lagos',city:'Lagos',meets:'Weekdays · 5:30 AM',lang:'English',members:88,verified:true,join:'join',tags:['nigeria','home'],desc:'Pray along with friends back home, whatever time zone you are in.'},
+ {id:'g12',name:'Early Risers Online',type:'online',campus:'Online',city:'Online',meets:'Weekdays · 6:00 AM UK time',lang:'English',members:120,verified:true,join:'join',tags:['online','international','new believers'],desc:'Join from anywhere. A 15-minute call every weekday morning, perfect for your first weeks abroad.'}
+];
+const RFILTERS=[['all','All'],['campus','My campus'],['near','Near me'],['intl','International students'],['new','New believers'],['church','Churches'],['diaspora','From home'],['language','Language groups'],['online','Online']];
+let ringQ='', ringF='all';
+const ICON_SEARCH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
+const ICON_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function myCampus(){ return prof().campus || 'University of Manchester'; }
+function ringResults(){
+  const my=myCampus(), city=CAMPUSES[my]||'', q=ringQ.trim().toLowerCase();
+  return RINGS.filter(r=>{
+    const f = ringF==='all' || (ringF==='campus'&&r.campus===my) || (ringF==='near'&&r.city===city) || (ringF==='intl'&&r.tags.includes('international')) || (ringF==='new'&&r.tags.includes('new believers')) || ringF===r.type;
+    const t = !q || [r.name,r.campus,r.city,r.lang,RTYPE[r.type][0],...r.tags].join(' ').toLowerCase().includes(q);
+    return f && t;
+  }).sort((a,b)=> ((a.city===city?0:1)-(b.city===city?0:1)) || ((a.km||999)-(b.km||999)));
+}
+function ringResultsHTML(){
+  const list=ringResults(), city=CAMPUSES[myCampus()]||'';
+  if(!list.length) return `<div class="li" style="display:grid;gap:8px;text-align:center;padding:22px"><div class="ttl">No rings match${ringQ?` “${esc(ringQ)}”`:''}</div><div class="sub" style="white-space:normal;-webkit-line-clamp:unset">Try your city, your church’s name or “Online”. No ring on your campus yet? You can start one.</div><button class="small-btn" style="justify-self:center" data-act="ringstart">Start a ring on your campus</button></div>`;
+  return `<div class="muted" style="font-size:13px">${list.length} ring${list.length>1?'s':''}</div>`+list.map(r=>{ const [tl,tc]=RTYPE[r.type]; const joined=(S.joined||[]).includes(r.id), req=(S.requested||[]).includes(r.id);
+    const where = r.city===city && r.km ? `${esc(r.campus)} · ${r.km} km from your campus` : esc(r.campus+(r.city!==r.campus&&r.city!=='Online'?' · '+r.city:''));
+    return `<div class="ring-r">
+      <div class="rr-top"><span class="rr-ic" style="background:${tc}">${esc(r.name[0])}</span><div class="main" style="min-width:0"><div class="ttl">${esc(r.name)}${r.verified?` <span class="vbadge" title="Leaders verified by Peace Rising">${ICON_CHECK}Verified</span>`:''}</div><div class="rr-where">${where}</div></div></div>
+      <p class="rr-desc">${esc(r.desc)}</p>
+      <div class="rr-meta"><span>${tl}</span><span>${esc(r.meets)}</span><span>${esc(r.lang)}</span><span>${r.members} members</span></div>
+      <button class="join ${joined||req?'on':''}" data-act="ringjoin" data-arg="${r.id}">${joined?'Joined':req?'Request sent':(r.join==='request'?'Request to join':'Join')}</button>
+    </div>`; }).join('');
+}
+function findHTML(){
+  const my=myCampus();
+  return `<div class="rsearch">${ICON_SEARCH}<input id="ringSearch" type="search" placeholder="Campus, city, church or language" value="${esc(ringQ)}" autocomplete="off" aria-label="Search rings"></div>
+    <label class="campusrow"><span>Your campus</span><select id="campusSel" aria-label="Your campus">${Object.keys(CAMPUSES).map(c=>`<option ${c===my?'selected':''}>${c}</option>`).join('')}</select></label>
+    <div class="rfilters">${RFILTERS.map(([k,l])=>`<button class="pchip ${ringF===k?'on':''}" data-act="ringfilter" data-arg="${k}" aria-pressed="${ringF===k}">${l}</button>`).join('')}</div>
+    <div id="ringResults" class="stack" style="gap:12px">${ringResultsHTML()}</div>
+    <div class="safety"><b>Staying safe:</b> verified rings are led by campus chaplaincies, churches or trained student leaders. When meeting anyone new in person, choose a public place and tell a friend where you’re going.</div>`;
+}
+Object.assign(A, {
+  ringfilter: k => { ringF=k; render(true); },
+  ringsearchgo: () => { connectTab='find'; render(true); setTimeout(()=>{ const i=document.getElementById('ringSearch'); if(i){ i.scrollIntoView({block:'start',behavior:'smooth'}); i.focus({preventScroll:true}); } },60); },
+  ringjoin: id => { const r=RINGS.find(x=>x.id===id); if(!S.account){ showJoin('signup','rings'); return; }
+    if(r.join==='request'){ S.requested=S.requested||[]; if(S.requested.includes(id)){ S.requested=S.requested.filter(x=>x!==id); toast('Request withdrawn'); } else { S.requested.push(id); toast('Request sent to the ring leaders'); } }
+    else { S.joined=S.joined||[]; if(S.joined.includes(id)){ S.joined=S.joined.filter(x=>x!==id); toast('You left '+r.name); } else { S.joined.push(id); toast('You joined '+r.name); } }
+    save(); const box=document.getElementById('ringResults'); if(box) box.innerHTML=ringResultsHTML(); else render(true); },
+  ringstart: () => toast('Starting your own ring is coming soon')
+});
+app.addEventListener('input', e=>{ if(e.target.id==='ringSearch'){ ringQ=e.target.value; const box=document.getElementById('ringResults'); if(box) box.innerHTML=ringResultsHTML(); } });
+app.addEventListener('change', e=>{ if(e.target.id==='campusSel'||e.target.id==='pfCampus'){ prof().campus=e.target.value; save(); toast('Campus set to '+e.target.value); render(true); } });
 function syncSheet(){ if(!sheet) return; const t=document.getElementById('sTime'), l=document.getElementById('sLabel'); if(t) sheet.time=t.value; if(l) sheet.label=l.value.trim()||'Alarm'; }
 function syncNote(){ const n=document.getElementById('note'); const e=todayEntry(); if(n&&e){ e.note=n.value.trim(); save(); } }
 function finishFlow(){
@@ -927,16 +1750,19 @@ function finishFlow(){
   setTimeout(()=>go('verses'),1300);
 }
 
-screenEl.addEventListener('click', e=>{
-  const el = e.target.closest('[data-act]'); if(!el) return;
+app.addEventListener('click', e=>{
+  const el = e.target.closest('[data-act]'); if(!el || el.closest('#tabbar')) return;
   if(el.dataset.self && e.target!==el) return;
   if(view==='verses' && el.dataset.act!=='save' && el.dataset.act!=='share') syncNote();
   const f = A[el.dataset.act]; if(f) f(el.dataset.arg, el);
 });
-tabbar.addEventListener('click', e=>{ const el=e.target.closest('[data-act]'); if(!el) return; if(view==='verses') syncNote(); A.go(el.dataset.arg); });
-screenEl.addEventListener('input', e=>{ if(e.target.id==='note') syncNote(); });
-screenEl.addEventListener('keydown', e=>{
+tabbar.addEventListener('click', e=>{ const el=e.target.closest('[data-act]'); if(!el) return; if(view==='verses') syncNote(); if(el.dataset.act==='go') A.go(el.dataset.arg); else if(A[el.dataset.act]) A[el.dataset.act](el.dataset.arg, el); });
+app.addEventListener('input', e=>{ if(e.target.id==='note') syncNote();
+  if(e.target.id==='otp'){ e.target.value=e.target.value.replace(/\D/g,'').slice(0,6); if(e.target.value.length===6) setTimeout(()=>{ if(curView()==='ob-otp') A.verify(); },200); } });
+app.addEventListener('keydown', e=>{
   if(e.key!=='Enter') return;
+  const obKeys={obPhone:'sendcode',otp:'verify',obEmail:'emailgo',obPass:'emailgo',obName:'obname'};
+  if(obKeys[e.target.id]){ e.preventDefault(); A[obKeys[e.target.id]](); return; }
   if(e.target.id==='chatInput'){ e.preventDefault(); A.send(); }
   if(e.target.id==='reqInput' && !e.shiftKey){ e.preventDefault(); A.post(); }
 });
@@ -945,17 +1771,81 @@ document.querySelectorAll('[data-side]').forEach(b=>b.addEventListener('click',(
   if(ringing && k!=='ring') stopRing();
   if(k==='ring') A.ring();
   else if(k==='checkin') startCheckin();
+  else if(k==='onboard'){ S.onboarded=false; S.account=null; S.ring=false; S.backup=false; S.user={name:''}; save(); ob={}; flow={}; go('ob-welcome'); }
+  else if(k==='desk') enterDesk();
   else if(k==='intro') playSplash();
-  else if(k==='reset'){ S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; go('alarms'); toast('Demo reset'); }
+  else if(k==='reset'){ S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; ob={}; go('ob-welcome'); toast('Demo reset'); }
   else { if(k==='connect') connectTab='requests'; go(k); }
 }));
 
+/* ---------------- Clock + alarm watcher ---------------- */
+/* ---------------- Settings ---------------- */
+const SET_DEF={appearance:'light',darkFrom:'19:00',darkTo:'06:00',accent:'sunrise',chime:'bells',nature:'none',gentle:true,snooze:9,vibrate:true,requireCheckin:true,verses:3,bedtime:false,bedtimeAt:'22:00'};
+function sett(){ S.settings=Object.assign({},SET_DEF,S.settings||{}); return S.settings; }
+function isDark(){
+  const s=sett();
+  if(s.appearance==='dark') return true;
+  if(s.appearance==='system') return !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+  if(s.appearance==='time'){ const d=new Date(), now=pad(d.getHours())+':'+pad(d.getMinutes()), f=s.darkFrom, to=s.darkTo; return f<=to ? (now>=f && now<to) : (now>=f || now<to); }
+  return false;
+}
+function applyTheme(){ if(isDark()||document.body.classList.contains('desk')) app.setAttribute('data-dark','1'); else app.removeAttribute('data-dark'); app.dataset.accent=sett().accent; }
+let setBack='alarms';
+const ACCENTS={sunrise:['Sunrise','#F2B544'],rose:['Rose dawn','#EE9A86'],lavender:['Lavender','#B7A3EC'],sky:['Morning sky','#86BFEA']};
+const ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';
+function segBtns(key, opts){ const v=String(sett()[key]); return `<div class="sseg">${opts.map(([val,label])=>`<button class="${v===String(val)?'on':''}" data-act="setval" data-arg="${key}|${val}" aria-pressed="${v===String(val)}">${label}</button>`).join('')}</div>`; }
+function stog(key,label,sub){ const on=!!sett()[key]; return `<div class="prow"><span class="plabel">${label}${sub?`<small class="psub">${sub}</small>`:''}</span><button class="switch ${on?'on':''}" role="switch" aria-checked="${on}" aria-label="${label}" data-act="settog" data-arg="${key}"></button></div>`; }
+views.settings = () => { const s=sett(); return `<div class="pad">
+  <div class="topline"><button class="back" data-act="go" data-arg="${setBack}">${ICON.back}Back</button></div>
+  <h1 class="h1" style="margin-top:0">Settings</h1>
+  <div class="psec"><div class="eyebrow">Appearance</div><div class="pcard">
+    <div class="prow col"><span class="plabel">Mode</span>${segBtns('appearance',[['light','Light'],['dark','Dark'],['time','By time'],['system','Phone']])}</div>
+    ${s.appearance==='time'?`<div class="prow"><span class="plabel">Dark mode</span><span class="trange"><input type="time" id="stFrom" class="pin tin" value="${s.darkFrom}" aria-label="Dark mode starts"> to <input type="time" id="stTo" class="pin tin" value="${s.darkTo}" aria-label="Dark mode ends"></span></div>`:''}
+    ${s.appearance==='system'?`<div class="prow"><span class="psub" style="margin:0">Follows your phone’s light or dark setting.</span></div>`:''}
+    <div class="prow col"><span class="plabel">Accent colour</span><div class="accents">${Object.entries(ACCENTS).map(([k,[n,c]])=>`<button class="accent ${s.accent===k?'on':''}" data-act="setval" data-arg="accent|${k}" aria-pressed="${s.accent===k}"><i style="background:${c}"></i>${n}</button>`).join('')}</div></div>
+  </div></div>
+  <div class="psec"><div class="eyebrow">Alarm sound</div><div class="pcard">
+    <div class="prow col"><span class="plabel">Ring chime <em>Tap play to listen</em></span><div class="olist">${Object.entries(CHIMES).map(([k,c])=>`<div class="orow ${s.chime===k?'on':''}"><button class="opick" data-act="setval" data-arg="chime|${k}" aria-pressed="${s.chime===k}"><span class="radio"></span><span><b>${c.name}</b><small>${c.desc}</small></span></button><button class="playbtn" data-act="preview" data-arg="chime|${k}" aria-label="Play ${c.name}">${ICON_PLAY}</button></div>`).join('')}</div></div>
+    <div class="prow col"><span class="plabel">Nature sounds <em>Plays softly under the chime</em></span><div class="opts" style="margin-top:2px;gap:8px">${Object.entries(NATURE).map(([k,n])=>`<button class="pchip ${s.nature===k?'on':''}" data-act="setnature" data-arg="${k}" aria-pressed="${s.nature===k}">${n}</button>`).join('')}</div></div>
+    ${stog('gentle','Gentle wake','Volume rises slowly over 30 seconds')}
+    <div class="prow col"><span class="plabel">Snooze length</span>${segBtns('snooze',[[5,'5 min'],[9,'9 min'],[10,'10 min'],[15,'15 min']])}</div>
+    ${stog('vibrate','Vibrate','Not available in iPhone web browsers')}
+  </div></div>
+  <div class="psec"><div class="eyebrow">Morning check-in</div><div class="pcard">
+    ${stog('requireCheckin','Check in to silence the alarm','Say how you feel before it goes quiet')}
+    <div class="prow col"><span class="plabel">Verses each morning</span>${segBtns('verses',[[1,'1 verse'],[3,'3 verses'],[5,'5 verses']])}</div>
+    <div class="prow"><span class="plabel">Bible translation</span><b>King James Version</b></div>
+  </div></div>
+  <div class="psec"><div class="eyebrow">Reminders</div><div class="pcard">
+    ${stog('bedtime','Bedtime reminder','A nudge to set your alarm and rest')}
+    ${s.bedtime?`<div class="prow"><span class="plabel">Remind me at</span><input type="time" id="stBed" class="pin tin" value="${s.bedtimeAt}" aria-label="Bedtime reminder time"></div>`:''}
+  </div></div>
+  <div class="psec"><div class="eyebrow">About</div><div class="pcard">
+    <div class="prow"><span class="plabel">Version</span><b>Prototype 1.0</b></div>
+    <div class="prow"><span class="plabel">Scripture</span><b>KJV · public domain</b></div>
+  </div></div>
+</div>`; };
+Object.assign(A, {
+  settings: () => { if(view!=='settings') setBack=view; go('settings'); },
+  setval: a => { const [k,v]=a.split('|'); const s=sett(); s[k]=(k==='snooze'||k==='verses')?+v:v; save(); applyTheme(); render(true); if(k==='chime') preview('chime',v); },
+  settog: k => { const s=sett(); s[k]=!s[k]; save(); render(true); },
+  setnature: k => { sett().nature=k; save(); render(true); if(k==='none') stopPreview(); else preview('nature',k); },
+  preview: a => { const [kind,id]=a.split('|'); preview(kind,id); }
+});
+app.addEventListener('change', e=>{
+  const m={stFrom:'darkFrom',stTo:'darkTo',stBed:'bedtimeAt'}[e.target.id]; if(!m||!e.target.value) return;
+  sett()[m]=e.target.value; save(); applyTheme(); toast('Saved');
+});
+if(window.matchMedia){ try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); }catch(e){} }
 /* ---------------- Clock + alarm watcher ---------------- */
 function tick(){
   const d=new Date(); const t=(d.getHours()%12||12)+':'+pad(d.getMinutes());
   document.getElementById('sbTime').textContent=t;
   const rc=document.getElementById('ringClock'); if(rc) rc.textContent=t;
   const hhmm=pad(d.getHours())+':'+pad(d.getMinutes());
+  applyTheme();
+  if(!S.onboarded) return;
+  const st=sett(); if(st.bedtime && hhmm===st.bedtimeAt && !firedKeys['bed'+todayKey()]){ firedKeys['bed'+todayKey()]=1; toast('Time to rest. Your alarm is set for tomorrow.'); }
   S.alarms.forEach(a=>{ if(!a.on||a.time!==hhmm) return; if(a.days.length && !a.days.includes(d.getDay())) return;
     const k=todayKey()+a.id+hhmm; if(firedKeys[k]||ringing) return; firedKeys[k]=1; triggerRing(a); });
 }
@@ -969,7 +1859,21 @@ function fit(){
   wrap.style.setProperty('--s',Math.max(.5,s).toFixed(3));
 }
 window.addEventListener('resize',fit); fit();
-render();
+/* ---------------- Desktop experience ---------------- */
+function enterDesk(){
+  if(window.innerWidth<900){ toast('Open this on a laptop or wider screen'); return; }
+  document.body.classList.add('desk'); try{ if(location.hash!=='#desktop') location.hash='desktop'; }catch(e){}
+  applyTheme(); render(true);
+}
+function exitDesk(){
+  document.body.classList.remove('desk'); try{ if(location.hash==='#desktop') location.hash=''; }catch(e){}
+  applyTheme(); fit(); render(true);
+}
+window.addEventListener('hashchange',()=>{ const want=location.hash==='#desktop', on=document.body.classList.contains('desk'); if(want&&!on) enterDesk(); else if(!want&&on) exitDesk(); });
+Object.assign(A,{ deskexit: () => exitDesk() });
+if(location.hash==='#desktop' && window.innerWidth>=900) document.body.classList.add('desk');
+if(!S.onboarded) view='ob-welcome';
+try{ render(); }catch(err){ console.error(err); view='alarms'; try{ render(); }catch(e2){ console.error(e2); } }
 /* ---------------- Launch animation ---------------- */
 const splash=document.getElementById('splash'); let spT1, spT2;
 function hideSplash(){ clearTimeout(spT1); clearTimeout(spT2); splash.classList.add('out'); spT2=setTimeout(()=>{ splash.hidden=true; },600); }
