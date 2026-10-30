@@ -260,7 +260,7 @@ input,textarea{font:inherit}
 .safety{font-size:12px;color:var(--ink-2);line-height:1.5;padding:12px 14px;border-radius:14px;background:#EAECE6}
 
 /* Toast */
-.toast{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translate(-50%,-16px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:90%}
+.toast{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translate(-50%,-16px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:all .25s;pointer-events:none;white-space:normal;width:max-content;max-width:calc(100% - 40px);text-align:center;line-height:1.4;text-wrap:balance;box-sizing:border-box}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* Onboarding */
@@ -581,6 +581,19 @@ body.desk .cbar-t{color:#EEF1F7}
 .rr-meta span{font-size:12px;font-weight:600;color:var(--ink-2);background:var(--day);border:1px solid var(--line);padding:4px 9px;border-radius:99px}
 .ring-r .join{justify-self:start}
 body.desk .rfilters{margin:0;padding-left:0;padding-right:0;flex-wrap:wrap}
+/* Multiple rings */
+.rswitch-h{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px}
+.rswitch{display:flex;gap:8px;overflow-x:auto;margin:8px -22px 0;padding:0 22px 2px;scrollbar-width:none}
+.rswitch::-webkit-scrollbar{display:none}
+.rchip{flex:none;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-weight:600;font-size:13.5px;color:var(--ink);white-space:nowrap}
+.rchip.on{border-color:var(--sage);background:var(--sage-soft);color:var(--sage)}
+.rchip.pend{border-style:dashed;color:var(--ink-2)}
+.rchip.add{color:var(--sage);border-style:dashed}
+.rdot{width:10px;height:10px;border-radius:50%;flex:none}
+.rleave{justify-self:start;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);padding:8px 14px;border-radius:10px}
+.rleave:hover{background:rgba(255,255,255,.24)}
+.app.cbar-on .ralarm{visibility:hidden}
+body.desk .rswitch{margin:8px 0 0;padding:0;flex-wrap:wrap}
 /* Launch animation */
 .splash{position:absolute;inset:0;z-index:35;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0F1626;color:#EEF1F7;cursor:pointer;overflow:hidden;transition:opacity .6s ease}
 .splash.out{opacity:0;pointer-events:none}
@@ -1155,7 +1168,7 @@ views.connect = () => {
   const nmP=(S.user&&S.user.name)||'';
   const head = `<div class="topline" style="align-items:flex-start;margin:0"><div><div class="eyebrow">Peace Rings</div><h1 class="h1">Pray with people who wake when you do</h1></div>${avatarBtn()}</div>`;
   const ringCard = mine => `<div class="circle" style="margin-top:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>4 praying now</span><span style="font-size:12px;opacity:.85">Your alarm: ${c.alarm.t} ${c.alarm.ap}</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>4 praying now</span><span class="ralarm" style="font-size:12px;opacity:.85">Your alarm: ${c.alarm.t} ${c.alarm.ap}</span></div>
       ${mine?'':'<div style="font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;opacity:.8">Matched to your alarm</div>'}<div style="font-family:var(--display);font-size:24px;margin-top:-6px">${c.start} Ring</div>
       <div style="display:flex;align-items:center;gap:16px"><div class="avatars">${avs}</div><span style="font-size:13px;opacity:.9">14 members · Lagos, Abuja, Ibadan +4</span></div>
     </div>`;
@@ -1178,25 +1191,39 @@ views.connect = () => {
   if(!S.ring) return `<div class="pad">${head}${ringCard(false)}
     <div class="li" style="margin-top:16px;display:grid;gap:10px"><div class="ttl">You haven’t joined your ring yet</div><div class="sub" style="white-space:normal">Join to share requests, pray for others and chat with people who wake around ${c.start}.</div><button class="small-btn" style="justify-self:start" data-act="go" data-arg="ob-ring">Join the ${c.start} Ring</button></div>
   </div>`;
+  const aid=activeRing(), mine=ringsMine(), pendActive=mine.pending.includes(aid), aRing=RINGS.find(x=>x.id===aid);
+  const chipList=[['home',c.start+' Ring','#4F7363',false]].concat(mine.joined.map(id=>{ const r=RINGS.find(x=>x.id===id); return [id,r.name,RTYPE[r.type][1],false]; }), mine.pending.map(id=>{ const r=RINGS.find(x=>x.id===id); return [id,r.name,RTYPE[r.type][1],true]; }));
+  const switcher=`<div class="rswitch-h"><span class="eyebrow">Your rings</span><span class="muted" style="font-size:12px">${ringCount()} of ${RING_CAP}</span></div>
+    <div class="rswitch">${chipList.map(([id,n,col,p])=>`<button class="rchip ${aid===id?'on':''} ${p?'pend':''}" data-act="ringswitch" data-arg="${id}" aria-pressed="${aid===id}"><span class="rdot" style="background:${col}"></span>${esc(n)}${p?' · Pending':''}</button>`).join('')}<button class="rchip add" data-act="ringsearchgo">+ Find more</button></div>`;
+  const card = aid==='home' ? ringCard(true) : `<div class="circle" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="live"><i></i>${pendActive?'Waiting for approval':(2+aRing.members%5)+' praying now'}</span><span class="ralarm" style="font-size:12px;opacity:.85">${esc(aRing.meets)}</span></div>
+      <div style="font-family:var(--display);font-size:24px">${esc(aRing.name)}</div>
+      <div style="font-size:13px;opacity:.9">${RTYPE[aRing.type][0]} · ${aRing.members} members · ${esc(aRing.campus)}</div>
+      <button class="rleave" data-act="ringleave" data-arg="${aid}">${pendActive?'Withdraw request':'Leave ring'}</button>
+    </div>`;
+  const shortName = aid==='home' ? 'your ring' : aRing.name;
   let body='';
   if(connectTab==='requests'){
     body = `<div class="compose">
-        <textarea id="reqInput" rows="2" placeholder="Share a prayer request with your ring"></textarea>
+        <textarea id="reqInput" rows="2" placeholder="Share a prayer request with ${esc(shortName)}"></textarea>
         <div class="r"><label><input type="checkbox" id="anon" ${prof().anonDefault?'checked':''}> Post anonymously</label><button class="small-btn" data-act="post">Post</button></div>
       </div>
-      ${S.feed.map(r=>{ const on=!!S.prayed[r.id]; const nm=r.name;
+      ${curFeed().map(r=>{ const on=!!S.prayed[r.id]; const nm=r.name;
         return `<div class="req">
           <div class="who"><span class="av" style="background:${nm==='You'?prof().color:avColor(nm)}">${nm==='Anonymous'?'?':nm[0]}</span><div><b>${esc(nm)}</b>${r.praise?' · <span style="color:var(--gold-ink);font-weight:700">Praise report</span>':''}<div class="muted" style="font-size:12px">${esc(r.when)}</div></div></div>
           ${r.verse?`<p class="vq">“${V[r.verse].t}”</p><p class="muted" style="font-size:13px;font-weight:600">${V[r.verse].ref}</p>`:`<p>${esc(r.text)}</p>`}
           <button class="pray ${on?'on':''}" data-act="pray" data-arg="${r.id}">${ICON.hands}${on?'You prayed':'I prayed'} · ${r.count+(on?1:0)}</button>
         </div>`; }).join('')}`;
   } else if(connectTab==='chat'){
-    body = `<div class="msgs" id="msgs">${S.chat.map(m=>`<div class="msg ${m.name==='You'?'me':''}"><div class="n">${esc(m.name)} · ${esc(m.when)}</div><div class="b">${esc(m.text)}</div></div>`).join('')}</div>
-      <div class="chatin"><input id="chatInput" type="text" placeholder="Message your ring" autocomplete="off"><button class="small-btn" data-act="send">Send</button></div>`;
+    body = `<div class="msgs" id="msgs">${curChat().map(m=>`<div class="msg ${m.name==='You'?'me':''}"><div class="n">${esc(m.name)} · ${esc(m.when)}</div><div class="b">${esc(m.text)}</div></div>`).join('')}</div>
+      <div class="chatin"><input id="chatInput" type="text" placeholder="Message ${esc(shortName)}" autocomplete="off"><button class="small-btn" data-act="send">Send</button></div>`;
   } else {
     body = findHTML();
   }
-  return `<div class="pad">${head}<button class="rsearch fake" data-act="ringsearchgo">${ICON_SEARCH}Find rings near your campus</button>${ringCard(true)}
+  if(pendActive && connectTab!=='find') return `<div class="pad">${head}<button class="rsearch fake" data-act="ringsearchgo">${ICON_SEARCH}Find rings near your campus</button>${switcher}${card}
+    <div class="li" style="margin-top:16px;display:grid;gap:6px"><div class="ttl">Request sent</div><div class="sub" style="white-space:normal;-webkit-line-clamp:unset">The leaders of ${esc(aRing.name)} will review your request. Once you’re approved, you’ll see their prayer requests and chat here.</div></div>
+  </div>`;
+  return `<div class="pad">${head}<button class="rsearch fake" data-act="ringsearchgo">${ICON_SEARCH}Find rings near your campus</button>${switcher}${card}
     <div class="seg" role="tablist">
       <button class="${connectTab==='requests'?'on':''}" data-act="ctab" data-arg="requests" role="tab">Requests</button>
       <button class="${connectTab==='chat'?'on':''}" data-act="ctab" data-arg="chat" role="tab">Ring chat</button>
@@ -1310,17 +1337,17 @@ const A = {
   cause: i => { const o=MOODS[flow.mood].opts[+i]; flow.causeLabel=o[0]; flow.causeTags=o[1]; flow.crisis=!!o[2]; render(true); setTimeout(()=>go('q2'),250); },
   need: i => { const m=MOODS[flow.mood]; const o=(m.low?NEED_LOW:NEED_HIGH).opts[+i]; flow.needLabel=o[0]; flow.needTags=o[1]; flow.needKey=o[2]; render(true); setTimeout(finishFlow,250); },
   save: id => { S.saved = S.saved.includes(id)? S.saved.filter(x=>x!==id) : [id,...S.saved]; save(); render(true); toast(S.saved.includes(id)?'Saved to your journal':'Removed from saved'); },
-  share: id => { if(!S.account||!S.ring){ syncNote(); connectTab='requests'; go('connect'); toast('Join Peace Rings to share with your ring'); return; } S.feed.unshift({id:'r'+Date.now(),name:'You',when:nowLabel(),verse:id,count:0}); save(); toast('Shared with the '+circleFor().start+' Ring'); },
+  share: id => { if(!S.account||!S.ring){ syncNote(); connectTab='requests'; go('connect'); toast('Join Peace Rings to share with your ring'); return; } curFeed().unshift({id:'r'+Date.now(),name:'You',when:nowLabel(),verse:id,count:0}); save(); toast('Shared with '+ringName()); },
   startday: () => { syncNote(); celebrate=true; go('today'); },
   checkin: () => startCheckin(),
   ctab: t => { connectTab=t; render(true); },
   pray: id => { S.prayed[id]=!S.prayed[id]; save(); render(true); if(S.prayed[id]) toast('Thank you for praying'); },
   post: () => { const el=document.getElementById('reqInput'); const txt=(el.value||'').trim(); if(!txt){ toast('Write your request first'); el.focus(); return; }
-    const anon=document.getElementById('anon').checked; S.feed.unshift({id:'r'+Date.now(),name:anon?'Anonymous':'You',when:nowLabel(),text:txt,count:0}); save(); render(true); toast('Posted to your ring');
-    const rid=S.feed[0].id; setTimeout(()=>{ const r=S.feed.find(x=>x.id===rid); if(r){ r.count+=3; save(); if(view==='connect'&&connectTab==='requests') render(true); toast('3 people prayed for your request'); } },4000); },
-  send: () => { const el=document.getElementById('chatInput'); const txt=(el.value||'').trim(); if(!txt) return; S.chat.push({name:'You',text:txt,when:nowLabel()}); save(); render(true);
+    const anon=document.getElementById('anon').checked; const F=curFeed(); F.unshift({id:'r'+Date.now(),name:anon?'Anonymous':'You',when:nowLabel(),text:txt,count:0}); save(); render(true); toast('Posted to '+ringName());
+    const rid=F[0].id; setTimeout(()=>{ const r=F.find(x=>x.id===rid); if(r){ r.count+=3; save(); if(view==='connect'&&connectTab==='requests') render(true); toast('3 people prayed for your request'); } },4000); },
+  send: () => { const el=document.getElementById('chatInput'); const txt=(el.value||'').trim(); if(!txt) return; const C=curChat(); C.push({name:'You',text:txt,when:nowLabel()}); save(); render(true);
     const replies=[['Adaeze','Amen! Praying with you this morning.'],['Grace','Thank you for sharing. Have a blessed day.'],['Samuel','Amen. See you at the 6:00 voice prayer.'],['Bisi','Praying for you right now.']];
-    const r=replies[S.chat.length%replies.length]; setTimeout(()=>{ S.chat.push({name:r[0],text:r[1],when:nowLabel()}); save(); if(view==='connect'&&connectTab==='chat') render(true); },1800);
+    const r=replies[C.length%replies.length]; setTimeout(()=>{ C.push({name:r[0],text:r[1],when:nowLabel()}); save(); if(view==='connect'&&connectTab==='chat') render(true); },1800);
     setTimeout(()=>{ const i=document.getElementById('chatInput'); if(i) i.focus(); },0); },
   reset: () => { stopRing(); S=seed(); save(); flow={}; celebrate=false; connectTab='requests'; ob={}; go('ob-welcome'); toast('Demo reset'); },
   join: k => { S.joined = S.joined.includes(k)? S.joined.filter(x=>x!==k) : [...S.joined,k]; save(); render(true); }
@@ -1675,7 +1702,7 @@ function updateCbar(){
   const acts=screenEl.querySelector('.hdr-acts'), h=screenEl.querySelector('.h1');
   const show=!!acts && !!h && screenEl.scrollTop > (h.offsetTop + h.offsetHeight - 10);
   if(show && !cbar.classList.contains('show')){ cbar.querySelector('.cbar-t').textContent=h.textContent; cbar.querySelector('.cbar-a').innerHTML=avatarBtn(); }
-  cbar.classList.toggle('show', show); if(show) cbar.removeAttribute('inert'); else cbar.setAttribute('inert','');
+  cbar.classList.toggle('show', show); app.classList.toggle('cbar-on', show); if(show) cbar.removeAttribute('inert'); else cbar.setAttribute('inert','');
   cbar.setAttribute('aria-hidden', show?'false':'true');
 }
 screenEl.addEventListener('scroll', updateCbar, {passive:true});
@@ -1697,6 +1724,25 @@ const RINGS=[
  {id:'g12',name:'Early Risers Online',type:'online',campus:'Online',city:'Online',meets:'Weekdays · 6:00 AM UK time',lang:'English',members:120,verified:true,join:'join',tags:['online','international','new believers'],desc:'Join from anywhere. A 15-minute call every weekday morning, perfect for your first weeks abroad.'}
 ];
 const RFILTERS=[['all','All'],['campus','My campus'],['near','Near me'],['intl','International students'],['new','New believers'],['church','Churches'],['diaspora','From home'],['language','Language groups'],['online','Online']];
+const RING_CAP=5;
+function ringsMine(){ const ok=id=>RINGS.some(r=>r.id===id); const j=(S.joined||[]).filter(ok); const q=(S.requested||[]).filter(id=>ok(id)&&!j.includes(id)); return {joined:j, pending:q}; }
+function ringCount(){ const m=ringsMine(); return 1+m.joined.length+m.pending.length; }
+function activeRing(){ const id=S.activeRing||'home', m=ringsMine(); return (id==='home'||m.joined.includes(id)||m.pending.includes(id))?id:'home'; }
+function ringName(id){ id=id||activeRing(); return id==='home' ? 'the '+circleFor().start+' Ring' : ((RINGS.find(r=>r.id===id)||{}).name||'your ring'); }
+function seedRing(id){
+  const r=RINGS.find(x=>x.id===id)||{name:'your ring',city:'your city',lang:'English'}; const fr=/French/.test(r.lang), place=(r.city==='Online'?'a new country':r.city);
+  S.feeds=S.feeds||{}; S.chats=S.chats||{};
+  S.feeds[id]=[
+    {id:id+'-r1',name:'Chidi',when:'6:02 AM',text:`First week in ${place}. Please pray I find my feet, good friends and a church family.`,count:5},
+    {id:id+'-r2',name:'Anonymous',when:'5:48 AM',text:'Dissertation deadline on Friday and I feel far behind. Please pray for focus and peace.',count:9},
+    {id:id+'-r3',name:'Wei',when:'Yesterday',text:'Praise report: my visa extension came through. Thank you all for praying!',count:14,praise:true}];
+  S.chats[id]=[
+    {name:'Hannah',text: fr?'Bonjour à tous ! Lecture du jour : Psaume 121.':`Good morning, ${r.name}! Today’s reading is Psalm 121.`,when:'6:01 AM'},
+    {name:'Amara',text: fr?'Amen. Je prie pour ceux qui ont des examens aujourd’hui.':'Amen. Praying for everyone with lectures and deadlines today.',when:'6:04 AM'},
+    {name:'Joseph',text:'Anyone free for coffee after the 10 AM seminar? New faces very welcome.',when:'6:09 AM'}];
+}
+function curFeed(){ const id=activeRing(); if(id==='home') return S.feed; S.feeds=S.feeds||{}; if(!S.feeds[id]) seedRing(id); return S.feeds[id]; }
+function curChat(){ const id=activeRing(); if(id==='home') return S.chat; S.chats=S.chats||{}; if(!S.chats[id]) seedRing(id); return S.chats[id]; }
 let ringQ='', ringF='all';
 const ICON_SEARCH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
 const ICON_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
@@ -1733,13 +1779,23 @@ Object.assign(A, {
   ringfilter: k => { ringF=k; render(true); },
   ringsearchgo: () => { connectTab='find'; render(true); setTimeout(()=>{ const i=document.getElementById('ringSearch'); if(i){ i.scrollIntoView({block:'start',behavior:'smooth'}); i.focus({preventScroll:true}); } },60); },
   ringjoin: id => { const r=RINGS.find(x=>x.id===id); if(!S.account){ showJoin('signup','rings'); return; }
-    if(r.join==='request'){ S.requested=S.requested||[]; if(S.requested.includes(id)){ S.requested=S.requested.filter(x=>x!==id); toast('Request withdrawn'); } else { S.requested.push(id); toast('Request sent to the ring leaders'); } }
-    else { S.joined=S.joined||[]; if(S.joined.includes(id)){ S.joined=S.joined.filter(x=>x!==id); toast('You left '+r.name); } else { S.joined.push(id); toast('You joined '+r.name); } }
+    S.joined=S.joined||[]; S.requested=S.requested||[];
+    const inIt=S.joined.includes(id)||S.requested.includes(id);
+    if(!inIt && ringCount()>=RING_CAP){ toast('You can be in up to '+RING_CAP+' rings. Leave one to join another.'); return; }
+    if(r.join==='request'){ if(S.requested.includes(id)){ S.requested=S.requested.filter(x=>x!==id); toast('Request withdrawn'); } else if(S.joined.includes(id)){ S.joined=S.joined.filter(x=>x!==id); toast('You left '+r.name); } else { S.requested.push(id); toast('Request sent to the ring leaders');
+        setTimeout(()=>{ if((S.requested||[]).includes(id)){ S.requested=S.requested.filter(x=>x!==id); S.joined.push(id); save(); toast(r.name+' approved your request'); if(view==='connect') render(true); } },7000); } }
+    else { if(S.joined.includes(id)){ S.joined=S.joined.filter(x=>x!==id); if(S.activeRing===id) S.activeRing='home'; toast('You left '+r.name); } else { S.joined.push(id); toast('You joined '+r.name+'. Find it under Your rings.'); } }
     save(); const box=document.getElementById('ringResults'); if(box) box.innerHTML=ringResultsHTML(); else render(true); },
   ringstart: () => toast('Starting your own ring is coming soon')
 });
 app.addEventListener('input', e=>{ if(e.target.id==='ringSearch'){ ringQ=e.target.value; const box=document.getElementById('ringResults'); if(box) box.innerHTML=ringResultsHTML(); } });
 app.addEventListener('change', e=>{ if(e.target.id==='campusSel'||e.target.id==='pfCampus'){ prof().campus=e.target.value; save(); toast('Campus set to '+e.target.value); render(true); } });
+Object.assign(A, {
+  ringswitch: id => { S.activeRing=id; if(connectTab==='find') connectTab='requests'; save(); render(true); },
+  ringleave: id => { const r=RINGS.find(x=>x.id===id); const wasReq=(S.requested||[]).includes(id);
+    S.joined=(S.joined||[]).filter(x=>x!==id); S.requested=(S.requested||[]).filter(x=>x!==id); if(S.activeRing===id) S.activeRing='home'; save(); render(true);
+    toast(wasReq?'Request withdrawn':'You left '+(r?r.name:'the ring')); }
+});
 function syncSheet(){ if(!sheet) return; const t=document.getElementById('sTime'), l=document.getElementById('sLabel'); if(t) sheet.time=t.value; if(l) sheet.label=l.value.trim()||'Alarm'; }
 function syncNote(){ const n=document.getElementById('note'); const e=todayEntry(); if(n&&e){ e.note=n.value.trim(); save(); } }
 function finishFlow(){
