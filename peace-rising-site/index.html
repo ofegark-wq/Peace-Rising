@@ -594,6 +594,45 @@ body.desk .rfilters{margin:0;padding-left:0;padding-right:0;flex-wrap:wrap}
 .rleave:hover{background:rgba(255,255,255,.24)}
 .app.cbar-on .ralarm{visibility:hidden}
 body.desk .rswitch{margin:8px 0 0;padding:0;flex-wrap:wrap}
+.ob-join{display:grid;gap:8px;margin-top:10px;padding-top:18px;border-top:1px solid var(--night-line);text-align:left}
+.ob-join-t{font-family:var(--display);font-size:21px;color:var(--night-fg)}
+.ob-join-s{font-size:14px;color:var(--night-muted);margin-bottom:4px}
+.ob-welcome .ob-join .authtile small{color:var(--night-muted)}
+.ob-welcome .ob-join .authtile.light small{color:#5B6170}
+.featgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;text-align:left}
+.feat{aspect-ratio:1/1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;padding:16px;border-radius:22px;background:var(--night-2);border:1.5px solid var(--night-line);
+  animation:tilein .5s cubic-bezier(.34,1.3,.5,1) both}
+.feat:nth-child(2){animation-delay:.06s}.feat:nth-child(3){animation-delay:.12s}.feat:nth-child(4){animation-delay:.18s}
+.feat svg{width:30px;height:30px;color:var(--gold)}
+.feat span{display:grid;gap:4px;font-size:13px;line-height:1.4;color:var(--night-muted)}
+.feat b{font-size:16.5px;color:var(--night-fg);font-weight:700}
+.feat-btn{position:relative;text-align:left;border-color:rgba(242,181,68,.45);cursor:pointer;transition:transform .15s ease,border-color .2s ease;color:inherit;font:inherit}
+.feat-btn:hover{border-color:var(--gold)}
+.feat-btn:active{transform:scale(.97)}
+.feat-go{position:absolute;top:18px;right:16px;font-style:normal;font-size:12px;font-weight:700;color:var(--gold)}
+/* Welcome screen fits one page */
+.ob-wel2{padding-top:4px;padding-bottom:16px}
+.ob-wel2 .ob-hero{margin:14px 0 0}
+.ob-wel2 .ob-hero svg{width:88px;height:auto}
+.ob-wel2 .ob-title{font-size:29px;margin:8px 0 6px}
+.ob-wel2{padding-left:20px;padding-right:20px}
+.ob-wel2 .ob-sub{font-size:13.5px;line-height:1.45;margin:0 -4px;text-wrap:balance}
+@media (max-height:640px){.ob-wel2 .ob-hero svg{width:64px}.ob-wel2 .ob-title{font-size:25px;margin:4px 0}.ob-wel2 .feat{min-height:96px;padding:10px 12px}.ob-wel2 .feat span{font-size:11.5px}.ob-wel2 .feat b{font-size:14px}.ob-wel2 .featgrid{margin-top:12px;gap:8px}.ob-wel2 .btn{padding:12px}.ob-wel2 .ob-actions{padding-top:10px}}
+.ob-wel2 .featgrid{gap:10px;margin-top:16px}
+.ob-wel2 .feat{aspect-ratio:auto;min-height:118px;padding:13px 14px;border-radius:20px;gap:10px}
+.ob-wel2 .feat svg{width:24px;height:24px}
+.ob-wel2 .feat span{font-size:12.5px;line-height:1.35}
+.ob-wel2 .feat b{font-size:15px}
+.ob-wel2 .feat-go{top:14px;right:13px;font-size:11.5px}
+.ob-wel2{justify-content:flex-start}
+.ob-wel2 .ob-sub{margin-bottom:18px!important}
+.ob-wel2 .featgrid{margin-top:auto!important}
+.ob-wel2{height:100%}
+.ob-wel2>*{flex-shrink:0}
+.ob-wel2::after{content:"";flex:0 1 100px;min-height:0}
+.ob-wel2 .ob-actions{gap:8px;padding-top:0;margin-top:14px;margin-bottom:auto}
+.ob-wel2 .btn{padding:14px}
+.ob-wel2 .ob-note{margin:0}
 /* Launch animation */
 .splash{position:absolute;inset:0;z-index:35;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0F1626;color:#EEF1F7;cursor:pointer;overflow:hidden;transition:opacity .6s ease}
 .splash.out{opacity:0;pointer-events:none}
@@ -1369,12 +1408,18 @@ function obTop(back, step){
     (step?`<div class="progress" aria-hidden="true">${OB_STEPS.map((_,i)=>`<span class="${i<step?'on':''}"></span>`).join('')}</div>`:'');
 }
 /* First launch: no account */
-views['ob-welcome'] = () => `<div class="ob ob-welcome">
+views['ob-welcome'] = () => `<div class="ob ob-welcome ob-wel2">
   <div class="ob-hero">${MARK}</div>
   <h1 class="ob-title">Start each day with God</h1>
   <p class="ob-sub">Peace Rising wakes you gently, asks how you feel, and gives you scripture for your morning.</p>
-  <ul class="ob-points"><li>A gentle alarm that wakes you to a sunrise</li><li>Bible verses matched to how you feel</li><li>Peace Rings: pray with people who wake when you do</li></ul>
-  <div class="ob-actions"><button class="btn gold" data-act="obstart">Get started</button><button class="btn line" data-act="obsigninwelcome">I already have an account</button><p class="ob-note">No account needed to start.</p></div>
+  <div class="featgrid">
+    <div class="feat">${ICON.sun}<span><b>Gentle alarm</b>Wake to a sunrise and a soft chime</span></div>
+    <div class="feat">${ICON.book}<span><b>Verses for you</b>Scripture matched to how you feel</span></div>
+    <button class="feat feat-btn" data-act="obsignupwelcome" aria-label="Join Peace Rings">${ICON.people}<span><b>Peace Rings</b>Pray with people who wake when you do</span><em class="feat-go">Join now →</em></button>
+    <div class="feat">${ICON_JOURNAL}<span><b>Your journal</b>Track your mornings and save verses</span></div>
+  </div>
+  <div class="ob-actions"><button class="btn gold" data-act="obstart">Get started</button><p class="ob-note">No account needed to start.</p>
+    <button class="btn line" data-act="obsigninwelcome">I already have an account</button></div>
 </div>`;
 views['ob-name'] = () => `<div class="ob">${obTop('ob-welcome',1)}
   <h1 class="ob-title">What should we call you?</h1>
@@ -1634,12 +1679,15 @@ Object.assign(A, {
     if(p==='apple'||p==='google'){ obProvider=p; openWin('ob-wait', el); setTimeout(()=>{ if(curView()==='ob-wait') authDone(p, p==='apple'?'Apple ID':'Google account'); },1300); return; }
     openWin(p==='phone'?'ob-phone':'ob-email', el); focusEl(p==='phone'?'obPhone':'obEmail'); },
   nudgesignin: () => showJoin('signin', joinCtx),
+  obsignupwelcome: () => showJoin('signup','welcome'),
+  welauth: (p, el) => { joinCtx='welcome'; joinMode='signup'; A.nudgeauth(p, el); },
   nudgeclose: () => hideNudge(false),
   obsigninwelcome: () => showJoin('signin','welcome'),
   ringauthsheet: m => { sheet=null; render(true); showJoin(m,'rings'); }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(winOpen) closeWin('collapse'); else hideNudge(false); } });
 /* ---------------- Profile ---------------- */
+const ICON_JOURNAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h12v14H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 0 2 2h12v-3"/><path d="M9 9l2 2 4-4"/></svg>';
 const ICON_GEAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
 function avatarBtn(){ const nm=(S.user&&S.user.name)||''; return `<div class="hdr-acts"><button class="iconbtn" data-act="settings" aria-label="Settings">${ICON_GEAR}</button><button class="avatarbtn hdr-av ${S.account?'':'guest'}" style="${S.account?'background:'+prof().color:''}" data-act="account" aria-label="${S.account?'Your profile':'Sign in or create an account'}">${nm?esc(nm[0].toUpperCase()):ICON_USER}</button></div>`; }
 function hdr(eyebrow, title){ return `<div class="topline" style="align-items:flex-start;margin:0"><div style="min-width:0"><div class="eyebrow">${eyebrow}</div><h1 class="h1">${title}</h1></div>${avatarBtn()}</div>`; }
